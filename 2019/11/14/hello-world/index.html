@@ -53,14 +53,14 @@
   };
 </script>
 
-  <meta name="description" content="site：指定域名inurl:URL中存在关键字的网页intext:网页正文中的关键字filetype：指定文件类型intitle：网页标题中的关键字link：link：baidu.com即表示返回所有和baidu.com做了链接的URLinfo：查找指定站点的一些基本信息cache：搜索Google里关于某些内容的缓存 后台：site:xxx.xxx admin|login|system|管理|">
+  <meta name="description" content="1、基本： site：指定域名inurl:URL中存在关键字的网页intext:网页正文中的关键字filetype：指定文件类型intitle：网页标题中的关键字link：link：baidu.com即表示返回所有和baidu.com做了链接的URLinfo：查找指定站点的一些基本信息cache：搜索Google里关于某些内容的缓存  把google可能忽略的字列如查询范围    把某个字忽略~">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Google语法">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;14&#x2F;hello-world&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="site：指定域名inurl:URL中存在关键字的网页intext:网页正文中的关键字filetype：指定文件类型intitle：网页标题中的关键字link：link：baidu.com即表示返回所有和baidu.com做了链接的URLinfo：查找指定站点的一些基本信息cache：搜索Google里关于某些内容的缓存 后台：site:xxx.xxx admin|login|system|管理|">
+<meta property="og:description" content="1、基本： site：指定域名inurl:URL中存在关键字的网页intext:网页正文中的关键字filetype：指定文件类型intitle：网页标题中的关键字link：link：baidu.com即表示返回所有和baidu.com做了链接的URLinfo：查找指定站点的一些基本信息cache：搜索Google里关于某些内容的缓存  把google可能忽略的字列如查询范围    把某个字忽略~">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-14T07:55:32.590Z">
+<meta property="og:updated_time" content="2019-11-15T01:32:45.988Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/11/14/hello-world/">
@@ -209,10 +209,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-11-14 15:24:44 / 修改时间：15:55:32" itemprop="dateCreated datePublished" datetime="2019-11-14T15:24:44+08:00">2019-11-14</time>
+              <time title="创建时间：2019-11-14 15:24:44" itemprop="dateCreated datePublished" datetime="2019-11-14T15:24:44+08:00">2019-11-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-15 09:32:45" itemprop="dateModified" datetime="2019-11-15T09:32:45+08:00">2019-11-15</time>
+              </span>
 
           
 
@@ -225,8 +231,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>site：指定域名<br>inurl:URL中存在关键字的网页<br>intext:网页正文中的关键字<br>filetype：指定文件类型<br>intitle：网页标题中的关键字<br>link：link：baidu.com即表示返回所有和baidu.com做了链接的URL<br>info：查找指定站点的一些基本信息<br>cache：搜索Google里关于某些内容的缓存</p>
+        <p>1、基本：</p>
+<p>site：指定域名<br>inurl:URL中存在关键字的网页<br>intext:网页正文中的关键字<br>filetype：指定文件类型<br>intitle：网页标题中的关键字<br>link：link：baidu.com即表示返回所有和baidu.com做了链接的URL<br>info：查找指定站点的一些基本信息<br>cache：搜索Google里关于某些内容的缓存</p>
+<ul>
+<li>把google可能忽略的字列如查询范围 </li>
+</ul>
+<ul>
+<li>把某个字忽略<br>~ 允许词<br>. 单一的通配符 </li>
+</ul>
+<ul>
+<li>通配符，可代表多个字母 ，<br>与通配符星号“*”不一样的是，点号“.”匹配的是字符，不是字、短语等内容。保留的字符有[、(、-等。<br>“” 精确查询</li>
+</ul>
+<p>2.详解</p>
+<p>intitle</p>
+<pre><code>intitle语法通常被用来搜索网站的后台、特殊页面和文件，通过在Google中搜索“intitle:登录”、“intitle:管理”就可以找到很多网站的后台登录页面。此外，intitle语法还可以被用在搜索文件上，例如搜索“intitle:&quot;indexof&quot;etc/shadow”就可以找到Linux中因为配置不合理而泄露出来的用户密码文件。</code></pre><p>inurl</p>
+<pre><code>Google Hack中，inurl发挥的作用的最大，主要可以分为以下两个方面:寻找网站后台登录地址，搜索特殊URL。
+寻找网站后台登录地址：和intitle不同的是，inurl可以指定URL中的关键字，我们都知道网站的后台URL都是类似login.asp、admin.asp为结尾的，那么我们只要以“inurl:login.asp”、“inurl:admin.asp”为关键字进行搜索，同样可以找到很多网站的后台。此外，我们还可以搜索一下网站的数据库地址，以“inurl:data”、“inurl:db”为关键字进行搜索即可。</code></pre><p>intext</p>
+<pre><code>intext的作用是搜索网页中的指定字符，这貌似在Google Hack中没有什么作用，不过在以“intext:to parent directory”为关键字进行搜索后，我们会很惊奇的发现，无数网站的目录暴露在我们眼前。我们可以在其中随意切换目录，浏览文件，就像拥有了一个简单的Webshell。形成这种现象的原因是由于IIS的配置疏忽。同样，中文IIS配置疏忽也可能出现类似的漏洞，我们用“intext:转到父目录”就可以找到很多有漏洞的中文网站。</code></pre><p>Site</p>
+<pre><code>黑客使用Site，通常都是做入侵前的信息刺探。Site语法可以显示所有和目标网站有联系的页面，从中或多或少存在一些关于目标网站的资料，这对于黑客而言就是入侵的突破口，是关于目标网站的一份详尽的报告。</code></pre><p>语法组合，威力加倍</p>
+<p>Filetype</p>
+<pre><code>Filetype的作用是搜索指定文件。假如我们要搜索网站的数据库文件，那么可以以“filetype:mdb”为关键字进行搜索，很快就可以下载到不少网站的数据库文件。当然，Filetype语法的作用不仅于此，在和其他语法配合使用的时候更能显示出其强大作用</code></pre><p>3、进阶：</p>
 <p>后台：site:xxx.xxx admin|login|system|管理|登录|内部|系统<br>钓鱼：site:xxx.xxx 邮件|email<br>社工：site:xxx.xxx qq|群|微信|腾讯<br>越权：site:xxx.xxx inurl:uid=1|userid=1<br>包含：site:xxx.xxx inurl:php?include=</p>
+<p>1、site:220.181.38.*                             扫描c段<br>2、site:*.181.38.148                             扫描子域名<br>3、site:xxxx.com intext:管理                        后台<br>  site:xxxx.com inurl:login<br>  site:xxxx.com intitle:管理<br>  查找后台地址：<br>  site:域名      inurl:login|admin|manage|member|admin_login|login_admin|system|login|user|main|cms<br>查找文本内容：site:域名 intext:管理|后台|登陆|用户名|密码|验证码|系统|帐号|admin|login|sys|managetem|password|username<br>4、intitle:”index of” etc                   敏感信息搜索<br>intitle:”Index of” .sh_history<br>intitle:”Index of” .bash_history<br>intitle:”index of” passwd<br>intitle:”index of” people.lst<br>intitle:”index of” pwd.db<br>intitle:”index of” etc/shadow<br>intitle:”index of” spwd<br>intitle:”index of” master.passwd<br>intitle:”index of” htpasswd</p>
+<p>filetyle:xls inurl:gov username password<br>inurl:phpmyadmin/main.php intitle:phpmyadmin<br>filetype:inc inurl:config.inc host<br>filetype:sql cdb_members inurl:forumdata<br>filetype:txt inurl:”新建文本文档.txt”密码<br>inurl:phpinfo.php intitle:”phpinfo()””PHP Version”+”Server API”<br>filetype:log inurl:log mdb<br>5、<br>Index of /admin                                        目录浏览<br>Index of /passwd<br>Index of /password<br>Index of /mail<br>“Index of /” +passwd<br>“Index of /” +password.txt<br>“Index of /” +.htaccess<br>“Index of /root”<br>“Index of /cgi-bin”<br>“Index of /logs”<br>“Index of /config”<br>6、<br>site:xx.com inurl:file                               上传<br>site:xx.com inurl:load<br>inurl:file|load|editor|Files<br>7、<br>查找可注入点：site:域名 inurl:aspx|jsp|php|asp</p>
+<p>8、<br>查看脚本类型：site:域名 filetype:asp/aspx/php/jsp</p>
 
     </div>
 
