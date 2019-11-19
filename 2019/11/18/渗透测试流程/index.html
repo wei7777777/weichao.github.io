@@ -53,17 +53,17 @@
   };
 </script>
 
-  <meta name="description" content="1、基本： site：指定域名inurl:URL中存在关键字的网页intext:网页正文中的关键字filetype：指定文件类型intitle：网页标题中的关键字link：link：baidu.com即表示返回所有和baidu.com做了链接的URLinfo：查找指定站点的一些基本信息cache：搜索Google里关于某些内容的缓存 +把google可能忽略的字列如查询范围-把某个字忽略~允许词.">
+  <meta name="description" content="1.明确目标1）确定范围：测试的范围，如：IP、域名、内外网、整站or部分模块2）确定规则：能渗透到什么程度（发现漏洞为止or继续利用漏洞）、时间限制、能否修改上传、能否提权…• 目标系统介绍、重点保护对象及特性。• 是否允许数据破坏？• 是否允许阻断业务正常运行？• 测试之前是否应当知会相关部门接口人？• 接入方式？外网和内网？• 测试是发现问题就算成功，还是尽可能的发现多的问题？• 渗透过程是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Google语法">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;14&#x2F;Google%E8%AF%AD%E6%B3%95&#x2F;index.html">
+<meta property="og:title" content="渗透测试流程">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;18&#x2F;%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="1、基本： site：指定域名inurl:URL中存在关键字的网页intext:网页正文中的关键字filetype：指定文件类型intitle：网页标题中的关键字link：link：baidu.com即表示返回所有和baidu.com做了链接的URLinfo：查找指定站点的一些基本信息cache：搜索Google里关于某些内容的缓存 +把google可能忽略的字列如查询范围-把某个字忽略~允许词.">
+<meta property="og:description" content="1.明确目标1）确定范围：测试的范围，如：IP、域名、内外网、整站or部分模块2）确定规则：能渗透到什么程度（发现漏洞为止or继续利用漏洞）、时间限制、能否修改上传、能否提权…• 目标系统介绍、重点保护对象及特性。• 是否允许数据破坏？• 是否允许阻断业务正常运行？• 测试之前是否应当知会相关部门接口人？• 接入方式？外网和内网？• 测试是发现问题就算成功，还是尽可能的发现多的问题？• 渗透过程是">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-15T03:05:08.805Z">
+<meta property="og:updated_time" content="2019-11-19T06:04:44.813Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/11/14/Google%E8%AF%AD%E6%B3%95/">
+<link rel="canonical" href="http://yoursite.com/2019/11/18/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/">
 
 
 <script id="page-configurations">
@@ -77,7 +77,7 @@
   };
 </script>
 
-  <title>Google语法 | ClearLoveの博客</title>
+  <title>渗透测试流程 | ClearLoveの博客</title>
   
 
 
@@ -187,7 +187,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/14/Google%E8%AF%AD%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/18/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -200,7 +200,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Google语法
+          渗透测试流程
         </h1>
 
         <div class="post-meta">
@@ -210,14 +210,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-11-14 15:24:44" itemprop="dateCreated datePublished" datetime="2019-11-14T15:24:44+08:00">2019-11-14</time>
+              <time title="创建时间：2019-11-18 17:57:00" itemprop="dateCreated datePublished" datetime="2019-11-18T17:57:00+08:00">2019-11-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-15 11:05:08" itemprop="dateModified" datetime="2019-11-15T11:05:08+08:00">2019-11-15</time>
+                <time title="修改时间：2019-11-19 14:04:44" itemprop="dateModified" datetime="2019-11-19T14:04:44+08:00">2019-11-19</time>
               </span>
 
           
@@ -231,22 +231,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>1、基本：</p>
-<p>site：指定域名<br>inurl:URL中存在关键字的网页<br>intext:网页正文中的关键字<br>filetype：指定文件类型<br>intitle：网页标题中的关键字<br>link：link：baidu.com即表示返回所有和baidu.com做了链接的URL<br>info：查找指定站点的一些基本信息<br>cache：搜索Google里关于某些内容的缓存</p>
-<p>+把google可能忽略的字列如查询范围<br>-把某个字忽略<br>~允许词<br>.单一的通配符<br>星号通配符，可代表多个字母 ，<br>与通配符星号不一样的是，点号“.”匹配的是字符，不是字、短语等内容。保留的字符有[、(、-等。<br>“”精确查询</p>
-<p>2.详解</p>
-<p>intitle</p>
-<pre><code>intitle语法通常被用来搜索网站的后台、特殊页面和文件，通过在Google中搜索“intitle:登录”、“intitle:管理”就可以找到很多网站的后台登录页面。此外，intitle语法还可以被用在搜索文件上，例如搜索“intitle:&quot;indexof&quot;etc/shadow”就可以找到Linux中因为配置不合理而泄露出来的用户密码文件。</code></pre><p>inurl</p>
-<pre><code>Google Hack中，inurl发挥的作用的最大，主要可以分为以下两个方面:寻找网站后台登录地址，搜索特殊URL。
-寻找网站后台登录地址：和intitle不同的是，inurl可以指定URL中的关键字，我们都知道网站的后台URL都是类似login.asp、admin.asp为结尾的，那么我们只要以“inurl:login.asp”、“inurl:admin.asp”为关键字进行搜索，同样可以找到很多网站的后台。此外，我们还可以搜索一下网站的数据库地址，以“inurl:data”、“inurl:db”为关键字进行搜索即可。</code></pre><p>intext</p>
-<pre><code>intext的作用是搜索网页中的指定字符，这貌似在Google Hack中没有什么作用，不过在以“intext:to parent directory”为关键字进行搜索后，我们会很惊奇的发现，无数网站的目录暴露在我们眼前。我们可以在其中随意切换目录，浏览文件，就像拥有了一个简单的Webshell。形成这种现象的原因是由于IIS的配置疏忽。同样，中文IIS配置疏忽也可能出现类似的漏洞，我们用“intext:转到父目录”就可以找到很多有漏洞的中文网站。</code></pre><p>Site</p>
-<pre><code>黑客使用Site，通常都是做入侵前的信息刺探。Site语法可以显示所有和目标网站有联系的页面，从中或多或少存在一些关于目标网站的资料，这对于黑客而言就是入侵的突破口，是关于目标网站的一份详尽的报告。</code></pre><p>语法组合，威力加倍</p>
-<p>Filetype</p>
-<pre><code>Filetype的作用是搜索指定文件。假如我们要搜索网站的数据库文件，那么可以以“filetype:mdb”为关键字进行搜索，很快就可以下载到不少网站的数据库文件。当然，Filetype语法的作用不仅于此，在和其他语法配合使用的时候更能显示出其强大作用</code></pre><p>3、进阶：</p>
-<p>后台：site:xxx.xxx admin|login|system|管理|登录|内部|系统<br>钓鱼：site:xxx.xxx 邮件|email<br>社工：site:xxx.xxx qq|群|微信|腾讯<br>越权：site:xxx.xxx inurl:uid=1|userid=1<br>包含：site:xxx.xxx inurl:php?include=</p>
-<p>1、site:220.181.38.*                             扫描c段<br>2、site:*.181.38.148                             扫描子域名<br>3、site:xxxx.com intext:管理                        后台<br>  site:xxxx.com inurl:login<br>  site:xxxx.com intitle:管理<br>  查找后台地址：<br>  site:域名      inurl:login|admin|manage|member|admin_login|login_admin|system|login|user|main|cms<br>查找文本内容：site:域名 intext:管理|后台|登陆|用户名|密码|验证码|系统|帐号|admin|login|sys|managetem|password|username<br>4、intitle:”index of” etc                   敏感信息搜索<br>intitle:”Index of” .sh_history<br>intitle:”Index of” .bash_history<br>intitle:”index of” passwd<br>intitle:”index of” people.lst<br>intitle:”index of” pwd.db<br>intitle:”index of” etc/shadow<br>intitle:”index of” spwd<br>intitle:”index of” master.passwd<br>intitle:”index of” htpasswd</p>
-<p>filetyle:xls inurl:gov username password<br>inurl:phpmyadmin/main.php intitle:phpmyadmin<br>filetype:inc inurl:config.inc host<br>filetype:sql cdb_members inurl:forumdata<br>filetype:txt inurl:”新建文本文档.txt”密码<br>inurl:phpinfo.php intitle:”phpinfo()””PHP Version”+”Server API”<br>filetype:log inurl:log mdb<br>5、<br>Index of /admin                                        目录浏览<br>Index of /passwd<br>Index of /password<br>Index of /mail<br>“Index of /” +passwd<br>“Index of /” +password.txt<br>“Index of /” +.htaccess<br>“Index of /root”<br>“Index of /cgi-bin”<br>“Index of /logs”<br>“Index of /config”<br>6、<br>site:xx.com inurl:file                               上传<br>site:xx.com inurl:load<br>inurl:file|load|editor|Files<br>7、<br>查找可注入点：site:域名 inurl:aspx|jsp|php|asp</p>
-<p>8、<br>查看脚本类型：site:域名 filetype:asp/aspx/php/jsp</p>
+        <p>1.明确目标<br>1）确定范围：测试的范围，如：IP、域名、内外网、整站or部分模块<br>2）确定规则：能渗透到什么程度（发现漏洞为止or继续利用漏洞）、时间限制、能否修改上传、能否提权…<br>• 目标系统介绍、重点保护对象及特性。<br>• 是否允许数据破坏？<br>• 是否允许阻断业务正常运行？<br>• 测试之前是否应当知会相关部门接口人？<br>• 接入方式？外网和内网？<br>• 测试是发现问题就算成功，还是尽可能的发现多的问题？<br>• 渗透过程是否需要考虑社会工程？<br>3）确定需求：web应用的漏洞(新上线程序)？业务逻辑漏洞（针对业务的）？人员权限管理漏洞（针对人员、权限）？<br>根据需求和自己技术能力来确定能不能做、能做多少</p>
+<p>2.分析风险，获得授权<br>分析渗透测试过程中可能产生的风险，如大量测试数据的处理、影响正常业务开展、服务器发生异常的应急、数据备份和恢复、测试人力物力成本…<br>由测试方书写实施方案初稿并提交给客户（or本公司内部领导）进行审核。在审核完成后，从客户（or本公司内部领导）获取对测试方进行书面委托授权书，授权测试方进行渗透测试。</p>
+<p>3.信息收集<br>在信息收集阶段，我们需要尽量多的收集关于目标web应用的各种信息，比如：脚本语言的类型、服务器的类型、目录的结构、使用的开源软件、数据库类型、所有链接页面，用到的框架等。<br>方式：主动扫描；开放搜索<br>开放搜索：利用搜索引擎获得后台、未授权页面、敏感url<br>基础信息：IP，网段，域名，端口<br>系统信息：操作系统版本<br>应用信息：各端口的应用，例如web应用，邮件应用等<br>版本信息：所有探测到的版本<br>服务信息：服务器类型、版本<br>人员信息：域名注册人员信息，web应用中网站发帖人的id，管理员姓名等<br>防护信息：试着看能否探测到防护设备</p>
+<p>4.漏洞探测（手动&amp;自动）<br>利用上一步中列出的信息，使用相应的漏洞检测<br>方法：<br>1）漏扫：AWVS、AppScan…<br>2）结合漏洞去exploit-db等位置找利用<br>3）在网上寻找验证POC<br>内容：<br>系统漏洞：系统没有及时打补丁<br>Websever漏洞：Websever配置问题<br>Web应用漏洞：Web应用开发问题<br>其它端口服务漏洞：各种21/8080(st2)/7001/22/3389<br>通信安全：明文传输，token在cookie中传送等</p>
+<p>5.漏洞验证<br>将上一步中发现的有可能可以成功利用的全部漏洞都验证一遍。结合实际情况，搭建模拟环境进行试验，成功后再应用于目标中。<br>• 自动化验证：结合自动化扫描工具提供的结果<br>• 手工验证：根据公开资源进行验证<br>• 试验验证：自己搭建模拟环境进行验证<br>• 登录猜解：有时可以尝试猜解一下登陆口的账号密码等信息<br>• 业务漏洞验证：如发现业务漏洞，要进行验证<br>• 公开资源的利用<br>exploit-db/wooyun/<br>渗透代码网站<br>通用、缺省口令<br>厂商的漏洞警告等</p>
+<p>6.信息分析<br>为下一步实施渗透做准备<br>• 精准攻击：准备好上一步探测到的漏洞exp（漏洞利用），用来精准攻击<br>• 绕过防御机制：是否有防火墙等设备，如何绕过<br>• 定制攻击路径：最佳工具路径，根据薄弱入口，高内网权限位置，最终目标<br>• 绕过检测机制：是否有检测机制，流量监控，杀毒软件，恶意代码检测等（免杀）<br>• 攻击代码：经过试验得来的代码，包括不限于xss代码，sql注入语句等</p>
+<p>7.利用漏洞，获取数据<br>• 实施攻击：根据前几步的结果，进行攻击<br>• 获取内部信息：基础设施（网络连接，vpn，路由，拓扑等）<br>• 进一步渗透：内网入侵，敏感目标<br>• 持续性存在：一般对客户做渗透不需要。rookit，后门，添加管理账号，驻扎手法等<br>• 清理痕迹：清理相关日志（访问，操作），上传文件等</p>
+<p>8.信息整理<br>• 整理渗透工具：整理渗透过程中用到的代码，poc，exp等<br>• 整理收集信息：整理渗透过程中收集到的一切信息<br>• 整理漏洞信息：整理渗透过程中遇到的各种漏洞，各种脆弱位置信息<br>目的：为了最后形成报告，形成测试结果使用。</p>
+<p>9.形成报告<br>• 按需整理：按照之前第一步跟客户确定好的范围，需求来整理资料，并将资料形成报告<br>• 补充介绍：要对漏洞成因，验证过程和带来危害进行分析<br>修补建议：当然要对所有产生的问题提出合理高效安全的解决办法</p>
 
     </div>
 
@@ -260,13 +253,16 @@
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/18/%E6%A1%88%E4%BE%8B%E4%B8%80%E6%8F%90%E6%9D%83/" rel="next" title="案例一-提权">
+                  <i class="fa fa-chevron-left"></i> 案例一-提权
+                </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/11/15/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD/" rel="prev" title="网络安全专业术语">
-                  网络安全专业术语 <i class="fa fa-chevron-right"></i>
+                <a href="/2019/11/19/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/" rel="prev" title="渗透测试技巧">
+                  渗透测试技巧 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
