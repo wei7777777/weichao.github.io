@@ -53,18 +53,18 @@
   };
 </script>
 
-  <meta name="description" content="内网渗透">
-<meta name="keywords" content="内网渗透">
+  <meta name="description" content="MYSQL数据库 • 默认端口：3306 • 攻击方法： • 爆破：弱口令 • 身份认证漏洞：CVE-2012-2122 • 拒绝服务攻击 • Phpmyadmin万能密码绕过：用户名：‘localhost’@’@” 密码任意 • 提权 • 参考： • https:&#x2F;&#x2F;www.seebug.org&#x2F;appdir&#x2F;MySQL • http:&#x2F;&#x2F;www.waitalone.cn&#x2F;mysql-tiqua">
+<meta name="keywords" content="端口服务&#x2F;协议">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内网渗透">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;19&#x2F;%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F&#x2F;index.html">
+<meta property="og:title" content="常见的端口服务&#x2F;协议漏洞">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;20&#x2F;%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="内网渗透">
+<meta property="og:description" content="MYSQL数据库 • 默认端口：3306 • 攻击方法： • 爆破：弱口令 • 身份认证漏洞：CVE-2012-2122 • 拒绝服务攻击 • Phpmyadmin万能密码绕过：用户名：‘localhost’@’@” 密码任意 • 提权 • 参考： • https:&#x2F;&#x2F;www.seebug.org&#x2F;appdir&#x2F;MySQL • http:&#x2F;&#x2F;www.waitalone.cn&#x2F;mysql-tiqua">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-20T06:27:05.332Z">
+<meta property="og:updated_time" content="2019-11-20T07:15:44.084Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/11/19/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">
+<link rel="canonical" href="http://yoursite.com/2019/11/20/%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E/">
 
 
 <script id="page-configurations">
@@ -78,7 +78,7 @@
   };
 </script>
 
-  <title>内网渗透 | ClearLoveの博客</title>
+  <title>常见的端口服务/协议漏洞 | ClearLoveの博客</title>
   
 
 
@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/19/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/20/%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -201,7 +201,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          内网渗透
+          常见的端口服务/协议漏洞
         </h1>
 
         <div class="post-meta">
@@ -210,24 +210,18 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-11-19 15:20:48" itemprop="dateCreated datePublished" datetime="2019-11-19T15:20:48+08:00">2019-11-19</time>
+              <time title="创建时间：2019-11-20 14:42:32 / 修改时间：15:15:44" itemprop="dateCreated datePublished" datetime="2019-11-20T14:42:32+08:00">2019-11-20</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-20 14:27:05" itemprop="dateModified" datetime="2019-11-20T14:27:05+08:00">2019-11-20</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" itemprop="url" rel="index">
-                    <span itemprop="name">内网渗透</span>
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试基本知识</span>
                   </a>
                 </span>
             </span>
@@ -243,7 +237,176 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <pre><code> 内网渗透 </code></pre>
+        <p>MYSQL数据库</p>
+<pre><code>• 默认端口：3306
+• 攻击方法：
+• 爆破：弱口令
+• 身份认证漏洞：CVE-2012-2122
+• 拒绝服务攻击
+• Phpmyadmin万能密码绕过：用户名：‘localhost’@’@” 密码任意
+• 提权
+• 参考：
+• https://www.seebug.org/appdir/MySQL
+• http://www.waitalone.cn/mysql-tiquan-summary.html?replytocom=390
+•https://xz.aliyun.com/t/1491</pre></code>
+
+<p>MSSQL数据库</p>
+<pre><code>• 默认端口：1433（Server 数据库服务）、1434（Monitor 数据库监控）
+• 攻击方法：
+• 爆破：弱口令/使用系统用户
+• 注入
+• 参考：
+•https://www.anquanke.com/post/id/86011
+</pre></code>
+
+<p>Oracle数据库</p>
+<pre><code>• 默认端口：1521（数据库端口）、1158（Oracle EMCTL端口）、8080（Oracle XDB数据库）、210（Oracle XDB FTP服务）
+• 攻击方法：
+• 爆破：弱口令
+• 注入攻击；
+• 漏洞攻击； -参考：
+•https://www.leiphone.com/news/201711/JjzXFp46zEPMvJod.html
+</pre></code>
+
+<p>Postgresql数据库</p>
+<pre><code>PostgreSQL是一种特性非常齐全的自由软件的对象–关系型数据库管理系统，可以说是目前世界上最先进，功能最强大的自由数据库管理系统。包括kali系统中msf也使用这个数据库；浅谈postgresql数据库攻击技术 大部分关于它的攻击依旧是sql注入，所以注入才是数据库不变的话题。
+• 默认端口：5432
+• 攻击方法：
+• 爆破：弱口令：postgres postgres
+• 缓冲区溢出：CVE-2014-2669
+• 参考：
+• http://drops.xmd5.com/static/drops/tips-6449.html
+•https://www.secpulse.com/archives/69153.html
+</pre></code>
+
+<p>MongoDB数据库</p>
+<pre><code>MongoDB，NoSQL数据库；攻击方法与其他数据库类似》
+• 默认端口：27017
+• 攻击方法：
+• 爆破：弱口令
+• 未授权访问；github有攻击代码；请点击
+• 参考：
+• http://www.cnblogs.com/LittleHann/p/6252421.html
+•http://www.tiejiang.org/19157.html</pre></code>
+
+<p>Redis数据库</p>
+<pre><code>Redis是一个开源的使用c语言写的，支持网络、可基于内存亦可持久化的日志型、key-value数据库。关于这个数据库这两年还是很火的，暴露出来的问题也很多。特别是前段时间暴露的未授权访问。
+• 攻击方法：
+• 爆破：弱口令
+• 未授权访问+配合ssh key提权；
+• 参考：
+•http://www.alloyteam.com/2017/07/12910/</pre></code>
+
+<p>SysBase数据库</p>
+<pre><code>• 默认端口：服务端口5000；监听端口4100；备份端口：4200
+• 攻击方法：
+• 爆破：弱口令
+•命令注入：</pre></code>
+
+<p>DB2 数据库</p>
+<pre><code>• 默认端口：5000
+• 攻击方法：
+• 安全限制绕过：成功后可执行未授权操作（CVE-2015-1922）
+• 参考：
+•http://23.94.222.93/bug_detail.php?wybug_id=wooyun-2015-0113071</pre></code>
+
+<p>FTP 服务</p>
+<pre><code>FTP服务：ftp服务我分为两种情况，第一种是使用系统软件来配置，比如IIS中的FTP文件共享或Linux中的默认服务软件；第二种是通过第三方软件来配置，比如Serv-U还有一些网上写的简易ftp服务器等； 默认端口：20（数据端口）；21（控制端口）；69（tftp小型文件传输协议）
+• 攻击方式：
+• 爆破：ftp的爆破工具有很多，这里我推荐owasp的Bruter 以及msf中ftp爆破模块；
+• 匿名访问：用户名：anonymous 密码：为空或任意邮箱
+• 嗅探：ftp使用明文传输技术（但是嗅探给予局域网并需要欺骗或监听网关）
+• 后门 vsftp
+• 远程溢出
+• 跳转攻击</pre></code>
+<p>NFS 服务</p>
+<pre><code>NFS（Network File System）即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间通过TCP/IP网络共享资源。在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。如今NFS具备了防止被利用导出文件夹的功能，但遗留系统中的NFS服务配置不当，则仍可能遭到恶意攻击者的利用。
+• 攻击方法
+• 未授权访问
+• 参考
+• http://www.freebuf.com/articles/network/159468.html
+• http://www.vuln.cn/6368</pre></code>
+<p>Samba服务</p>
+<pre><code>Samba是linux和unix系统上实现SMB/CIFS协议的一个免费软件，由服务器和客户端程序构成。而SMB是局域网支持共享文件和打印机的一种通信协议，为局域网内不同计算机之间提供文件及打印机等资源的共享服务。
+• 攻击方法
+• 远程代码执行
+• 弱口令
+• 未授权访问（public）
+• 参考
+• http://www.91ri.org/17114.html</pre></code>
+<p>SSH 服务</p>
+<pre><code>SSH 是协议，通常使用 OpenSSH 软件实现协议应用。SSH 为 Secure Shell 的缩写，由 IETF 的网络工作小组（Network Working Group）所制定；SSH 为建立在应用层和传输层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其它网络服务提供安全性的协议。利用 SSH 协议可以有效防止远程管理过程中的信息泄露问题。
+• 端口：22
+• 攻击方法：
+• 爆破
+• 后门
+• 漏洞：28退格漏洞、OpenSSL漏洞
+• 参考
+• https://cloud.tencent.com/developer/article/1078187</pre></code>
+<p>Telnet 服务</p>
+<pre><code>Telnet协议是TCP/IP协议族中的一员，是Internet远程登陆服务的标准协议和主要方式。它为用户提供了在本地计算机上完成远程主机工作的能力。在終端使用者的电脑上使用telnet程序，用它连接到服务器。終端使用者可以在telnet程序中输入命令，这些命令会在服务器上运行，就像直接在服务器的控制台上输入一样。可以在本地就能控制服务器。
+• 默认端口：21
+• 攻击方法：
+• 爆破
+• 嗅探</pre></code>
+<p>Windows 远程连接</p>
+<pre><code>• 默认端口：3389
+• 攻击方法
+• 爆破
+• Shift粘滞键后门：5次shift后门
+• 利用ms12-020攻击3389端口</pre></code>
+<p>VNC服务</p>
+<pre><code>VNC（Virtual Network Computing），为一种使用RFB协议的显示屏画面分享及远程操作软件。此软件借由网络，可发送键盘与鼠标的动作及即时的显示屏画面。
+• 默认端口：5900+桌面ID（5901；5902）
+• 攻击方式：
+• 爆破：弱口令
+• 认证口令绕过：
+• 拒绝服务攻击：（CVE-2015-5239）
+• 权限提升：（CVE-2013-6886）</pre></code>
+<p>SMTP协议</p>
+<pre><code>smtp：邮件协议，在linux中默认开启这个服务，可以向对方发送钓鱼邮件！
+• 默认端口：25（smtp）、465（smtps）
+• 攻击方式：
+• 爆破：弱口令
+• 未授权访问</pre></code>
+<p>POP3协议</p>
+<pre><code>• 默认端口：109（POP2）、110（POP3）、995（POP3S）
+• 攻击方式：
+• 爆破；弱口令
+• 未授权访问；</pre></code>
+<p>DNS服务</p>
+<pre><code>• 默认端口：53
+• 攻击方式：
+• 区域传输漏洞</pre></code>
+<p>IMAP协议</p>
+<pre><code>• 默认端口：143（imap）、993（imaps）
+• 攻击方式：
+• 爆破：弱口令
+• 配置不当</pre></code>
+<p>SNMP协议</p>
+<pre><code>• 默认端口：161
+• 攻击方式:
+• 爆破：弱口令</pre></code>
+<p>DHCP服务</p>
+<pre><code>• 默认端口：67&68、546（DHCP Failover做双机热备的）
+• 攻击方式：
+DHCP劫持；</pre></code>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 
     
@@ -252,24 +415,21 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" rel="tag"># 内网渗透</a>
+              <a href="/tags/%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E5%8D%8F%E8%AE%AE/" rel="tag"># 端口服务/协议</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/11/19/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/" rel="next" title="渗透测试面试问题">
-                  <i class="fa fa-chevron-left"></i> 渗透测试面试问题
+                <a href="/2019/11/19/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" rel="next" title="内网渗透">
+                  <i class="fa fa-chevron-left"></i> 内网渗透
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/11/20/%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E/" rel="prev" title="常见的端口服务/协议漏洞">
-                  常见的端口服务/协议漏洞 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
       </footer>
