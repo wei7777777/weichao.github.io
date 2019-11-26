@@ -51,13 +51,13 @@
   };
 </script>
 
-  <meta name="description" content="一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接 1、whomai 查看当前权限，若权限低，提权 2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权 3、ps liunx查看进程 tasklist win查看进程 tasklist">
+  <meta name="description" content="一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接1、whomai 查看当前权限，若权限低，提权 2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权 3、ps liunx查看进程 tasklist win查看进程 tasklist &#x2F;">
 <meta name="keywords" content="内网渗透">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从webshell到内网渗透">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;19&#x2F;%E4%BB%8Ewebshell%E5%88%B0%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接 1、whomai 查看当前权限，若权限低，提权 2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权 3、ps liunx查看进程 tasklist win查看进程 tasklist">
+<meta property="og:description" content="一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接1、whomai 查看当前权限，若权限低，提权 2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权 3、ps liunx查看进程 tasklist win查看进程 tasklist &#x2F;">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;pasted-44.png">
 <meta property="og:updated_time" content="2019-11-22T02:32:55.940Z">
@@ -243,13 +243,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接</p>
-<pre><code>1、whomai 查看当前权限，若权限低，提权
+        <p>一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接</p><pre><code>1、whomai 查看当前权限，若权限低，提权
 2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权
 3、ps liunx查看进程
 tasklist win查看进程
 tasklist /f /im pid 杀进程（常用于杀软）
-提权部分另外介绍</pre></code>
+提权部分另外介绍</code></pre><a id="more"></a>
+
 <p><img src="/images/pasted-44.png" alt="upload successful"></p>
 <p>二、信息搜集(拿到一台服务器的时候，拿下内网更多服务器，获取更有用的信息)</p>
 <pre><code><center>信息获取</center>
@@ -258,7 +258,7 @@ tasklist /f /im pid 杀进程（常用于杀软）
 3、假如存在数据库管理工具，ftp管理工具等，如navicat、secure CRT、flashfxp等，查看是否保存的密码，尝试登陆
 4、各种浏览器保存的登录密码，作为自己的密码表，在其他内网机器上登录尝试
 5、有无vpn连接信息
-</pre></code>
+</code></pre>
 
 <pre><code><center>存活主机扫描</center>
 1、ipconfig/all
@@ -271,19 +271,19 @@ run autoroute -p    路由查询）
 3、通过上传一些工具，如cain，可以探测本地程序缓存的密码，通过嗅探器可嗅探到相邻机器的username和password
 4、通过上传一些工具，如hscan，可以探测到同一个段内存活的机器IP、端口、服务等信息，包括存活机器的弱口令
 控制发包量，内网防范严谨的时候，容易触发报警警告
-</pre></code>
+</code></pre>
 <pre><code><center>存活端口扫描利用</center>
 1、服务弱口令
 2、直接利用msf(可反弹shell到msf，设置路由表，利用msf内置扫描模块扫描use auxiliary / scanner / portscan / tcp)
 3、未经授权的各种服务
 4、如web渗透一样，在进行端口/服务探测时，可以探测到服务版本信息，根据已知漏洞msf溢出攻击，拿到对应服务器权限
-</pre></code>
+</code></pre>
 <pre><code>net user /domain 查看域用户
 net view 显示正由指定的计算机共享的域、计算机或资源的列表。如果在没有参数的情况下使用，则net view显示当前域中的计算机列表
 net view /domain 查看几个域
 net group /domain 查看域里面的组
 
-</pre></code>
+</code></pre>
     </div>
 
     

