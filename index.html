@@ -337,7 +337,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <pre><code>1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行/c c:\windows\temp\cookies\net1.exe user</code></pre><pre><code>2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权</code></pre>
+          <pre><code>1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行/c c:\windows\temp\cookies\net1.exe user</code></pre>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/11/22/%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%B8%80/#more" rel="contents">
@@ -576,12 +576,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接</p><pre><code>1、whomai 查看当前权限，若权限低，提权
-2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权
-3、ps liunx查看进程
-tasklist win查看进程
-tasklist /f /im pid 杀进程（常用于杀软）
-提权部分另外介绍</code></pre>
+          <p>一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/11/19/%E4%BB%8Ewebshell%E5%88%B0%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/#more" rel="contents">
@@ -988,7 +983,7 @@ tasklist /f /im pid 杀进程（常用于杀软）
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>仅知道靶机的ip是172.16.12.131，现在需要一步步去获取更多的信息。</p><p>一、获取靶机的登录权限：<br>1、探测靶机开放端口：</p><p><img src="/images/pasted-4.png" alt="upload successful"><br>发现1433端口开放。1433对应mssqlserver数据库服务。</p><p>2、继续探测非默认服务端口，发现27689端口对外开放</p><p><img src="/images/pasted-5.png" alt="upload successful"></p><p>3、尝试用浏览器访问，发现是web服务端口，打开网页如下：</p>
+          <p>仅知道靶机的ip是172.16.12.131，现在需要一步步去获取更多的信息。</p><p>一、获取靶机的登录权限：<br>1、探测靶机开放端口：</p><p><img src="/images/pasted-4.png" alt="upload successful"><br>发现1433端口开放。1433对应mssqlserver数据库服务。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/11/18/%E6%A1%88%E4%BE%8B%E4%B8%80%E6%8F%90%E6%9D%83/#more" rel="contents">
@@ -1071,7 +1066,7 @@ tasklist /f /im pid 杀进程（常用于杀软）
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>1.肉鸡：<br>所谓“肉鸡”是一种很形象的比喻，比喻那些可以随意被我们控制的电脑，对方可以是WINDOWS系统，也可以是UNIX/LINUX系统，可以是普通的个人电脑，也可以是大型的服务器，我们可以象操作自己的电脑那样来操作它们，而不被对方所发觉。</p><p>2.木马：<br>就是那些表面上伪装成了正常的程序，但是当这些被程序运行时，就会获取系统的整个控制权限。有很多黑客就是热中与使用木马程序来控制别人的电脑，比如灰鸽子，黑洞，PcShare等等。</p>
+          <p>1.肉鸡：<br>所谓“肉鸡”是一种很形象的比喻，比喻那些可以随意被我们控制的电脑，对方可以是WINDOWS系统，也可以是UNIX/LINUX系统，可以是普通的个人电脑，也可以是大型的服务器，我们可以象操作自己的电脑那样来操作它们，而不被对方所发觉。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/11/15/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD/#more" rel="contents">

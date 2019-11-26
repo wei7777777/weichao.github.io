@@ -51,13 +51,13 @@
   };
 </script>
 
-  <meta name="description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权">
+  <meta name="description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user">
 <meta name="keywords" content="提权">
 <meta property="og:type" content="article">
 <meta property="og:title" content="提权思路一">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;22&#x2F;%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%B8%80&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权">
+<meta property="og:description" content="1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行&#x2F;c c:\windows\temp\cookies\net1.exe user">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-22T06:56:33.992Z">
 <meta name="twitter:card" content="summary">
@@ -235,8 +235,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <pre><code>1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行/c c:\windows\temp\cookies\net1.exe user</code></pre><pre><code>2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权</code></pre><a id="more"></a>
-
+        <pre><code>1、能不能执行cmd就看这个命令：net user，net不行就用net1，再不行就上传一个net到可写可读目录，执行/c c:\windows\temp\cookies\net1.exe user</code></pre><a id="more"></a>
+<pre><code>2、cmd命令：systeminfo，看看有没有KB952004、KB956572、KB970483这三个补丁，如果没有，第一个是pr提权，第二个是巴西烤肉提权，第三个是iis6.0提权</code></pre>
 <pre><code>3、cmd拒绝访问的话就自己上传一个cmd.exe 自己上传的后缀是不限制后缀的，cmd.exe/cmd.com/cmd.txt 都可以</code></pre>
 <pre><code>4、找sa密码或是root密码，直接利用大马的文件搜索功能直接搜索</code></pre>
 <pre><code>5、c:\windows\temp\cookies\ 这个目录</code></pre>

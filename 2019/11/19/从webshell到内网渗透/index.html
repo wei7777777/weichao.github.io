@@ -51,13 +51,13 @@
   };
 </script>
 
-  <meta name="description" content="一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接1、whomai 查看当前权限，若权限低，提权 2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权 3、ps liunx查看进程 tasklist win查看进程 tasklist &#x2F;">
+  <meta name="description" content="一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接">
 <meta name="keywords" content="内网渗透">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从webshell到内网渗透">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;19&#x2F;%E4%BB%8Ewebshell%E5%88%B0%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接1、whomai 查看当前权限，若权限低，提权 2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权 3、ps liunx查看进程 tasklist win查看进程 tasklist &#x2F;">
+<meta property="og:description" content="一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;pasted-44.png">
 <meta property="og:updated_time" content="2019-11-22T02:32:55.940Z">
@@ -243,13 +243,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接</p><pre><code>1、whomai 查看当前权限，若权限低，提权
+        <p>一、通过常规web渗透拿到webshell后，那么接下来最重要的就是探测系统信息，提权，针对windows想办法开启远程桌面连接，针对linux想办法反弹shell本地连接</p><a id="more"></a>
+<pre><code>1、whomai 查看当前权限，若权限低，提权
 2、systeminfo 查看系统版本、域、补丁情况，根据相关补丁对应的提权工具进行相对应提权
 3、ps liunx查看进程
 tasklist win查看进程
 tasklist /f /im pid 杀进程（常用于杀软）
-提权部分另外介绍</code></pre><a id="more"></a>
-
+提权部分另外介绍</code></pre>
 <p><img src="/images/pasted-44.png" alt="upload successful"></p>
 <p>二、信息搜集(拿到一台服务器的时候，拿下内网更多服务器，获取更有用的信息)</p>
 <pre><code><center>信息获取</center>
