@@ -263,6 +263,12 @@ echo ‘exploit’ >> autoexp.rc
 msfconsole 
 msf> resource autoexp.rc
 <pre><code></code></pre></code></pre>]]></content>
+      <categories>
+        <category>内网渗透</category>
+      </categories>
+      <tags>
+        <tag>MSF</tag>
+      </tags>
   </entry>
   <entry>
     <title>提权思路二</title>
