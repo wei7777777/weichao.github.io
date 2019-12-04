@@ -53,6 +53,12 @@
 
 
 ]]></content>
+      <categories>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+      </tags>
   </entry>
   <entry>
     <title>sql server提权相关命令</title>
