@@ -59,7 +59,7 @@
 <meta property="og:site_name" content="ClearLoveの博客">
 <meta property="og:description" content="1.获得一台服务器权限后，如何判断当前服务器是否在域中？如果在域中，如何判断当前用户的身份？1.RDS如果服务器远程桌面服务开启，可尝试连接，若在用户和密码栏下还有一个登录到（L）选项，下拉选项如果除了计算机名（此计算机）选项外还有其他选项，则此服务器可能位于域中，且选项名即为域名 2.net time &#x2F;domain执行命令，有三种情况：第一种若存在域会从域控返回时间，并在第一行返回域控及域名；">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-04T07:35:35.417Z">
+<meta property="og:updated_time" content="2019-12-16T07:48:25.765Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/12/03/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E4%BA%8C/">
@@ -241,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-04 15:35:35" itemprop="dateModified" datetime="2019-12-04T15:35:35+08:00">2019-12-04</time>
+                <time title="修改时间：2019-12-16 15:48:25" itemprop="dateModified" datetime="2019-12-16T15:48:25+08:00">2019-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,25 +296,48 @@
 <pre><code>具有恶意目的，自身是计算机程序，通过执行发生作用</code></pre>
 <p>7.通过MySQL写入php一句话<br>前提：root权限，web服务器的绝对路径</p>
 <pre><code>select "<?php @eval($_POST['pass']);?>" INTO OUTFILE "D:\\WWW\\22.php"</code></pre>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<p>8.除了owasp top10漏洞说下还有哪些web漏洞？</p>
+<pre><code>1、xxe漏洞：XXE 漏洞全称 XML 外部实体漏洞（XML External Entity），当应用程序解析 XML 输入时，如果没有禁止外部实体的加载，导致可加载恶意外部文件和代码，就会造成任意文件读取、命令执行、内网端口扫描、攻击内网网站等攻击
+2、json劫持：一些 Web 应用会把一些敏感数据以 json 的形式返回到前端，如果仅仅通过 Cookie 来判断请求是否合法，那么就可以利用类似 CSRF 的手段，向目标服务器发送请求，以获得敏感数据。
+3、CRLF注入：CRLF注入漏洞，是因为Web应用没有对用户输入做严格验证，导致攻击者可以输入一些恶意字符。攻击者一旦向请求行或首部中的字段注入恶意的CRLF，就能注入一些首部字段或报文主体，并在响应中输出，所以又称为HTTP响应拆分漏洞（HTTP Response Splitting）
+4、url重定向，ssi注入等等</code></pre>
+<p>9.ssi注入</p>
+<pre><code>SSI 注入全称Server-Side Includes Injection，即服务端包含注入。SSI 是类似于 CGI，用于动态页面的指令。SSI 注入允许远程在 Web 应用中注入脚本来执行代码
+漏洞挖掘思路
+1.从业务场景来Fuzz，比如获取IP、定位、时间等
+2.识别页面是否包含.stm,.shtm和.shtml后缀
+3.google dork：'inurl:bin/cklb'</code></pre>
+<p>10.列举常见中间件漏洞</p>
+<pre><code>（一） IIS
+1、PUT漏洞
+2、短文件名猜解
+3、远程代码执行
+4、解析漏洞
+（二） Apache
+1、解析漏洞
+2、目录遍历
+（三） Nginx
+1、文件解析
+2、目录遍历
+3、CRLF注入
+4、目录穿越
+（四）Tomcat
+1、远程代码执行
+2、war后门文件部署
+（五）jBoss
+1、反序列化漏洞
+2、war后门文件部署
+（六）WebLogic
+1、反序列化漏洞
+2、SSRF
+3、任意文件上传
+4、war后门文件部署
+（七）其它中间件相关漏洞
+1、FastCGI未授权访问、任意命令执行
+2、PHPCGI远程代码执行</code></pre>
+<p>11.列举常见中间件漏洞利用过程</p>
+<pre><code>https://www.freebuf.com/articles/web/192063.html</code></pre>
+<p>12.列举常见的编辑器漏洞</p>
 
     </div>
 
