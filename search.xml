@@ -122,6 +122,12 @@ sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --file-write test.txt --file-d
 
 
 ]]></content>
+      <categories>
+        <category>渗透测试基本知识</category>
+      </categories>
+      <tags>
+        <tag>sqlmap</tag>
+      </tags>
   </entry>
   <entry>
     <title>phpMYAdmin提权</title>
